@@ -17,6 +17,67 @@
 		<url>http://code.google.com/p/wobr/issues/list</url>
 	</issueManagement>
 
+	<developers>
+		<developer>
+			<id>andre</id>
+			<name>André Couto</name>
+			<email>andre@doit.com.br</email>
+			<organization>DOit S/A</organization>
+			<organizationUrl>http://www.doit.com.br</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>georg</id>
+			<name>Georg Von Bülow</name>
+			<email>georg@moleque.com.br</email>
+			<organization>Moleque de Idéias</organization>
+			<organizationUrl>http://www.moleque.com.br</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>hprange</id>
+			<name>Henrique Prange</name>
+			<email>hprange@gmail.com</email>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>luiseugenio</id>
+			<name>Luís Eugênio</name>
+			<email>luiseugenio@moleque.com.br</email>
+			<organization>Moleque de Idéias</organization>
+			<organizationUrl>http://www.moleque.com.br</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>nlessa</id>
+			<name>Nilton Lessa</name>
+			<email>nlessa@moleque.com.br</email>
+			<organization>Moleque de Idéias</organization>
+			<organizationUrl>http://www.moleque.com.br</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>vribeiro</id>
+			<name>Vicente Ribeiro</name>
+			<email>vribeiro@doit.com.br</email>
+			<organization>DOit S/A</organization>
+			<organizationUrl>http://www.doit.com.br</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+
 	<scm>
 		<connection>http://wobr.googlecode.com/svn/wobr-parent/trunk</connection>
 		<developerConnection>https://wobr.googlecode.com/svn/wobr-parent/trunk</developerConnection>
