@@ -8,6 +8,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
+import com.google.inject.Provider;
 import com.webobjects.eoaccess.EOUtilities;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.eocontrol.EOEnterpriseObject;
@@ -19,6 +20,8 @@ import er.extensions.foundation.ERXProperties;
  */
 public class EofRealm extends AuthorizingRealm
 {
+	private Provider<EOEditingContext> editingContextProvider;
+
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken arg0) throws AuthenticationException
 	{
@@ -33,7 +36,7 @@ public class EofRealm extends AuthorizingRealm
 
 	protected SimpleAccount getAccount(String username)
 	{
-		EOEditingContext editingContext = null;
+		EOEditingContext editingContext = editingContextProvider.get();
 
 		String entityName = ERXProperties.stringForKey("security.realm.entityName");
 
@@ -50,5 +53,10 @@ public class EofRealm extends AuthorizingRealm
 		// TODO: Fazer algo com o password
 
 		return null;
+	}
+
+	protected void initEditingContextProvider(Provider<EOEditingContext> editingContextProvider)
+	{
+		this.editingContextProvider = editingContextProvider;
 	}
 }
