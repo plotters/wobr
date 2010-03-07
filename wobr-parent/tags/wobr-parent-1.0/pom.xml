@@ -1,0 +1,165 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>br.com.wobr</groupId>
+	<artifactId>wobr-parent</artifactId>
+	<version>1.0</version>
+	<packaging>pom</packaging>
+	<name>WOBR Parent POM</name>
+
+	<description>WebObjects libraries provided by a consortium of Brazilian companies.</description>
+	<url>http://code.google.com/p/wobr</url>
+	<inceptionYear>2009</inceptionYear>
+
+	<issueManagement>
+		<system>Google Code</system>
+		<url>http://code.google.com/p/wobr/issues/list</url>
+	</issueManagement>
+
+	<developers>
+		<developer>
+			<id>adriano</id>
+			<name>Adriano Ribeiro</name>
+			<email>adriano@doit.com.br</email>
+			<organization>DOit S/A</organization>
+			<organizationUrl>www.doit.com.br</organizationUrl>
+		</developer>
+		<developer>
+			<id>alexandre.parreira</id>
+			<name>Alexandre Parreira</name>
+			<email>alexandre.parreira@doit.com.br</email>
+			<organization>DOit S/A</organization>
+			<organizationUrl>www.doit.com.br</organizationUrl>
+		</developer>
+		<developer>
+			<id>andre</id>
+			<name>André Couto</name>
+			<email>andre@doit.com.br</email>
+			<organization>DOit S/A</organization>
+			<organizationUrl>http://www.doit.com.br</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>georg</id>
+			<name>Georg Von Bülow</name>
+			<email>georg@moleque.com.br</email>
+			<organization>Moleque de Idéias</organization>
+			<organizationUrl>http://www.moleque.com.br</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>hprange</id>
+			<name>Henrique Prange</name>
+			<email>hprange@gmail.com</email>
+			<organization>DOit S/A</organization>
+			<organizationUrl>www.doit.com.br</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>luiseugenio</id>
+			<name>Luís Eugênio</name>
+			<email>luiseugenio@moleque.com.br</email>
+			<organization>Moleque de Idéias</organization>
+			<organizationUrl>http://www.moleque.com.br</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>nlessa</id>
+			<name>Nilton Lessa</name>
+			<email>nlessa@moleque.com.br</email>
+			<organization>Moleque de Idéias</organization>
+			<organizationUrl>http://www.moleque.com.br</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>bueno</id>
+			<name>Oswaldo Bueno</name>
+			<email>bueno@carpintaria.com.br</email>
+			<organization>Carpintaria</organization>
+			<organizationUrl>www.carpintaria.com.br</organizationUrl>
+		</developer>
+		<developer>
+			<id>rodnei</id>
+			<name>Rodnei Couto</name>
+			<email>rodnei@doit.com.br</email>
+			<organization>DOit S/A</organization>
+			<organizationUrl>www.doit.com.br</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>vribeiro</id>
+			<name>Vicente Ribeiro</name>
+			<email>vribeiro@doit.com.br</email>
+			<organization>DOit S/A</organization>
+			<organizationUrl>http://www.doit.com.br</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:svn:http://wobr.googlecode.com/svn/wobr-parent/tags/wobr-parent-1.0</connection>
+		<developerConnection>scm:svn:https://wobr.googlecode.com/svn/wobr-parent/tags/wobr-parent-1.0</developerConnection>
+	</scm>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.objectstyle.woproject.maven2</groupId>
+					<artifactId>maven-wolifecycle-plugin</artifactId>
+					<version>2.0.17</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.objectstyle.woproject.maven2</groupId>
+				<artifactId>maven-wolifecycle-plugin</artifactId>
+				<extensions>true</extensions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<properties>
+		<webobjects.version>5.4.3</webobjects.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+
+	<distributionManagement>
+		<repository>
+			<id>wocommunity.deployment</id>
+			<name>WOCommunity Maven2 Releases Repository</name>
+			<url>http://maven.wocommunity.org/content/repositories/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>wocommunity.deployment</id>
+			<uniqueVersion>false</uniqueVersion>
+			<name>WOCommunity Maven2 Snapshots Repository</name>
+			<url>http://maven.wocommunity.org/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+</project>
