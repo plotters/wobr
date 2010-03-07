@@ -4,7 +4,7 @@
 
 	<groupId>br.com.wobr</groupId>
 	<artifactId>wobr-parent</artifactId>
-	<version>1.0</version>
+	<version>1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>WOBR Parent POM</name>
 
@@ -112,8 +112,8 @@
 	</developers>
 
 	<scm>
-		<connection>scm:svn:http://wobr.googlecode.com/svn/wobr-parent/tags/wobr-parent-1.0</connection>
-		<developerConnection>scm:svn:https://wobr.googlecode.com/svn/wobr-parent/tags/wobr-parent-1.0</developerConnection>
+		<connection>scm:svn:http://wobr.googlecode.com/svn/wobr-parent/trunk</connection>
+		<developerConnection>scm:svn:https://wobr.googlecode.com/svn/wobr-parent/trunk</developerConnection>
 	</scm>
 
 	<build>
