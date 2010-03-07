@@ -19,6 +19,20 @@
 
 	<developers>
 		<developer>
+			<id>adriano</id>
+			<name>Adriano Ribeiro</name>
+			<email>adriano@doit.com.br</email>
+			<organization>DOit S/A</organization>
+			<organizationUrl>www.doit.com.br</organizationUrl>
+		</developer>
+		<developer>
+			<id>alexandre.parreira</id>
+			<name>Alexandre Parreira</name>
+			<email>alexandre.parreira@doit.com.br</email>
+			<organization>DOit S/A</organization>
+			<organizationUrl>www.doit.com.br</organizationUrl>
+		</developer>
+		<developer>
 			<id>andre</id>
 			<name>André Couto</name>
 			<email>andre@doit.com.br</email>
@@ -42,6 +56,8 @@
 			<id>hprange</id>
 			<name>Henrique Prange</name>
 			<email>hprange@gmail.com</email>
+			<organization>DOit S/A</organization>
+			<organizationUrl>www.doit.com.br</organizationUrl>
 			<roles>
 				<role>Developer</role>
 			</roles>
@@ -62,6 +78,23 @@
 			<email>nlessa@moleque.com.br</email>
 			<organization>Moleque de Idéias</organization>
 			<organizationUrl>http://www.moleque.com.br</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>bueno</id>
+			<name>Oswaldo Bueno</name>
+			<email>bueno@carpintaria.com.br</email>
+			<organization>Carpintaria</organization>
+			<organizationUrl>www.carpintaria.com.br</organizationUrl>
+		</developer>
+		<developer>
+			<id>rodnei</id>
+			<name>Rodnei Couto</name>
+			<email>rodnei@doit.com.br</email>
+			<organization>DOit S/A</organization>
+			<organizationUrl>www.doit.com.br</organizationUrl>
 			<roles>
 				<role>Developer</role>
 			</roles>
