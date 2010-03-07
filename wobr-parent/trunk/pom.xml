@@ -112,8 +112,8 @@
 	</developers>
 
 	<scm>
-		<connection>http://wobr.googlecode.com/svn/${project.artifactId}/trunk</connection>
-		<developerConnection>https://wobr.googlecode.com/svn/${project.artifactId}/trunk</developerConnection>
+		<connection>scm:svn:http://wobr.googlecode.com/svn/${project.artifactId}/trunk</connection>
+		<developerConnection>scm:svn:https://wobr.googlecode.com/svn/${project.artifactId}/trunk</developerConnection>
 	</scm>
 
 	<build>
