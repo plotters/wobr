@@ -15,7 +15,7 @@
 		<dependency>
 			<groupId>wonder.core</groupId>
 			<artifactId>ERExtensions</artifactId>
-			<version>5.0.0-SNAPSHOT</version>
+			<version>5.0.0-r10702</version>
 			<classifier>wo54</classifier>
 		</dependency>
 		<dependency>
