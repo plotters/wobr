@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>br.com.wobr</groupId>
 		<artifactId>wobr-parent</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.0</version>
 	</parent>
 
 	<artifactId>wobr-base</artifactId>
 	<packaging>woframework</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>0.1-SNAPSHOT</version>
 	<name>WOBR Base Framework</name>
 
 	<dependencies>
