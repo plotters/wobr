@@ -1,4 +1,4 @@
-package br.com.wobr.guice;
+package br.com.wobr.inject;
 
 import com.google.inject.Key;
 import com.google.inject.Provider;

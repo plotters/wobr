@@ -11,6 +11,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import br.com.wobr.inject.WOSessionScope;
+
 import com.google.inject.Key;
 import com.google.inject.Provider;
 import com.webobjects.appserver.WOSession;
