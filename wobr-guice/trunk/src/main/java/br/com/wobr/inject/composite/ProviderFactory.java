@@ -9,24 +9,25 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
 package br.com.wobr.inject.composite;
 
 import com.google.inject.Key;
 import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
 
-public interface ProviderFactory {
+public interface ProviderFactory
+{
 
-    Provider providedBy(Class clazz);
+	Provider providedBy(Class clazz);
 
-    Provider providedByInstance(Object instance);
+	Provider providedByInstance(Object instance);
 
-    Provider providedByProvider(Class providerClass);
+	Provider providedByProvider(Class providerClass);
 
-    Provider providedBy(TypeLiteral typeLiteral);
+	Provider providedBy(TypeLiteral typeLiteral);
 
-    Provider providedBy(Key key);
+	Provider providedBy(Key key);
 
-    Provider providedByProvider(Key providerKey);
+	Provider providedByProvider(Key providerKey);
 }

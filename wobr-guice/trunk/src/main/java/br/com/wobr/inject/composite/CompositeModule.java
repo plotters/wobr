@@ -9,13 +9,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
 package br.com.wobr.inject.composite;
-
-import com.google.inject.Binder;
-import com.google.inject.Module;
-import javaonhorse.auxiliary.identity.HasIdentity;
-import javaonhorse.auxiliary.identity.IdentifiedBy;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -24,104 +19,131 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class CompositeModule<T, B> implements Module {
+import com.google.inject.Binder;
+import com.google.inject.Module;
 
-    protected final Class<T> type;
-    private final static Map<BuilderKey, Object> builders = new HashMap<BuilderKey, Object>();
-    private final static List<ConfiguredType> configuredTypes = new ArrayList<ConfiguredType>();
-    private Binder binder;
-    private BuilderKey builderKey;
+public abstract class CompositeModule<T, B> implements Module
+{
 
-    public CompositeModule(Class<? extends B> builderType) {
-        type = firstTypeArg(getClass());
-        builderKey = new BuilderKey(type, builderType);
-    }
+	private static final class BuilderKey extends HasIdentity
+	{
 
-    private Class firstTypeArg(Class clazz) {
-        ParameterizedType parameterizedType = (ParameterizedType) clazz.getGenericSuperclass();
-        Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-        return (Class) actualTypeArguments[0];
-    }
+		@IdentifiedBy
+		final Class builderType;
 
-    public void configure(Binder binder) {
-        this.binder = binder;
-        configure();
-        ConfiguredType configuredType = new ConfiguredType(type, binder);
-        if (configuredTypes.contains(configuredType)) {
-            return;
-        }
-        configuredTypes.add(configuredType);
-        configureBuilder();
-        Cleaner.bind(binder);
-    }
+		@IdentifiedBy
+		final Class buildingFor;
 
-    protected abstract void configure();
+		public BuilderKey(Class buildingFor, Class builderType)
+		{
+			this.buildingFor = buildingFor;
+			this.builderType = builderType;
+		}
+	}
 
-    protected abstract void configureBuilder();
+	protected static final class Cleaner
+	{
 
-    protected final Binder binder() {
-        return binder;
-    }
+		private static boolean bound;
 
-    protected final B builder() {
-        if (!builders.containsKey(builderKey)) {
-            builders.put(builderKey, createBuilder());
-        }
-        return (B) builders.get(builderKey);
-    }
+		public static void bind(Binder binder)
+		{
+			if(bound)
+			{
+				return;
+			}
+			binder.bind(Cleaner.class).asEagerSingleton();
+			bound = true;
+		}
 
-    protected abstract B createBuilder();
+		public static void clean()
+		{
+			bound = false;
+			configuredTypes.clear();
+			builders.clear();
+		}
 
-    public static void clean() {
-        Cleaner.clean();
-    }
+		public Cleaner()
+		{
+			clean();
+		}
+	}
 
-    protected static final class Cleaner {
+	private static final class ConfiguredType extends HasIdentity
+	{
 
-        private static boolean bound;
+		@IdentifiedBy
+		final Binder binder;
 
-        public Cleaner() {
-            clean();
-        }
+		@IdentifiedBy
+		final Class type;
 
-        public static void clean() {
-            bound = false;
-            configuredTypes.clear();
-            builders.clear();
-        }
+		public ConfiguredType(Class type, Binder binder)
+		{
+			this.type = type;
+			this.binder = binder;
+		}
+	}
 
-        public static void bind(Binder binder) {
-            if (bound) {
-                return;
-            }
-            binder.bind(Cleaner.class).asEagerSingleton();
-            bound = true;
-        }
-    }
+	private final static Map<BuilderKey, Object> builders = new HashMap<BuilderKey, Object>();
 
-    private static final class ConfiguredType extends HasIdentity {
+	private final static List<ConfiguredType> configuredTypes = new ArrayList<ConfiguredType>();
 
-        @IdentifiedBy
-        final Class type;
-        @IdentifiedBy
-        final Binder binder;
+	public static void clean()
+	{
+		Cleaner.clean();
+	}
 
-        public ConfiguredType(Class type, Binder binder) {
-            this.type = type;
-            this.binder = binder;
-        }
-    }
+	private Binder binder;
 
-    private static final class BuilderKey extends HasIdentity {
+	private final BuilderKey builderKey;
 
-        @IdentifiedBy
-        final Class buildingFor;
-        @IdentifiedBy
-        final Class builderType;
+	protected final Class<T> type;
 
-        public BuilderKey(Class buildingFor, Class builderType) {
-            this.buildingFor = buildingFor;
-            this.builderType = builderType;
-        }
-    }
+	protected CompositeModule(Class<? extends B> builderType)
+	{
+		type = firstTypeArg(getClass());
+		builderKey = new BuilderKey(type, builderType);
+	}
+
+	protected final Binder binder()
+	{
+		return binder;
+	}
+
+	protected final B builder()
+	{
+		if(!builders.containsKey(builderKey))
+		{
+			builders.put(builderKey, createBuilder());
+		}
+		return (B) builders.get(builderKey);
+	}
+
+	protected abstract void configure();
+
+	public void configure(Binder binder)
+	{
+		this.binder = binder;
+		configure();
+		ConfiguredType configuredType = new ConfiguredType(type, binder);
+		if(configuredTypes.contains(configuredType))
+		{
+			return;
+		}
+		configuredTypes.add(configuredType);
+		configureBuilder();
+		Cleaner.bind(binder);
+	}
+
+	protected abstract void configureBuilder();
+
+	protected abstract B createBuilder();
+
+	private Class firstTypeArg(Class clazz)
+	{
+		ParameterizedType parameterizedType = (ParameterizedType) clazz.getGenericSuperclass();
+		Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+		return (Class) actualTypeArguments[0];
+	}
 }

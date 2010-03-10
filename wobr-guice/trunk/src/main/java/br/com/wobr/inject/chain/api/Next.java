@@ -9,7 +9,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
 package br.com.wobr.inject.chain.api;
 
 import com.google.inject.BindingAnnotation;
@@ -20,12 +20,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Can only be used in constructor parameter to receive the next one in the chain
- *
+ * Can only be used in constructor parameter to receive the next one in the
+ * chain
+ * 
  * @author taowen@gmail.com (Wen Tao)
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 @BindingAnnotation
-public @interface Next {
+public @interface Next
+{
 }

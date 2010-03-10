@@ -9,7 +9,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
 package br.com.wobr.inject.chain.internal;
 
 import com.google.inject.BindingAnnotation;
@@ -22,5 +22,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 @BindingAnnotation
-public @interface Implementation {
+public @interface Implementation
+{
 }

@@ -1,4 +1,4 @@
-package br.com.wobr.guice;
+package br.com.wobr.inject;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;

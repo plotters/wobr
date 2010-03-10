@@ -9,26 +9,30 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
 package br.com.wobr.inject.chain.internal;
 
 import br.com.wobr.inject.chain.api.DecoratorFactory;
 
 import java.util.List;
 
-final class ChainedDecoratorFactory implements DecoratorFactory {
+final class ChainedDecoratorFactory implements DecoratorFactory
+{
 
-    private final List<DecoratorFactory> decoratorFactories;
+	private final List<DecoratorFactory> decoratorFactories;
 
-    public ChainedDecoratorFactory(List<DecoratorFactory> decoratorFactories) {
-        this.decoratorFactories = decoratorFactories;
-    }
+	public ChainedDecoratorFactory(List<DecoratorFactory> decoratorFactories)
+	{
+		this.decoratorFactories = decoratorFactories;
+	}
 
-    public final Object decorate(Object beginning) {
-        Object next = beginning;
-        for (DecoratorFactory decoratorFactory : decoratorFactories) {
-            next = decoratorFactory.decorate(next);
-        }
-        return next;
-    }
+	public final Object decorate(Object beginning)
+	{
+		Object next = beginning;
+		for(DecoratorFactory decoratorFactory : decoratorFactories)
+		{
+			next = decoratorFactory.decorate(next);
+		}
+		return next;
+	}
 }

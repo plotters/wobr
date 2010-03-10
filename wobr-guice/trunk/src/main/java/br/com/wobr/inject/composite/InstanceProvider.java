@@ -9,20 +9,23 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
 package br.com.wobr.inject.composite;
 
 import com.google.inject.Provider;
 
-public class InstanceProvider implements Provider {
+public class InstanceProvider implements Provider
+{
 
-    private final Object instance;
+	private final Object instance;
 
-    public InstanceProvider(Object instance) {
-        this.instance = instance;
-    }
+	public InstanceProvider(Object instance)
+	{
+		this.instance = instance;
+	}
 
-    public Object get() {
-        return instance;
-    }
+	public Object get()
+	{
+		return instance;
+	}
 }

@@ -9,7 +9,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
 package br.com.wobr.inject.set.internal;
 
 import br.com.wobr.inject.composite.CachedProviderFactory;
@@ -20,23 +20,28 @@ import com.google.inject.Provider;
 import java.util.HashSet;
 import java.util.Set;
 
-public final class SetBuilder extends CachedProviderFactory implements Provider {
+public final class SetBuilder extends CachedProviderFactory implements Provider
+{
 
-    private final Set<Provider> providers = new HashSet<Provider>();
+	private final Set<Provider> providers = new HashSet<Provider>();
 
-    public SetBuilder(ProviderFactory providerFactory) {
-        super(providerFactory);
-    }
+	public SetBuilder(ProviderFactory providerFactory)
+	{
+		super(providerFactory);
+	}
 
-    public void add(Provider provider) {
-        providers.add(provider);
-    }
+	public void add(Provider provider)
+	{
+		providers.add(provider);
+	}
 
-    public Object get() {
-        Set set = new HashSet();
-        for (Provider provider : providers) {
-            set.add(provider.get());
-        }
-        return set;
-    }
+	public Object get()
+	{
+		Set set = new HashSet();
+		for(Provider provider : providers)
+		{
+			set.add(provider.get());
+		}
+		return set;
+	}
 }

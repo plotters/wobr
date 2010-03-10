@@ -9,7 +9,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
 package br.com.wobr.inject.composite;
 
 import com.google.inject.Key;
@@ -19,55 +19,70 @@ import com.google.inject.TypeLiteral;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CachedProviderFactory implements ProviderFactory {
+public class CachedProviderFactory implements ProviderFactory
+{
 
-    private final ProviderFactory providerFactory;
-    private final Map<Object, Provider> providers = new HashMap<Object, Provider>();
+	private final ProviderFactory providerFactory;
 
-    public CachedProviderFactory(ProviderFactory providerFactory) {
-        this.providerFactory = providerFactory;
-    }
+	private final Map<Object, Provider> providers = new HashMap<Object, Provider>();
 
-    public Provider providedBy(TypeLiteral typeLiteral) {
-        if (!providers.containsKey(typeLiteral)) {
-            providers.put(typeLiteral, providerFactory.providedBy(typeLiteral));
-        }
-        return providers.get(typeLiteral);
-    }
+	public CachedProviderFactory(ProviderFactory providerFactory)
+	{
+		this.providerFactory = providerFactory;
+	}
 
-    public Provider providedBy(Key key) {
-        if (!providers.containsKey(key)) {
-            providers.put(key, providerFactory.providedBy(key));
-        }
-        return providers.get(key);
-    }
+	public Provider providedBy(TypeLiteral typeLiteral)
+	{
+		if(!providers.containsKey(typeLiteral))
+		{
+			providers.put(typeLiteral, providerFactory.providedBy(typeLiteral));
+		}
+		return providers.get(typeLiteral);
+	}
 
-    public Provider providedBy(Class clazz) {
-        if (!providers.containsKey(clazz)) {
-            providers.put(clazz, providerFactory.providedBy(clazz));
-        }
-        return providers.get(clazz);
-    }
+	public Provider providedBy(Key key)
+	{
+		if(!providers.containsKey(key))
+		{
+			providers.put(key, providerFactory.providedBy(key));
+		}
+		return providers.get(key);
+	}
 
-    public Provider providedByInstance(Object instance) {
-        if (!providers.containsKey(instance)) {
-            providers.put(instance, providerFactory.providedByInstance(instance));
-        }
-        return providers.get(instance);
-    }
+	public Provider providedBy(Class clazz)
+	{
+		if(!providers.containsKey(clazz))
+		{
+			providers.put(clazz, providerFactory.providedBy(clazz));
+		}
+		return providers.get(clazz);
+	}
 
-    public Provider providedByProvider(Class providerClass) {
-        if (!providers.containsKey(providerClass)) {
-            providers.put(providerClass, providerFactory.providedByProvider(providerClass));
-        }
-        return providers.get(providerClass);
+	public Provider providedByInstance(Object instance)
+	{
+		if(!providers.containsKey(instance))
+		{
+			providers.put(instance, providerFactory.providedByInstance(instance));
+		}
+		return providers.get(instance);
+	}
 
-    }
+	public Provider providedByProvider(Class providerClass)
+	{
+		if(!providers.containsKey(providerClass))
+		{
+			providers.put(providerClass, providerFactory.providedByProvider(providerClass));
+		}
+		return providers.get(providerClass);
 
-    public Provider providedByProvider(Key providerKey) {
-        if (!providers.containsKey(providerKey)) {
-            providers.put(providerKey, providerFactory.providedByProvider(providerKey));
-        }
-        return providers.get(providerKey);
-    }
+	}
+
+	public Provider providedByProvider(Key providerKey)
+	{
+		if(!providers.containsKey(providerKey))
+		{
+			providers.put(providerKey, providerFactory.providedByProvider(providerKey));
+		}
+		return providers.get(providerKey);
+	}
 }

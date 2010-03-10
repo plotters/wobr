@@ -9,7 +9,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
 package br.com.wobr.inject.chain.internal;
 
 import br.com.wobr.inject.chain.api.DecoratorFactory;
@@ -22,30 +22,38 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-final class ClassDecoratorFactories {
+final class ClassDecoratorFactories
+{
 
-    private final Map<Class, DecoratorFactory> decoratorClasses = new HashMap<Class, DecoratorFactory>();
-    private final Provider<Injector> injectorProvider;
-    private final Class type;
+	private final Map<Class, DecoratorFactory> decoratorClasses = new HashMap<Class, DecoratorFactory>();
 
-    public ClassDecoratorFactories(Provider<Injector> injectorProvider, Class type) {
-        this.injectorProvider = injectorProvider;
-        this.type = type;
-    }
+	private final Provider<Injector> injectorProvider;
 
-    public DecoratorFactory get(Class decoratorClass) {
-        if (!decoratorClasses.containsKey(decoratorClass)) {
-            ClassDecoratorFactory factory = new ClassDecoratorFactory(injectorProvider, type, decoratorClass);
-            decoratorClasses.put(decoratorClass, factory);
-        }
-        return decoratorClasses.get(decoratorClass);
-    }
+	private final Class type;
 
-    public DecoratorFactory[] get(Class[] decoratorClasses) {
-        List<DecoratorFactory> factories = new ArrayList<DecoratorFactory>();
-        for (Class decoratorClass : decoratorClasses) {
-            factories.add(get(decoratorClass));
-        }
-        return factories.toArray(new DecoratorFactory[factories.size()]);
-    }
+	public ClassDecoratorFactories(Provider<Injector> injectorProvider, Class type)
+	{
+		this.injectorProvider = injectorProvider;
+		this.type = type;
+	}
+
+	public DecoratorFactory get(Class decoratorClass)
+	{
+		if(!decoratorClasses.containsKey(decoratorClass))
+		{
+			ClassDecoratorFactory factory = new ClassDecoratorFactory(injectorProvider, type, decoratorClass);
+			decoratorClasses.put(decoratorClass, factory);
+		}
+		return decoratorClasses.get(decoratorClass);
+	}
+
+	public DecoratorFactory[] get(Class[] decoratorClasses)
+	{
+		List<DecoratorFactory> factories = new ArrayList<DecoratorFactory>();
+		for(Class decoratorClass : decoratorClasses)
+		{
+			factories.add(get(decoratorClass));
+		}
+		return factories.toArray(new DecoratorFactory[factories.size()]);
+	}
 }

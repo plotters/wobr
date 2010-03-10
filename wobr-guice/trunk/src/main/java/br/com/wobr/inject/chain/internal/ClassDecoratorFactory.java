@@ -9,7 +9,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
 package br.com.wobr.inject.chain.internal;
 
 import br.com.wobr.inject.chain.api.DecoratorFactory;
@@ -19,24 +19,31 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
 
-final class ClassDecoratorFactory implements DecoratorFactory {
+final class ClassDecoratorFactory implements DecoratorFactory
+{
 
-    private final Class type;
-    private final Class decoratorClass;
-    private Provider<Injector> injectorProvider;
+	private final Class type;
 
-    public ClassDecoratorFactory(Provider<Injector> injectorProvider, Class type, Class decoratorClass) {
-        this.injectorProvider = injectorProvider;
-        this.type = type;
-        this.decoratorClass = decoratorClass;
-    }
+	private final Class decoratorClass;
 
-    public Object decorate(final Object next) {
-        Injector childInjector = injectorProvider.get().createChildInjector(new AbstractModule() {
-            protected void configure() {
-                bind(type).annotatedWith(Next.class).toInstance(next);
-            }
-        });
-        return childInjector.getInstance(decoratorClass);
-    }
+	private Provider<Injector> injectorProvider;
+
+	public ClassDecoratorFactory(Provider<Injector> injectorProvider, Class type, Class decoratorClass)
+	{
+		this.injectorProvider = injectorProvider;
+		this.type = type;
+		this.decoratorClass = decoratorClass;
+	}
+
+	public Object decorate(final Object next)
+	{
+		Injector childInjector = injectorProvider.get().createChildInjector(new AbstractModule()
+		{
+			protected void configure()
+			{
+				bind(type).annotatedWith(Next.class).toInstance(next);
+			}
+		});
+		return childInjector.getInstance(decoratorClass);
+	}
 }

@@ -9,7 +9,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
 package br.com.wobr.inject.chain.internal;
 
 import br.com.wobr.inject.chain.api.DecoratorFactory;
@@ -21,57 +21,71 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public final class ChainBuilder {
+public final class ChainBuilder
+{
 
-    private final static Set<ChainBuilder> builders = new HashSet<ChainBuilder>();
-    private final Class type;
-    private final DecoratorFactories decoratorFactories = new DecoratorFactories();
-    private final ClassDecoratorFactories classDecoratorFactories;
+	private final static Set<ChainBuilder> builders = new HashSet<ChainBuilder>();
 
-    public ChainBuilder(Provider<Injector> injectorProvider, Class type) {
-        this.type = type;
-        classDecoratorFactories = new ClassDecoratorFactories(injectorProvider, type);
-        builders.add(this);
-    }
+	private final Class type;
 
-    public final void addDecoratorFactories(DecoratorFactory firstDecoratorFactory,
-                                            DecoratorFactory[] decoratorFactories) {
-        this.decoratorFactories.add(firstDecoratorFactory, Arrays.asList(decoratorFactories));
-    }
+	private final DecoratorFactories decoratorFactories = new DecoratorFactories();
 
-    public final void setImplDecoratorFactory(DecoratorFactory implDecoratorFactory) {
-        decoratorFactories.setHead(implDecoratorFactory);
-    }
+	private final ClassDecoratorFactories classDecoratorFactories;
 
-    public final DecoratorFactory toFactory(Class decoratorClass) {
-        return classDecoratorFactories.get(decoratorClass);
-    }
+	public ChainBuilder(Provider<Injector> injectorProvider, Class type)
+	{
+		this.type = type;
+		classDecoratorFactories = new ClassDecoratorFactories(injectorProvider, type);
+		builders.add(this);
+	}
 
-    public final DecoratorFactory[] toFactories(Class[] decoratorClasses) {
-        return classDecoratorFactories.get(decoratorClasses);
-    }
+	public final void addDecoratorFactories(DecoratorFactory firstDecoratorFactory, DecoratorFactory[] decoratorFactories)
+	{
+		this.decoratorFactories.add(firstDecoratorFactory, Arrays.asList(decoratorFactories));
+	}
 
-    public final void bindChain(Binder binder) {
-        final Provider implProvider = binder.getProvider(Key.get(type, Implementation.class));
-        binder.bind(type).toProvider(new Provider() {
-            public Object get() {
-                return decoratorFactories.decorate(implProvider.get());
-            }
-        }).in(Scopes.SINGLETON);
-        binder.requestInjection(new CompletenessAssertion());
-    }
+	public final void setImplDecoratorFactory(DecoratorFactory implDecoratorFactory)
+	{
+		decoratorFactories.setHead(implDecoratorFactory);
+	}
 
-    public final void bindDecoratorFactory(Binder binder) {
-        TypeLiteral decoratorFactoryType = TypeLiteral.get(Types.newParameterizedType(DecoratorFactory.class, type));
-        binder.bind(decoratorFactoryType).toInstance(decoratorFactories);
-        binder.requestInjection(new CompletenessAssertion());
-    }
+	public final DecoratorFactory toFactory(Class decoratorClass)
+	{
+		return classDecoratorFactories.get(decoratorClass);
+	}
 
-    private class CompletenessAssertion {
+	public final DecoratorFactory[] toFactories(Class[] decoratorClasses)
+	{
+		return classDecoratorFactories.get(decoratorClasses);
+	}
 
-        @Inject
-        public void assertCompleteChain() {
-            decoratorFactories.assertCompleteChain();
-        }
-    }
+	public final void bindChain(Binder binder)
+	{
+		final Provider implProvider = binder.getProvider(Key.get(type, Implementation.class));
+		binder.bind(type).toProvider(new Provider()
+		{
+			public Object get()
+			{
+				return decoratorFactories.decorate(implProvider.get());
+			}
+		}).in(Scopes.SINGLETON);
+		binder.requestInjection(new CompletenessAssertion());
+	}
+
+	public final void bindDecoratorFactory(Binder binder)
+	{
+		TypeLiteral decoratorFactoryType = TypeLiteral.get(Types.newParameterizedType(DecoratorFactory.class, type));
+		binder.bind(decoratorFactoryType).toInstance(decoratorFactories);
+		binder.requestInjection(new CompletenessAssertion());
+	}
+
+	private class CompletenessAssertion
+	{
+
+		@Inject
+		public void assertCompleteChain()
+		{
+			decoratorFactories.assertCompleteChain();
+		}
+	}
 }

@@ -9,44 +9,43 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
 package br.com.wobr.inject.chain;
 
 import br.com.wobr.inject.chain.api.DecoratorFactory;
 import br.com.wobr.inject.chain.internal.ChainBuilder;
 import br.com.wobr.inject.chain.internal.ChainModule;
 
-
 /**
- * Used to bind a DecoratorFactory of T which its impl unknown yet:
- * decorator1 <- ... <- decoratorN
- * you can bind it by:
- * implDecoratedWith(decorator1, ..., decoratorN);
- * or you can:
- * implDecoratedWith(decorator1);  //in module 1
- * decorate(decorator1).with(decorator2, ..., decoratorN);  // in module 2
- *
+ * Used to bind a DecoratorFactory of T which its impl unknown yet: decorator1
+ * <- ... <- decoratorN you can bind it by: implDecoratedWith(decorator1, ...,
+ * decoratorN); or you can: implDecoratedWith(decorator1); //in module 1
+ * decorate(decorator1).with(decorator2, ..., decoratorN); // in module 2
+ * 
  * @author taowen@gmail.com (Wen Tao)
- * @param <T> the decorating type
+ * @param <T>
+ *            the decorating type
  */
-public abstract class DecoratorFactoryOf<T> extends ChainModule<T> {
+public abstract class DecoratorFactoryOf<T> extends ChainModule<T>
+{
 
-    protected void configureBuilder() {
-        builder().bindDecoratorFactory(binder());
-    }
+	protected void configureBuilder()
+	{
+		builder().bindDecoratorFactory(binder());
+	}
 
-    protected final void implDecoratedWith(Class<? extends T> implDecoratorClass,
-                                           Class<? extends T>... decoratorClasses) {
-        ChainBuilder builder = builder();
-        DecoratorFactory firstDecoratorFactory = builder.toFactory(implDecoratorClass);
-        builder.setImplDecoratorFactory(firstDecoratorFactory);
-        builder.addDecoratorFactories(firstDecoratorFactory, builder.toFactories(decoratorClasses));
-    }
+	protected final void implDecoratedWith(Class<? extends T> implDecoratorClass, Class<? extends T>... decoratorClasses)
+	{
+		ChainBuilder builder = builder();
+		DecoratorFactory firstDecoratorFactory = builder.toFactory(implDecoratorClass);
+		builder.setImplDecoratorFactory(firstDecoratorFactory);
+		builder.addDecoratorFactories(firstDecoratorFactory, builder.toFactories(decoratorClasses));
+	}
 
-    protected final void implDecoratedWith(DecoratorFactory<T> implDecoratorFactory,
-                                           DecoratorFactory<T>... decoratorFactories) {
-        ChainBuilder builder = builder();
-        builder.setImplDecoratorFactory(implDecoratorFactory);
-        builder.addDecoratorFactories(implDecoratorFactory, decoratorFactories);
-    }
+	protected final void implDecoratedWith(DecoratorFactory<T> implDecoratorFactory, DecoratorFactory<T>... decoratorFactories)
+	{
+		ChainBuilder builder = builder();
+		builder.setImplDecoratorFactory(implDecoratorFactory);
+		builder.addDecoratorFactories(implDecoratorFactory, decoratorFactories);
+	}
 }
