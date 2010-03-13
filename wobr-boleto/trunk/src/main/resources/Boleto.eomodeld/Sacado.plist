@@ -1,0 +1,40 @@
+{
+    attributes = (
+        {
+            allowsNull = Y; 
+            columnName = bairro; 
+            name = bairro; 
+            prototypeName = longText; 
+        }, 
+        {allowsNull = Y; columnName = cep; name = cep; prototypeName = varchar16; }, 
+        {
+            allowsNull = Y; 
+            columnName = cidade; 
+            name = cidade; 
+            prototypeName = longText; 
+        }, 
+        {allowsNull = Y; columnName = cpf; name = cpf; prototypeName = varchar16; }, 
+        {
+            allowsNull = Y; 
+            columnName = endereco; 
+            name = endereco; 
+            prototypeName = longText; 
+        }, 
+        {allowsNull = N; name = id; prototypeName = id; }, 
+        {allowsNull = Y; columnName = nome; name = nome; prototypeName = longText; }, 
+        {
+            allowsNull = Y; 
+            columnName = uf; 
+            name = uf; 
+            prototypeName = shortString; 
+            width = 2; 
+        }
+    ); 
+    attributesUsedForLocking = (id); 
+    className = "br.com.wobr.boleto.model.Sacado"; 
+    classProperties = (bairro, cep, cidade, cpf, endereco, nome, uf); 
+    externalName = "boleto_sacado"; 
+    fetchSpecificationDictionary = {}; 
+    name = Sacado; 
+    primaryKeyAttributes = (id); 
+}

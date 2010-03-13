@@ -1,0 +1,35 @@
+{
+    EOModelVersion = "2.1"; 
+    adaptorName = JDBC; 
+    connectionDictionary = {}; 
+    entities = (
+        {
+            className = "br.com.wobr.boleto.model.AbstractInformacao"; 
+            name = AbstractInformacao; 
+        }, 
+        {className = "br.com.wobr.boleto.model.Boleto"; name = Boleto; }, 
+        {
+            className = "br.com.wobr.boleto.model.Descricao"; 
+            name = Descricao; 
+            parent = AbstractInformacao; 
+        }, 
+        {className = "br.com.wobr.boleto.model.Emissor"; name = Emissor; }, 
+        {
+            className = "br.com.wobr.boleto.model.Instrucao"; 
+            name = Instrucao; 
+            parent = AbstractInformacao; 
+        }, 
+        {
+            className = "br.com.wobr.boleto.model.LocalPagamento"; 
+            name = LocalPagamento; 
+            parent = AbstractInformacao; 
+        }, 
+        {className = "br.com.wobr.boleto.model.Sacado"; name = Sacado; }
+    ); 
+    userInfo = {
+        "_EntityModeler" = {
+            attributeNamingConvention = {case = Lower; separator = Underscore; }; 
+            entityNamingConvention = {case = Lower; prefix = boleto; separator = Underscore; }; 
+        }; 
+    }; 
+}

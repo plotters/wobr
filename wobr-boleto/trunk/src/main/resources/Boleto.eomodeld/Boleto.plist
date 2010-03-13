@@ -1,0 +1,102 @@
+{
+    attributes = (
+        {allowsNull = N; columnName = aceite; name = aceite; prototypeName = flag; }, 
+        {
+            allowsNull = N; 
+            columnName = banco; 
+            name = banco; 
+            prototypeName = javaEnum; 
+            valueClassName = "br.com.wobr.boleto.model.BancoEnum"; 
+        }, 
+        {
+            allowsNull = Y; 
+            columnName = "data_documento"; 
+            name = dataDocumento; 
+            prototypeName = date; 
+        }, 
+        {
+            allowsNull = Y; 
+            columnName = "data_processamento"; 
+            name = dataProcessamento; 
+            prototypeName = date; 
+        }, 
+        {
+            allowsNull = N; 
+            columnName = "data_vencimento"; 
+            name = dataVencimento; 
+            prototypeName = date; 
+        }, 
+        {
+            allowsNull = N; 
+            columnName = "especie_documento"; 
+            name = especieDocumento; 
+            prototypeName = longText; 
+        }, 
+        {allowsNull = N; name = id; prototypeName = id; }, 
+        {
+            allowsNull = N; 
+            columnName = "numero_documento"; 
+            name = numeroDocumento; 
+            prototypeName = longText; 
+        }, 
+        {
+            allowsNull = Y; 
+            columnName = "quantidade_moeda"; 
+            name = quantidadeMoeda; 
+            prototypeName = amount; 
+        }, 
+        {allowsNull = N; columnName = valor; name = valor; prototypeName = amount; }, 
+        {
+            allowsNull = Y; 
+            columnName = "valor_moeda"; 
+            name = valorMoeda; 
+            prototypeName = amount; 
+        }
+    ); 
+    attributesUsedForLocking = (id); 
+    className = "br.com.wobr.boleto.model.Boleto"; 
+    classProperties = (
+        aceite, 
+        banco, 
+        dataDocumento, 
+        dataProcessamento, 
+        dataVencimento, 
+        descricoes, 
+        especieDocumento, 
+        instrucoes, 
+        locaisPagamento, 
+        numeroDocumento, 
+        quantidadeMoeda, 
+        valor, 
+        valorMoeda
+    ); 
+    externalName = boleto; 
+    fetchSpecificationDictionary = {}; 
+    name = Boleto; 
+    primaryKeyAttributes = (id); 
+    relationships = (
+        {
+            deleteRule = EODeleteRuleCascade; 
+            destination = Descricao; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = boletoId; sourceAttribute = id; }); 
+            name = descricoes; 
+        }, 
+        {
+            deleteRule = EODeleteRuleCascade; 
+            destination = Instrucao; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = boletoId; sourceAttribute = id; }); 
+            name = instrucoes; 
+        }, 
+        {
+            destination = LocalPagamento; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = boletoId; sourceAttribute = id; }); 
+            name = locaisPagamento; 
+        }
+    ); 
+}
