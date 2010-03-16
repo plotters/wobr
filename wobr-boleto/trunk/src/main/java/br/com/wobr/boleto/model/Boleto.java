@@ -14,40 +14,40 @@ import com.webobjects.foundation.NSTimestamp;
  */
 public class Boleto extends _Boleto
 {
-	public static Boleto createBoleto(EOEditingContext editingContext)
+	public static Boleto createBoleto( final EOEditingContext editingContext )
 	{
-		return (Boleto) EOUtilities.createAndInsertInstance(editingContext, ENTITY_NAME);
+		return (Boleto) EOUtilities.createAndInsertInstance( editingContext, ENTITY_NAME );
 	}
 
 	@Override
-	public void awakeFromInsertion(EOEditingContext ec)
+	public void awakeFromInsertion( final EOEditingContext ec )
 	{
-		super.awakeFromInsertion(ec);
+		super.awakeFromInsertion( ec );
 
-		if(aceite() == null)
+		if( aceite() == null )
 		{
-			setAceite(Boolean.FALSE);
+			setAceite( Boolean.FALSE );
 		}
 	}
 
-	private Calendar convertDate(NSTimestamp date)
+	private Calendar convertDate( final NSTimestamp date )
 	{
-		if(date == null)
+		if( date == null )
 		{
 			return null;
 		}
 
 		Calendar calendar = Calendar.getInstance();
 
-		calendar.setTime(date);
+		calendar.setTime( date );
 
 		return calendar;
 	}
 
-	@SuppressWarnings("unchecked")
-	private String[] stringArrayDe(NSArray<? extends AbstractInformacao> informacoes)
+	@SuppressWarnings( "unchecked" )
+	private String[] stringArrayDe( final NSArray<? extends AbstractInformacao> informacoes )
 	{
-		return ((NSArray<String>) informacoes.valueForKeyPath(AbstractInformacao.VALOR_KEY)).toArray(new String[] {});
+		return ( (NSArray<String>) informacoes.valueForKeyPath( AbstractInformacao.VALOR_KEY ) ).toArray( new String[] {} );
 	}
 
 	public br.com.caelum.stella.boleto.Boleto toStellaBoleto()
@@ -56,26 +56,48 @@ public class Boleto extends _Boleto
 
 		Datas datas = Datas.newDatas();
 
-		if(dataDocumento() != null)
+		if( dataDocumento() != null )
 		{
-			datas.withDocumento(convertDate(dataDocumento()));
+			datas.withDocumento( convertDate( dataDocumento() ) );
 		}
 
-		if(dataProcessamento() != null)
+		if( dataProcessamento() != null )
 		{
-			datas.withProcessamento(convertDate(dataProcessamento()));
+			datas.withProcessamento( convertDate( dataProcessamento() ) );
 		}
 
-		if(dataVencimento() != null)
+		if( dataVencimento() != null )
 		{
-			datas.withVencimento(convertDate(dataVencimento()));
+			datas.withVencimento( convertDate( dataVencimento() ) );
 		}
 
-		boleto.withDatas(datas);
-		boleto.withDescricoes(stringArrayDe(descricoes()));
-		boleto.withInstrucoes(stringArrayDe(instrucoes()));
-		boleto.withLocaisDePagamento(stringArrayDe(locaisPagamento()));
+		boleto.withDatas( datas );
+		boleto.withDescricoes( stringArrayDe( descricoes() ) );
+		boleto.withInstrucoes( stringArrayDe( instrucoes() ) );
+		boleto.withLocaisDePagamento( stringArrayDe( locaisPagamento() ) );
+		boleto.withAceite( aceite() );
+		boleto.withEspecieDocumento( especieDocumento() );
+		boleto.withNoDocumento( numeroDocumento() );
+		boleto.withQtdMoeda( quantidadeMoeda() );
+		boleto.withValorBoleto( valor() );
+		boleto.withValorMoeda( valorMoeda() );
+
+		if( banco() != null )
+		{
+			boleto.withBanco( banco().toStellaBanco() );
+		}
 
 		return boleto;
+	}
+
+	@Override
+	public void validateForSave() throws ValidationException
+	{
+		super.validateForSave();
+
+		if( locaisPagamento().size() > 2 )
+		{
+			throw new ValidationException( "O boleto pode conter no m\u00e1ximo 2 locais de pagamento" );
+		}
 	}
 }

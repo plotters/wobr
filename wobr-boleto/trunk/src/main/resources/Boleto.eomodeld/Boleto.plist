@@ -27,7 +27,13 @@
             prototypeName = date; 
         }, 
         {
-            allowsNull = N; 
+            allowsNull = Y; 
+            columnName = "emissor_id"; 
+            name = emissorId; 
+            prototypeName = id; 
+        }, 
+        {
+            allowsNull = Y; 
             columnName = "especie_documento"; 
             name = especieDocumento; 
             prototypeName = longText; 
@@ -45,6 +51,12 @@
             name = quantidadeMoeda; 
             prototypeName = amount; 
         }, 
+        {
+            allowsNull = Y; 
+            columnName = "sacado_id"; 
+            name = sacadoId; 
+            prototypeName = id; 
+        }, 
         {allowsNull = N; columnName = valor; name = valor; prototypeName = amount; }, 
         {
             allowsNull = Y; 
@@ -53,7 +65,7 @@
             prototypeName = amount; 
         }
     ); 
-    attributesUsedForLocking = (id); 
+    attributesUsedForLocking = (emissorId, id, sacadoId); 
     className = "br.com.wobr.boleto.model.Boleto"; 
     classProperties = (
         aceite, 
@@ -62,11 +74,13 @@
         dataProcessamento, 
         dataVencimento, 
         descricoes, 
+        emissor, 
         especieDocumento, 
         instrucoes, 
         locaisPagamento, 
         numeroDocumento, 
         quantidadeMoeda, 
+        sacado, 
         valor, 
         valorMoeda
     ); 
@@ -85,6 +99,14 @@
         }, 
         {
             deleteRule = EODeleteRuleCascade; 
+            destination = Emissor; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = emissorId; }); 
+            name = emissor; 
+        }, 
+        {
+            deleteRule = EODeleteRuleCascade; 
             destination = Instrucao; 
             isToMany = Y; 
             joinSemantic = EOInnerJoin; 
@@ -92,11 +114,20 @@
             name = instrucoes; 
         }, 
         {
+            deleteRule = EODeleteRuleCascade; 
             destination = LocalPagamento; 
             isToMany = Y; 
             joinSemantic = EOInnerJoin; 
             joins = ({destinationAttribute = boletoId; sourceAttribute = id; }); 
             name = locaisPagamento; 
+        }, 
+        {
+            deleteRule = EODeleteRuleCascade; 
+            destination = Sacado; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = sacadoId; }); 
+            name = sacado; 
         }
     ); 
 }
