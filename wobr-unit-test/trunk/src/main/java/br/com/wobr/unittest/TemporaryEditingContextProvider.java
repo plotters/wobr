@@ -1,10 +1,5 @@
 package br.com.wobr.unittest;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.junit.rules.ExternalResource;
@@ -15,11 +10,10 @@ import com.webobjects.eoaccess.EOModel;
 import com.webobjects.eoaccess.EOModelGroup;
 import com.webobjects.eoaccess.EOUtilities;
 import com.webobjects.eocontrol.EOEditingContext;
-import com.webobjects.eocontrol.EOEnterpriseObject;
-import com.webobjects.eocontrol.EOGlobalID;
 import com.webobjects.foundation.NSBundle;
 
 import er.extensions.eof.ERXEC;
+import er.extensions.foundation.ERXProperties;
 import er.memoryadaptor.ERMemoryAdaptorContext;
 
 public class TemporaryEditingContextProvider extends ExternalResource
@@ -28,45 +22,27 @@ public class TemporaryEditingContextProvider extends ExternalResource
 
 	private boolean initialized = false;
 
-	public TemporaryEditingContextProvider(String... modelNames)
+	public TemporaryEditingContextProvider( final String... modelNames )
 	{
 		fixJavaMemoryDictionary();
 
 		// Use Memory prototypes for tests. We don't want to set this
 		// information in the EOModel dictionary
-		System.setProperty("dbEOPrototypesEntityGLOBAL", "EOMemoryPrototypes");
+		ERXProperties.setStringForKey( "EOMemoryPrototypes", "dbEOPrototypesEntityGLOBAL" );
 
-		for(String modelName : modelNames)
+		for( String modelName : modelNames )
 		{
-			if(EOModelGroup.defaultGroup().modelNamed(modelName) == null)
-			{
-				URL url;
-
-				try
-				{
-					url = new File("src/main/resources/" + modelName + ".eomodeld").toURI().toURL();
-				}
-				catch(MalformedURLException exception)
-				{
-					throw new RuntimeException(exception);
-				}
-
-				EOModel model = EOModelGroup.defaultGroup().addModelWithPathURL(url);
-
-				// Use Memory adaptor for tests. We don't want to set this
-				// information in the EOModel dictionary
-				model.setAdaptorName("Memory");
-			}
+			loadModel( modelName );
 		}
 	}
 
 	@Override
 	protected void after()
 	{
-		EODatabaseContext databaseContext = EOUtilities.databaseContextForModelNamed(editingContext, "Boleto");
+		EODatabaseContext databaseContext = EOUtilities.databaseContextForModelNamed( editingContext, "Boleto" );
 		EOAdaptorContext adaptorContext = databaseContext.adaptorContext();
 
-		((ERMemoryAdaptorContext) adaptorContext).resetAllEntities();
+		( (ERMemoryAdaptorContext) adaptorContext ).resetAllEntities();
 
 		editingContext.revert();
 		editingContext.unlock();
@@ -86,18 +62,12 @@ public class TemporaryEditingContextProvider extends ExternalResource
 
 	public EOEditingContext editingContext()
 	{
-		if(editingContext == null)
+		if( editingContext == null )
 		{
 			initializeOnce();
 		}
 
 		return editingContext;
-	}
-
-	public boolean eoHasBeenSaved(EOEnterpriseObject anEnterpriseObject)
-	{
-		EOGlobalID globalId = editingContext().globalIDForObject(anEnterpriseObject);
-		return !(globalId == null || globalId.isTemporary());
 	}
 
 	/**
@@ -106,19 +76,17 @@ public class TemporaryEditingContextProvider extends ExternalResource
 	 */
 	private void fixJavaMemoryDictionary()
 	{
-		NSBundle bundle = NSBundle.bundleForName("JavaMemoryAdaptor");
+		NSBundle bundle = NSBundle.bundleForName( "JavaMemoryAdaptor" );
 
-		bundle._infoDictionary().takeValueForKey("er.memoryadaptor.ERMemoryAdaptor", "EOAdaptorClassName");
+		bundle._infoDictionary().takeValueForKey( "er.memoryadaptor.ERMemoryAdaptor", "EOAdaptorClassName" );
 	}
 
 	private void initializeOnce()
 	{
-		if(initialized)
+		if( initialized )
 		{
 			return;
 		}
-
-		System.out.println("inicializou editingContext");
 
 		initialized = true;
 
@@ -127,29 +95,19 @@ public class TemporaryEditingContextProvider extends ExternalResource
 		editingContext.lock();
 	}
 
-	public void saveChanges(boolean assumeSuccess)
+	protected void loadModel( final String modelName )
 	{
-		Exception exception = null;
-		try
+		if( EOModelGroup.defaultGroup().modelNamed( modelName ) != null )
 		{
-			editingContext().saveChanges();
+			return;
 		}
-		catch(Exception e)
-		{
-			exception = e;
-			if(assumeSuccess)
-			{
-				e.printStackTrace();
-				editingContext().revert();
-			}
-		}
-		if(assumeSuccess)
-		{
-			assertNull(exception);
-		}
-		else
-		{
-			assertNotNull(exception);
-		}
+
+		URL url = getClass().getResource( "/" + modelName + ".eomodeld" );
+
+		EOModel model = EOModelGroup.defaultGroup().addModelWithPathURL( url );
+
+		// Use Memory adaptor for tests. We don't want to set this
+		// information in the EOModel dictionary
+		model.setAdaptorName( "Memory" );
 	}
 }

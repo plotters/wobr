@@ -1,59 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>br.com.wobr</groupId>
+
+	<parent>
+		<groupId>br.com.wobr</groupId>
+		<artifactId>wobr-parent</artifactId>
+		<version>1.0</version>
+	</parent>
+
 	<artifactId>wobr-unit-test</artifactId>
-	<packaging>woframework</packaging>
+	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>wobr-unit-test WebObjects Framework</name>
-	<url>http://maven.apache.org</url>
-
-	<properties>
-		<!-- properties used for filtering and dependency management -->
-		<jvmtarget>1.5</jvmtarget>
-		<webobjects.version>5.4.3</webobjects.version>
-		<webobjects.groupId>com.webobjects</webobjects.groupId>
-
-		<!-- encoding properties -->
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-
-	<build>
-		<finalName>${project.artifactId}</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.objectstyle.woproject.maven2</groupId>
-				<artifactId>maven-wolifecycle-plugin</artifactId>
-				<version>2.0.17</version>
-				<extensions>true</extensions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>${jvmtarget}</source>
-					<target>${jvmtarget}</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+	<name>WOBR Unit Test Framework</name>
 
 	<dependencies>
 		<dependency>
-			<groupId>${webobjects.groupId}</groupId>
-			<artifactId>JavaWebObjects</artifactId>
-			<version>${webobjects.version}</version>
+			<groupId>wonder.core</groupId>
+			<artifactId>ERExtensions</artifactId>
+			<version>5.0.0-SNAPSHOT</version>
+			<classifier>wo54</classifier>
 		</dependency>
 		<dependency>
-			<groupId>${webobjects.groupId}</groupId>
-			<artifactId>JavaEOAccess</artifactId>
-			<version>${webobjects.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${webobjects.groupId}</groupId>
-			<artifactId>JavaFoundation</artifactId>
-			<version>${webobjects.version}</version>
+			<groupId>wonder.eoadaptors</groupId>
+			<artifactId>JavaMemoryAdaptor</artifactId>
+			<version>5.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hamcrest</groupId>
@@ -66,15 +36,15 @@
 			<version>4.7</version>
 		</dependency>
 		<dependency>
-			<groupId>wonder.core</groupId>
-			<artifactId>ERExtensions</artifactId>
-			<version>5.0.0-SNAPSHOT</version>
-			<classifier>wo54</classifier>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.4</version>
 		</dependency>
 		<dependency>
-			<groupId>wonder.eoadaptors</groupId>
-			<artifactId>JavaMemoryAdaptor</artifactId>
-			<version>5.0.0-SNAPSHOT</version>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>1.8.2</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
