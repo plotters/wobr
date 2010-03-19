@@ -12,7 +12,7 @@ import br.com.wobr.unittest.TemporaryEditingContextProvider;
 /**
  * @author <a href="mailto:hprange@gmail.com">Henrique Prange</a>
  */
-public class TestEmissor
+public class TestEOEmissor
 {
 	@Rule
 	public final TemporaryEditingContextProvider editingContextProvider = new TemporaryEditingContextProvider( "Boleto" );
@@ -20,7 +20,7 @@ public class TestEmissor
 	@Test
 	public void converteEmissorParaEmissorStella() throws Exception
 	{
-		Emissor emissor = Emissor.createEmissor( editingContextProvider.editingContext() );
+		EOEmissor emissor = EOEmissor.createEOEmissor( editingContextProvider.editingContext() );
 
 		emissor.setAgencia( 1234 );
 		emissor.setCarteira( 175 );
@@ -52,7 +52,7 @@ public class TestEmissor
 	@Test
 	public void converteEmissorVazioParaEmissorStella() throws Exception
 	{
-		Emissor emissor = Emissor.createEmissor( editingContextProvider.editingContext() );
+		EOEmissor emissor = EOEmissor.createEOEmissor( editingContextProvider.editingContext() );
 
 		br.com.caelum.stella.boleto.Emissor result = emissor.toStellaEmissor();
 

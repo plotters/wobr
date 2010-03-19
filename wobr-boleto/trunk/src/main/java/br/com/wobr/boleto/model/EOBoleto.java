@@ -2,6 +2,7 @@ package br.com.wobr.boleto.model;
 
 import java.util.Calendar;
 
+import br.com.caelum.stella.boleto.Boleto;
 import br.com.caelum.stella.boleto.Datas;
 
 import com.webobjects.eoaccess.EOUtilities;
@@ -9,24 +10,31 @@ import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSTimestamp;
 
-/**
- * @author <a href="mailto:hprange@gmail.com">Henrique Prange</a>
- */
-public class Boleto extends _Boleto
+public class EOBoleto extends _EOBoleto
 {
-	public static Boleto createBoleto( final EOEditingContext editingContext )
+	public static EOBoleto createEOBoleto( final EOEditingContext editingContext )
 	{
-		return (Boleto) EOUtilities.createAndInsertInstance( editingContext, ENTITY_NAME );
+		return (EOBoleto) EOUtilities.createAndInsertInstance( editingContext, ENTITY_NAME );
 	}
 
 	@Override
-	public void awakeFromInsertion( final EOEditingContext ec )
+	public void awakeFromInsertion( final EOEditingContext editingContext )
 	{
-		super.awakeFromInsertion( ec );
+		super.awakeFromInsertion( editingContext );
 
 		if( aceite() == null )
 		{
 			setAceite( Boolean.FALSE );
+		}
+
+		if( emissor() == null )
+		{
+			setEmissorRelationship( EOEmissor.createEOEmissor( editingContext ) );
+		}
+
+		if( sacado() == null )
+		{
+			setSacadoRelationship( EOSacado.createEOSacado( editingContext ) );
 		}
 	}
 
@@ -50,9 +58,9 @@ public class Boleto extends _Boleto
 		return ( (NSArray<String>) informacoes.valueForKeyPath( AbstractInformacao.VALOR_KEY ) ).toArray( new String[] {} );
 	}
 
-	public br.com.caelum.stella.boleto.Boleto toStellaBoleto()
+	public Boleto toStellaBoleto()
 	{
-		br.com.caelum.stella.boleto.Boleto boleto = br.com.caelum.stella.boleto.Boleto.newBoleto();
+		Boleto boleto = Boleto.newBoleto();
 
 		Datas datas = Datas.newDatas();
 
@@ -72,6 +80,8 @@ public class Boleto extends _Boleto
 		}
 
 		boleto.withDatas( datas );
+		boleto.withEmissor( emissor().toStellaEmissor() );
+		boleto.withSacado( sacado().toStellaSacado() );
 		boleto.withDescricoes( stringArrayDe( descricoes() ) );
 		boleto.withInstrucoes( stringArrayDe( instrucoes() ) );
 		boleto.withLocaisDePagamento( stringArrayDe( locaisPagamento() ) );

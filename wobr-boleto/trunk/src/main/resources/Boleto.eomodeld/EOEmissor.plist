@@ -1,7 +1,7 @@
 {
     attributes = (
         {
-            allowsNull = N; 
+            allowsNull = Y; 
             columnName = agencia; 
             name = agencia; 
             prototypeName = intNumber; 
@@ -16,7 +16,7 @@
             allowsNull = Y; 
             columnName = cedente; 
             name = cedente; 
-            prototypeName = longText; 
+            prototypeName = varchar255; 
         }, 
         {
             allowsNull = Y; 
@@ -31,19 +31,19 @@
             prototypeName = intNumber; 
         }, 
         {
-            allowsNull = N; 
+            allowsNull = Y; 
             columnName = "conta_corrente"; 
             name = contaCorrente; 
             prototypeName = longNumber; 
         }, 
         {
-            allowsNull = N; 
+            allowsNull = Y; 
             columnName = "digito_verificador_agencia"; 
             name = digitoVerificadorAgencia; 
             prototypeName = charFlag; 
         }, 
         {
-            allowsNull = N; 
+            allowsNull = Y; 
             columnName = "digito_verificador_conta_corrente"; 
             name = digitoVerificadorContaCorrente; 
             prototypeName = charFlag; 
@@ -69,7 +69,7 @@
         }
     ); 
     attributesUsedForLocking = (id); 
-    className = "br.com.wobr.boleto.model.Emissor"; 
+    className = "br.com.wobr.boleto.model.EOEmissor"; 
     classProperties = (
         agencia, 
         carteira, 
@@ -85,6 +85,6 @@
     ); 
     externalName = "boleto_emissor"; 
     fetchSpecificationDictionary = {}; 
-    name = Emissor; 
+    name = EOEmissor; 
     primaryKeyAttributes = (id); 
 }

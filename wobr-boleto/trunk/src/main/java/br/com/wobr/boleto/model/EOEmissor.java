@@ -1,22 +1,12 @@
 package br.com.wobr.boleto.model;
 
-import com.webobjects.eoaccess.EOUtilities;
-import com.webobjects.eocontrol.EOEditingContext;
+import br.com.caelum.stella.boleto.Emissor;
 
-/**
- * @author <a href="mailto:hprange@gmail.com">Henrique Prange</a>
- */
-public class Emissor extends _Emissor
+public class EOEmissor extends _EOEmissor
 {
-
-	public static Emissor createEmissor( final EOEditingContext editingContext )
+	public Emissor toStellaEmissor()
 	{
-		return (Emissor) EOUtilities.createAndInsertInstance( editingContext, ENTITY_NAME );
-	}
-
-	public br.com.caelum.stella.boleto.Emissor toStellaEmissor()
-	{
-		br.com.caelum.stella.boleto.Emissor emissor = br.com.caelum.stella.boleto.Emissor.newEmissor();
+		Emissor emissor = Emissor.newEmissor();
 
 		if( agencia() != null )
 		{

@@ -4,24 +4,24 @@
             allowsNull = Y; 
             columnName = bairro; 
             name = bairro; 
-            prototypeName = longText; 
+            prototypeName = varchar255; 
         }, 
-        {allowsNull = Y; columnName = cep; name = cep; prototypeName = varchar16; }, 
+        {allowsNull = Y; columnName = cep; name = cep; prototypeName = varchar50; }, 
         {
             allowsNull = Y; 
             columnName = cidade; 
             name = cidade; 
-            prototypeName = longText; 
+            prototypeName = varchar255; 
         }, 
-        {allowsNull = Y; columnName = cpf; name = cpf; prototypeName = varchar16; }, 
+        {allowsNull = Y; columnName = cpf; name = cpf; prototypeName = varchar50; }, 
         {
             allowsNull = Y; 
             columnName = endereco; 
             name = endereco; 
-            prototypeName = longText; 
+            prototypeName = varchar255; 
         }, 
         {allowsNull = N; name = id; prototypeName = id; }, 
-        {allowsNull = Y; columnName = nome; name = nome; prototypeName = longText; }, 
+        {allowsNull = Y; columnName = nome; name = nome; prototypeName = varchar255; }, 
         {
             allowsNull = Y; 
             columnName = uf; 
@@ -31,10 +31,10 @@
         }
     ); 
     attributesUsedForLocking = (id); 
-    className = "br.com.wobr.boleto.model.Sacado"; 
+    className = "br.com.wobr.boleto.model.EOSacado"; 
     classProperties = (bairro, cep, cidade, cpf, endereco, nome, uf); 
     externalName = "boleto_sacado"; 
     fetchSpecificationDictionary = {}; 
-    name = Sacado; 
+    name = EOSacado; 
     primaryKeyAttributes = (id); 
 }

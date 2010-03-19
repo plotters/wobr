@@ -7,24 +7,24 @@
             className = "br.com.wobr.boleto.model.AbstractInformacao"; 
             name = AbstractInformacao; 
         }, 
-        {className = "br.com.wobr.boleto.model.Boleto"; name = Boleto; }, 
+        {className = "br.com.wobr.boleto.model.EOBoleto"; name = EOBoleto; }, 
         {
-            className = "br.com.wobr.boleto.model.Descricao"; 
-            name = Descricao; 
+            className = "br.com.wobr.boleto.model.EODescricao"; 
+            name = EODescricao; 
             parent = AbstractInformacao; 
         }, 
-        {className = "br.com.wobr.boleto.model.Emissor"; name = Emissor; }, 
+        {className = "br.com.wobr.boleto.model.EOEmissor"; name = EOEmissor; }, 
         {
-            className = "br.com.wobr.boleto.model.Instrucao"; 
-            name = Instrucao; 
+            className = "br.com.wobr.boleto.model.EOInstrucao"; 
+            name = EOInstrucao; 
             parent = AbstractInformacao; 
         }, 
         {
-            className = "br.com.wobr.boleto.model.LocalPagamento"; 
-            name = LocalPagamento; 
+            className = "br.com.wobr.boleto.model.EOLocalPagamento"; 
+            name = EOLocalPagamento; 
             parent = AbstractInformacao; 
         }, 
-        {className = "br.com.wobr.boleto.model.Sacado"; name = Sacado; }
+        {className = "br.com.wobr.boleto.model.EOSacado"; name = EOSacado; }
     ); 
     userInfo = {
         "_EntityModeler" = {

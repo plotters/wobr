@@ -27,7 +27,7 @@
             prototypeName = date; 
         }, 
         {
-            allowsNull = Y; 
+            allowsNull = N; 
             columnName = "emissor_id"; 
             name = emissorId; 
             prototypeName = id; 
@@ -36,37 +36,45 @@
             allowsNull = Y; 
             columnName = "especie_documento"; 
             name = especieDocumento; 
-            prototypeName = longText; 
+            prototypeName = varchar16; 
         }, 
         {allowsNull = N; name = id; prototypeName = id; }, 
         {
             allowsNull = N; 
             columnName = "numero_documento"; 
             name = numeroDocumento; 
-            prototypeName = longText; 
+            prototypeName = varchar16; 
         }, 
         {
             allowsNull = Y; 
             columnName = "quantidade_moeda"; 
             name = quantidadeMoeda; 
+            precision = 30; 
             prototypeName = amount; 
         }, 
         {
-            allowsNull = Y; 
+            allowsNull = N; 
             columnName = "sacado_id"; 
             name = sacadoId; 
             prototypeName = id; 
         }, 
-        {allowsNull = N; columnName = valor; name = valor; prototypeName = amount; }, 
+        {
+            allowsNull = N; 
+            columnName = valor; 
+            name = valor; 
+            precision = 30; 
+            prototypeName = amount; 
+        }, 
         {
             allowsNull = Y; 
             columnName = "valor_moeda"; 
             name = valorMoeda; 
+            precision = 30; 
             prototypeName = amount; 
         }
     ); 
     attributesUsedForLocking = (emissorId, id, sacadoId); 
-    className = "br.com.wobr.boleto.model.Boleto"; 
+    className = "br.com.wobr.boleto.model.EOBoleto"; 
     classProperties = (
         aceite, 
         banco, 
@@ -86,12 +94,12 @@
     ); 
     externalName = boleto; 
     fetchSpecificationDictionary = {}; 
-    name = Boleto; 
+    name = EOBoleto; 
     primaryKeyAttributes = (id); 
     relationships = (
         {
             deleteRule = EODeleteRuleCascade; 
-            destination = Descricao; 
+            destination = EODescricao; 
             isToMany = Y; 
             joinSemantic = EOInnerJoin; 
             joins = ({destinationAttribute = boletoId; sourceAttribute = id; }); 
@@ -99,7 +107,8 @@
         }, 
         {
             deleteRule = EODeleteRuleCascade; 
-            destination = Emissor; 
+            destination = EOEmissor; 
+            isMandatory = Y; 
             isToMany = N; 
             joinSemantic = EOInnerJoin; 
             joins = ({destinationAttribute = id; sourceAttribute = emissorId; }); 
@@ -107,7 +116,7 @@
         }, 
         {
             deleteRule = EODeleteRuleCascade; 
-            destination = Instrucao; 
+            destination = EOInstrucao; 
             isToMany = Y; 
             joinSemantic = EOInnerJoin; 
             joins = ({destinationAttribute = boletoId; sourceAttribute = id; }); 
@@ -115,7 +124,7 @@
         }, 
         {
             deleteRule = EODeleteRuleCascade; 
-            destination = LocalPagamento; 
+            destination = EOLocalPagamento; 
             isToMany = Y; 
             joinSemantic = EOInnerJoin; 
             joins = ({destinationAttribute = boletoId; sourceAttribute = id; }); 
@@ -123,7 +132,8 @@
         }, 
         {
             deleteRule = EODeleteRuleCascade; 
-            destination = Sacado; 
+            destination = EOSacado; 
+            isMandatory = Y; 
             isToMany = N; 
             joinSemantic = EOInnerJoin; 
             joins = ({destinationAttribute = id; sourceAttribute = sacadoId; }); 

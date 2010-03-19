@@ -1,6 +1,7 @@
 package br.com.wobr.boleto.model;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.hasItems;
 
@@ -20,9 +21,9 @@ import com.webobjects.foundation.NSTimestamp;
 /**
  * @author <a href="mailto:hprange@gmail.com">Henrique Prange</a>
  */
-public class TestBoleto
+public class TestEOBoleto
 {
-	private Boleto boleto;
+	private EOBoleto boleto;
 
 	@Rule
 	public final TemporaryEditingContextProvider editingContextProvider = new TemporaryEditingContextProvider( "Boleto" );
@@ -66,11 +67,11 @@ public class TestBoleto
 	@Test
 	public void converteDescricoesParaStellaBoleto() throws Exception
 	{
-		boleto.addToDescricoesRelationship( Descricao.createDescricao( editingContextProvider.editingContext(), "descricao 1" ) );
-		boleto.addToDescricoesRelationship( Descricao.createDescricao( editingContextProvider.editingContext(), "descricao 2" ) );
-		boleto.addToDescricoesRelationship( Descricao.createDescricao( editingContextProvider.editingContext(), "descricao 3" ) );
-		boleto.addToDescricoesRelationship( Descricao.createDescricao( editingContextProvider.editingContext(), "descricao 4" ) );
-		boleto.addToDescricoesRelationship( Descricao.createDescricao( editingContextProvider.editingContext(), "descricao 5" ) );
+		boleto.addToDescricoesRelationship( EODescricao.createEODescricao( editingContextProvider.editingContext(), "descricao 1" ) );
+		boleto.addToDescricoesRelationship( EODescricao.createEODescricao( editingContextProvider.editingContext(), "descricao 2" ) );
+		boleto.addToDescricoesRelationship( EODescricao.createEODescricao( editingContextProvider.editingContext(), "descricao 3" ) );
+		boleto.addToDescricoesRelationship( EODescricao.createEODescricao( editingContextProvider.editingContext(), "descricao 4" ) );
+		boleto.addToDescricoesRelationship( EODescricao.createEODescricao( editingContextProvider.editingContext(), "descricao 5" ) );
 
 		br.com.caelum.stella.boleto.Boleto result = boleto.toStellaBoleto();
 
@@ -78,24 +79,21 @@ public class TestBoleto
 	}
 
 	@Test
-	public void converteEmissorNuloToStellaBoleto() throws Exception
-	{
-	}
-
-	@Test
 	public void converteEmissorParaStellaBoleto() throws Exception
 	{
+		br.com.caelum.stella.boleto.Boleto result = boleto.toStellaBoleto();
 
+		assertThat( result.getEmissor(), notNullValue() );
 	}
 
 	@Test
 	public void converteInstrucoesParaStellaBoleto() throws Exception
 	{
-		boleto.addToInstrucoesRelationship( Instrucao.createInstrucao( editingContextProvider.editingContext(), "instrucao 1" ) );
-		boleto.addToInstrucoesRelationship( Instrucao.createInstrucao( editingContextProvider.editingContext(), "instrucao 2" ) );
-		boleto.addToInstrucoesRelationship( Instrucao.createInstrucao( editingContextProvider.editingContext(), "instrucao 3" ) );
-		boleto.addToInstrucoesRelationship( Instrucao.createInstrucao( editingContextProvider.editingContext(), "instrucao 4" ) );
-		boleto.addToInstrucoesRelationship( Instrucao.createInstrucao( editingContextProvider.editingContext(), "instrucao 5" ) );
+		boleto.addToInstrucoesRelationship( EOInstrucao.createEOInstrucao( editingContextProvider.editingContext(), "instrucao 1" ) );
+		boleto.addToInstrucoesRelationship( EOInstrucao.createEOInstrucao( editingContextProvider.editingContext(), "instrucao 2" ) );
+		boleto.addToInstrucoesRelationship( EOInstrucao.createEOInstrucao( editingContextProvider.editingContext(), "instrucao 3" ) );
+		boleto.addToInstrucoesRelationship( EOInstrucao.createEOInstrucao( editingContextProvider.editingContext(), "instrucao 4" ) );
+		boleto.addToInstrucoesRelationship( EOInstrucao.createEOInstrucao( editingContextProvider.editingContext(), "instrucao 5" ) );
 
 		br.com.caelum.stella.boleto.Boleto result = boleto.toStellaBoleto();
 
@@ -105,8 +103,8 @@ public class TestBoleto
 	@Test
 	public void converteLocaisDePagamentoParaStellaBoleto() throws Exception
 	{
-		boleto.addToLocaisPagamentoRelationship( LocalPagamento.createLocalPagamento( editingContextProvider.editingContext(), "local 1" ) );
-		boleto.addToLocaisPagamentoRelationship( LocalPagamento.createLocalPagamento( editingContextProvider.editingContext(), "local 2" ) );
+		boleto.addToLocaisPagamentoRelationship( EOLocalPagamento.createEOLocalPagamento( editingContextProvider.editingContext(), "local 1" ) );
+		boleto.addToLocaisPagamentoRelationship( EOLocalPagamento.createEOLocalPagamento( editingContextProvider.editingContext(), "local 2" ) );
 
 		br.com.caelum.stella.boleto.Boleto result = boleto.toStellaBoleto();
 
@@ -114,11 +112,21 @@ public class TestBoleto
 	}
 
 	@Test
+	public void converteSacadoParaStellaBoleto() throws Exception
+	{
+		br.com.caelum.stella.boleto.Boleto result = boleto.toStellaBoleto();
+
+		assertThat( result.getSacado(), notNullValue() );
+	}
+
+	@Test
 	public void inicializacaoBoleto() throws Exception
 	{
-		Boleto boleto = Boleto.createBoleto( editingContextProvider.editingContext() );
+		EOBoleto boleto = EOBoleto.createEOBoleto( editingContextProvider.editingContext() );
 
 		assertThat( boleto.aceite(), is( false ) );
+		assertThat( boleto.emissor(), notNullValue() );
+		assertThat( boleto.sacado(), notNullValue() );
 	}
 
 	@Test
@@ -128,7 +136,7 @@ public class TestBoleto
 
 		for( int i = 0; i < 3; i++ )
 		{
-			boleto.addToLocaisPagamentoRelationship( LocalPagamento.createLocalPagamento( editingContextProvider.editingContext(), "local " + i ) );
+			boleto.addToLocaisPagamentoRelationship( EOLocalPagamento.createEOLocalPagamento( editingContextProvider.editingContext(), "local " + i ) );
 		}
 
 		CanBeSavedMatcher.verify( boleto, CanBeSavedMatcher.cannotBeSavedBecauseOf( "O boleto pode conter no m\u00e1ximo 2 locais de pagamento" ) );
@@ -159,6 +167,6 @@ public class TestBoleto
 	@Before
 	public void setup()
 	{
-		boleto = Boleto.createBoleto( editingContextProvider.editingContext() );
+		boleto = EOBoleto.createEOBoleto( editingContextProvider.editingContext() );
 	}
 }

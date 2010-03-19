@@ -8,14 +8,19 @@
         }, 
         {allowsNull = N; name = id; prototypeName = id; }, 
         {allowsNull = N; columnName = tipo; name = tipo; prototypeName = charFlag; }, 
-        {allowsNull = N; columnName = valor; name = valor; prototypeName = longText; }
+        {
+            allowsNull = N; 
+            columnName = valor; 
+            name = valor; 
+            prototypeName = varchar255; 
+        }
     ); 
     attributesUsedForLocking = (boletoId, id); 
-    className = "br.com.wobr.boleto.model.Instrucao"; 
+    className = "br.com.wobr.boleto.model.EOInstrucao"; 
     classProperties = (tipo, valor); 
     externalName = "boleto_informacao"; 
     fetchSpecificationDictionary = {}; 
-    name = Instrucao; 
+    name = EOInstrucao; 
     parent = AbstractInformacao; 
     primaryKeyAttributes = (id); 
     restrictingQualifier = "tipo = '2'"; 

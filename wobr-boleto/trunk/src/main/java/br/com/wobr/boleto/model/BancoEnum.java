@@ -2,10 +2,14 @@ package br.com.wobr.boleto.model;
 
 import br.com.caelum.stella.boleto.Banco;
 import br.com.caelum.stella.boleto.bancos.BancoDoBrasil;
+import br.com.caelum.stella.boleto.bancos.Bradesco;
+import br.com.caelum.stella.boleto.bancos.Caixa;
+import br.com.caelum.stella.boleto.bancos.Itau;
+import br.com.caelum.stella.boleto.bancos.Real;
 
 public enum BancoEnum
 {
-	BANCO_DO_BRASIL( new BancoDoBrasil() ), BRADESCO( null ), CAIXA_ECONOMICA( null ), ITAU( null ), OUTRO( null ), REAL( null );
+	BANCO_DO_BRASIL( new BancoDoBrasil() ), BRADESCO( new Bradesco() ), CAIXA_ECONOMICA( new Caixa() ), ITAU( new Itau() ), OUTRO( null ), REAL( new Real() );
 
 	private final Banco banco;
 
@@ -16,6 +20,11 @@ public enum BancoEnum
 
 	public Banco toStellaBanco()
 	{
+		if( banco == null )
+		{
+			throw new UnsupportedOperationException( "O banco " + this.toString() + " n\u00e3o possui um correspondente na biblioteca Stella boleto." );
+		}
+
 		return banco;
 	}
 }
