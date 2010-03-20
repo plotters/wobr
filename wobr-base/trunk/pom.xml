@@ -16,11 +16,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.webobjects</groupId>
-			<artifactId>JavaWebObjects</artifactId>
-			<version>${webobjects.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.webobjects</groupId>
 			<artifactId>JavaEOAccess</artifactId>
 			<version>${webobjects.version}</version>
 		</dependency>
