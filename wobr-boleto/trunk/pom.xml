@@ -46,17 +46,24 @@
 	<dependencies>
 		<dependency>
 			<groupId>wonder.core</groupId>
-			<artifactId>ERPrototypes</artifactId>
+			<artifactId>ERExtensions</artifactId>
 			<version>5.0.0-SNAPSHOT</version>
+			<classifier>wo54</classifier>
 		</dependency>
 		<dependency>
-			<groupId>${webobjects.groupId}</groupId>
-			<artifactId>JavaWebObjects</artifactId>
-			<version>${webobjects.version}</version>
+			<groupId>wonder.core</groupId>
+			<artifactId>ERPrototypes</artifactId>
+			<version>5.0.0-SNAPSHOT</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>${webobjects.groupId}</groupId>
 			<artifactId>JavaEOAccess</artifactId>
+			<version>${webobjects.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${webobjects.groupId}</groupId>
+			<artifactId>JavaEOControl</artifactId>
 			<version>${webobjects.version}</version>
 		</dependency>
 		<dependency>
@@ -70,9 +77,9 @@
 			<version>1.2</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.ws.rs</groupId>
-			<artifactId>jsr311-api</artifactId>
-			<version>1.1</version>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.14</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

@@ -2,6 +2,9 @@ package br.com.wobr.boleto.model;
 
 import br.com.caelum.stella.boleto.Sacado;
 
+/**
+ * @author <a href="mailto:hprange@gmail.com">Henrique Prange</a>
+ */
 public class EOSacado extends _EOSacado
 {
 	public Sacado toStellaSacado()
