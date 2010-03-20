@@ -26,19 +26,19 @@
 			<version>5.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-core</artifactId>
-			<version>1.1</version>
+			<groupId>com.webobjects</groupId>
+			<artifactId>JavaEOAccess</artifactId>
+			<version>${webobjects.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.webobjects</groupId>
+			<artifactId>JavaEOControl</artifactId>
+			<version>${webobjects.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.7</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
