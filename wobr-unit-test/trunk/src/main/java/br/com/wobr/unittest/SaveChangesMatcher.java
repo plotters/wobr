@@ -13,6 +13,18 @@ public class SaveChangesMatcher<T extends EOEditingContext> extends TypeSafeMatc
 {
 	private Exception exception;
 
+	private final String message;
+
+	public SaveChangesMatcher()
+	{
+		this.message = null;
+	}
+
+	public SaveChangesMatcher( final String message )
+	{
+		this.message = message;
+	}
+
 	public void describeTo( final Description description )
 	{
 		description.appendText( exception.getMessage() );

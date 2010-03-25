@@ -13,8 +13,6 @@ import com.webobjects.eoaccess.EOModelGroup;
 import er.extensions.foundation.ERXProperties;
 
 /**
- * TODO: load model inside subfolders
- * <p>
  * TODO: change loaded model to use the memory adaptor
  * <p>
  * TODO: Exception if model does not exist or cannot be find

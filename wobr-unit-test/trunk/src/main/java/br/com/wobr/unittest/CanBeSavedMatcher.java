@@ -5,41 +5,12 @@ import static org.hamcrest.CoreMatchers.not;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.StringDescription;
 import org.junit.internal.matchers.TypeSafeMatcher;
 
 import com.webobjects.eocontrol.EOEnterpriseObject;
 
 public class CanBeSavedMatcher<T extends EOEnterpriseObject> extends TypeSafeMatcher<T>
 {
-	public static Matcher<EOEnterpriseObject> canBeSaved()
-	{
-		return new CanBeSavedMatcher<EOEnterpriseObject>();
-	}
-
-	public static Matcher<EOEnterpriseObject> cannotBeSaved()
-	{
-		return not( canBeSaved() );
-	}
-
-	public static Matcher<EOEnterpriseObject> cannotBeSavedBecauseOf( final String message )
-	{
-		return not( new CanBeSavedMatcher<EOEnterpriseObject>( message ) );
-	}
-
-	public static <T extends EOEnterpriseObject> void verify( final T actual, final Matcher<T> matcher )
-	{
-		if( !matcher.matches( actual ) )
-		{
-			Description description = new StringDescription();
-
-			description.appendText( "\nExpected: " );
-			description.appendDescriptionOf( matcher );
-
-			throw new AssertionError( description.toString() );
-		}
-	}
-
 	private Exception exception;
 
 	private final String message;
