@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import br.com.wobr.unittest.CanBeSavedMatcher;
+import br.com.wobr.unittest.EOAssert;
 import br.com.wobr.unittest.TemporaryEditingContextProvider;
 
 import com.webobjects.foundation.NSTimestamp;
@@ -139,7 +139,7 @@ public class TestEOBoleto
 			boleto.addToLocaisPagamentoRelationship( EOLocalPagamento.createEOLocalPagamento( editingContextProvider.editingContext(), "local " + i ) );
 		}
 
-		CanBeSavedMatcher.verify( boleto, CanBeSavedMatcher.cannotBeSavedBecauseOf( "O boleto pode conter no m\u00e1ximo 2 locais de pagamento" ) );
+		EOAssert.confirm( boleto, EOAssert.cannotBeSavedBecauseOf( "O boleto pode conter no m\u00e1ximo 2 locais de pagamento" ) );
 	}
 
 	private Calendar newDate( final int day, final int month, final int year )
