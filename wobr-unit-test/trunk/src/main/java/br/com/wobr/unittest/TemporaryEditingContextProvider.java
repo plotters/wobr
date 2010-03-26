@@ -39,7 +39,7 @@ public class TemporaryEditingContextProvider extends ExternalResource
 	@Override
 	protected void after()
 	{
-		EODatabaseContext databaseContext = EOUtilities.databaseContextForModelNamed( editingContext, "Boleto" );
+		EODatabaseContext databaseContext = EOUtilities.databaseContextForModelNamed( editingContext, EOModelGroup.defaultGroup().modelNames().objectAtIndex( 0 ) );
 		EOAdaptorContext adaptorContext = databaseContext.adaptorContext();
 
 		( (ERMemoryAdaptorContext) adaptorContext ).resetAllEntities();
