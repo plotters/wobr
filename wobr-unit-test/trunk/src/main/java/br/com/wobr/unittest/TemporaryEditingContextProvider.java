@@ -97,14 +97,21 @@ public class TemporaryEditingContextProvider extends ExternalResource
 
 	protected void loadModel( final String modelName )
 	{
-		if( EOModelGroup.defaultGroup().modelNamed( modelName ) != null )
+		EOModelGroup modelGroup = EOModelGroup.defaultGroup();
+
+		if( modelGroup.modelNamed( modelName ) != null )
 		{
 			return;
 		}
 
 		URL url = getClass().getResource( "/" + modelName + ".eomodeld" );
 
-		EOModel model = EOModelGroup.defaultGroup().addModelWithPathURL( url );
+		if( url == null )
+		{
+			throw new IllegalArgumentException( String.format( "Cannot load model named '%s'", modelName ) );
+		}
+
+		EOModel model = modelGroup.addModelWithPathURL( url );
 
 		// Use Memory adaptor for tests. We don't want to set this
 		// information in the EOModel dictionary
