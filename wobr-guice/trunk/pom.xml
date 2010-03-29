@@ -8,7 +8,7 @@
 	</parent>
 
 	<artifactId>wobr-guice</artifactId>
-	<version>0.2</version>
+	<version>0.3-SNAPSHOT</version>
 	<name>WOBR Guice Integration</name>
 
 	<dependencies>
@@ -51,9 +51,4 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-  <scm>
-    <connection>scm:svn:http://wobr.googlecode.com/svn/wobr-parent/tags/wobr-guice-0.2</connection>
-    <developerConnection>scm:svn:https://wobr.googlecode.com/svn/wobr-parent/tags/wobr-guice-0.2</developerConnection>
-  </scm>
 </project>
