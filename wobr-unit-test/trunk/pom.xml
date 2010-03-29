@@ -13,17 +13,21 @@
 	<version>1.0-SNAPSHOT</version>
 	<name>WOBR Unit Test Framework</name>
 
+	<properties>
+		<wonder.version>5.0.0-r10702</wonder.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>wonder.core</groupId>
 			<artifactId>ERExtensions</artifactId>
-			<version>5.0.0-SNAPSHOT</version>
+			<version>${wonder.version}</version>
 			<classifier>wo54</classifier>
 		</dependency>
 		<dependency>
 			<groupId>wonder.eoadaptors</groupId>
 			<artifactId>JavaMemoryAdaptor</artifactId>
-			<version>5.0.0-SNAPSHOT</version>
+			<version>${wonder.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.webobjects</groupId>
@@ -47,4 +51,9 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<scm>
+		<connection>http://wobr.googlecode.com/svn/${project.artifactId}/trunk</connection>
+		<developerConnection>https://wobr.googlecode.com/svn/${project.artifactId}/trunk</developerConnection>
+	</scm>
 </project>
