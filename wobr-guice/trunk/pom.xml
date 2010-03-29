@@ -8,7 +8,7 @@
 	</parent>
 
 	<artifactId>wobr-guice</artifactId>
-	<version>0.3-SNAPSHOT</version>
+	<version>0.2-SNAPSHOT</version>
 	<name>WOBR Guice Integration</name>
 
 	<dependencies>
