@@ -2,7 +2,7 @@
     attributes = (
         {allowsNull = N; columnName = aceite; name = aceite; prototypeName = flag; }, 
         {
-            allowsNull = N; 
+            allowsNull = Y; 
             columnName = banco; 
             name = banco; 
             prototypeName = javaEnum; 
@@ -21,7 +21,7 @@
             prototypeName = date; 
         }, 
         {
-            allowsNull = N; 
+            allowsNull = Y; 
             columnName = "data_vencimento"; 
             name = dataVencimento; 
             prototypeName = date; 
@@ -40,7 +40,7 @@
         }, 
         {allowsNull = N; name = id; prototypeName = id; }, 
         {
-            allowsNull = N; 
+            allowsNull = Y; 
             columnName = "numero_documento"; 
             name = numeroDocumento; 
             prototypeName = varchar16; 
@@ -59,7 +59,7 @@
             prototypeName = id; 
         }, 
         {
-            allowsNull = N; 
+            allowsNull = Y; 
             columnName = valor; 
             name = valor; 
             precision = 30; 

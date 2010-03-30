@@ -11,56 +11,59 @@ public class EOEmissor extends _EOEmissor
 	{
 		Emissor emissor = Emissor.newEmissor();
 
-		if( agencia() != null )
+		if(agencia() != null)
 		{
-			emissor.withAgencia( agencia() );
+			emissor.withAgencia(agencia());
 		}
 
-		if( carteira() != null )
+		if(carteira() != null)
 		{
-			emissor.withCarteira( carteira() );
+			emissor.withCarteira(carteira());
 		}
 
-		emissor.withCedente( cedente() );
-
-		if( codigoFornecidoPelaAgencia() != null )
+		if(cedente() != null)
 		{
-			emissor.withCodFornecidoPelaAgencia( codigoFornecidoPelaAgencia() );
+			emissor.withCedente(cedente());
 		}
 
-		if( codigoOperacao() != null )
+		if(codigoFornecidoPelaAgencia() != null)
 		{
-			emissor.withCodOperacao( codigoOperacao() );
+			emissor.withCodFornecidoPelaAgencia(codigoFornecidoPelaAgencia());
 		}
 
-		if( contaCorrente() != null )
+		if(codigoOperacao() != null)
 		{
-			emissor.withContaCorrente( contaCorrente() );
+			emissor.withCodOperacao(codigoOperacao());
 		}
 
-		if( digitoVerificadorAgencia() != null )
+		if(contaCorrente() != null)
 		{
-			emissor.withDvAgencia( digitoVerificadorAgencia().charAt( 0 ) );
+			emissor.withContaCorrente(contaCorrente());
 		}
 
-		if( digitoVerificadorContaCorrente() != null )
+		if(digitoVerificadorAgencia() != null)
 		{
-			emissor.withDvContaCorrente( digitoVerificadorContaCorrente().charAt( 0 ) );
+			emissor.withDvAgencia(digitoVerificadorAgencia().charAt(0));
 		}
 
-		if( digitoVerificadorNossoNumero() != null )
+		if(digitoVerificadorContaCorrente() != null)
 		{
-			emissor.withDvNossoNumero( digitoVerificadorNossoNumero().charAt( 0 ) );
+			emissor.withDvContaCorrente(digitoVerificadorContaCorrente().charAt(0));
 		}
 
-		if( nossoNumero() != null )
+		if(digitoVerificadorNossoNumero() != null)
 		{
-			emissor.withNossoNumero( nossoNumero() );
+			emissor.withDvNossoNumero(digitoVerificadorNossoNumero().charAt(0));
 		}
 
-		if( numeroConvenio() != null )
+		if(nossoNumero() != null)
 		{
-			emissor.withNumConvenio( numeroConvenio() );
+			emissor.withNossoNumero(nossoNumero());
+		}
+
+		if(numeroConvenio() != null)
+		{
+			emissor.withNumConvenio(numeroConvenio());
 		}
 
 		return emissor;

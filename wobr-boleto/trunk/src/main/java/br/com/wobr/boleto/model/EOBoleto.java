@@ -15,50 +15,50 @@ import com.webobjects.foundation.NSTimestamp;
  */
 public class EOBoleto extends _EOBoleto
 {
-	public static EOBoleto createEOBoleto( final EOEditingContext editingContext )
+	public static EOBoleto createEOBoleto(final EOEditingContext editingContext)
 	{
-		return (EOBoleto) EOUtilities.createAndInsertInstance( editingContext, ENTITY_NAME );
+		return (EOBoleto) EOUtilities.createAndInsertInstance(editingContext, ENTITY_NAME);
 	}
 
 	@Override
-	public void awakeFromInsertion( final EOEditingContext editingContext )
+	public void awakeFromInsertion(final EOEditingContext editingContext)
 	{
-		super.awakeFromInsertion( editingContext );
+		super.awakeFromInsertion(editingContext);
 
-		if( aceite() == null )
+		if(aceite() == null)
 		{
-			setAceite( Boolean.FALSE );
+			setAceite(Boolean.FALSE);
 		}
 
-		if( emissor() == null )
+		if(emissor() == null)
 		{
-			setEmissorRelationship( EOEmissor.createEOEmissor( editingContext ) );
+			setEmissorRelationship(EOEmissor.createEOEmissor(editingContext));
 		}
 
-		if( sacado() == null )
+		if(sacado() == null)
 		{
-			setSacadoRelationship( EOSacado.createEOSacado( editingContext ) );
+			setSacadoRelationship(EOSacado.createEOSacado(editingContext));
 		}
 	}
 
-	private Calendar convertDate( final NSTimestamp date )
+	private Calendar convertDate(final NSTimestamp date)
 	{
-		if( date == null )
+		if(date == null)
 		{
 			return null;
 		}
 
 		Calendar calendar = Calendar.getInstance();
 
-		calendar.setTime( date );
+		calendar.setTime(date);
 
 		return calendar;
 	}
 
-	@SuppressWarnings( "unchecked" )
-	private String[] stringArrayDe( final NSArray<? extends AbstractInformacao> informacoes )
+	@SuppressWarnings("unchecked")
+	private String[] stringArrayDe(final NSArray<? extends AbstractInformacao> informacoes)
 	{
-		return ( (NSArray<String>) informacoes.valueForKeyPath( AbstractInformacao.VALOR_KEY ) ).toArray( new String[] {} );
+		return ((NSArray<String>) informacoes.valueForKeyPath(AbstractInformacao.VALOR_KEY)).toArray(new String[] {});
 	}
 
 	public Boleto toStellaBoleto()
@@ -67,37 +67,61 @@ public class EOBoleto extends _EOBoleto
 
 		Datas datas = Datas.newDatas();
 
-		if( dataDocumento() != null )
+		if(dataDocumento() != null)
 		{
-			datas.withDocumento( convertDate( dataDocumento() ) );
+			datas.withDocumento(convertDate(dataDocumento()));
 		}
 
-		if( dataProcessamento() != null )
+		if(dataProcessamento() != null)
 		{
-			datas.withProcessamento( convertDate( dataProcessamento() ) );
+			datas.withProcessamento(convertDate(dataProcessamento()));
 		}
 
-		if( dataVencimento() != null )
+		if(dataVencimento() != null)
 		{
-			datas.withVencimento( convertDate( dataVencimento() ) );
+			datas.withVencimento(convertDate(dataVencimento()));
 		}
 
-		boleto.withDatas( datas );
-		boleto.withEmissor( emissor().toStellaEmissor() );
-		boleto.withSacado( sacado().toStellaSacado() );
-		boleto.withDescricoes( stringArrayDe( descricoes() ) );
-		boleto.withInstrucoes( stringArrayDe( instrucoes() ) );
-		boleto.withLocaisDePagamento( stringArrayDe( locaisPagamento() ) );
-		boleto.withAceite( aceite() );
-		boleto.withEspecieDocumento( especieDocumento() );
-		boleto.withNoDocumento( numeroDocumento() );
-		boleto.withQtdMoeda( quantidadeMoeda() );
-		boleto.withValorBoleto( valor() );
-		boleto.withValorMoeda( valorMoeda() );
+		boleto.withDatas(datas);
+		boleto.withEmissor(emissor().toStellaEmissor());
+		boleto.withSacado(sacado().toStellaSacado());
+		boleto.withDescricoes(stringArrayDe(descricoes()));
+		boleto.withInstrucoes(stringArrayDe(instrucoes()));
+		boleto.withLocaisDePagamento(stringArrayDe(locaisPagamento()));
 
-		if( banco() != null )
+		if(aceite() != null)
 		{
-			boleto.withBanco( banco().toStellaBanco() );
+			boleto.withAceite(aceite());
+		}
+
+		if(especieDocumento() != null)
+		{
+			boleto.withEspecieDocumento(especieDocumento());
+		}
+
+		if(numeroDocumento() != null)
+		{
+			boleto.withNoDocumento(numeroDocumento());
+		}
+
+		if(quantidadeMoeda() != null)
+		{
+			boleto.withQtdMoeda(quantidadeMoeda());
+		}
+
+		if(valor() != null)
+		{
+			boleto.withValorBoleto(valor());
+		}
+
+		if(valorMoeda() != null)
+		{
+			boleto.withValorMoeda(valorMoeda());
+		}
+
+		if(banco() != null)
+		{
+			boleto.withBanco(banco().toStellaBanco());
 		}
 
 		return boleto;
@@ -108,9 +132,9 @@ public class EOBoleto extends _EOBoleto
 	{
 		super.validateForSave();
 
-		if( locaisPagamento().size() > 2 )
+		if(locaisPagamento().size() > 2)
 		{
-			throw new ValidationException( "O boleto pode conter no m\u00e1ximo 2 locais de pagamento" );
+			throw new ValidationException("O boleto pode conter no m\u00e1ximo 2 locais de pagamento");
 		}
 	}
 }
