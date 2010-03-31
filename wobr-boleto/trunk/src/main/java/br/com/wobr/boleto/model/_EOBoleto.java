@@ -351,17 +351,9 @@ public abstract class _EOBoleto extends  EOGenericRecord {
 
 
   public static EOBoleto createEOBoleto(EOEditingContext editingContext, Boolean aceite
-, br.com.wobr.boleto.model.BancoEnum banco
-, NSTimestamp dataVencimento
-, String numeroDocumento
-, java.math.BigDecimal valor
 , br.com.wobr.boleto.model.EOEmissor emissor, br.com.wobr.boleto.model.EOSacado sacado) {
     EOBoleto eo = (EOBoleto) EOUtilities.createAndInsertInstance(editingContext, _EOBoleto.ENTITY_NAME);    
 		eo.setAceite(aceite);
-		eo.setBanco(banco);
-		eo.setDataVencimento(dataVencimento);
-		eo.setNumeroDocumento(numeroDocumento);
-		eo.setValor(valor);
     eo.setEmissorRelationship(emissor);
     eo.setSacadoRelationship(sacado);
     return eo;
