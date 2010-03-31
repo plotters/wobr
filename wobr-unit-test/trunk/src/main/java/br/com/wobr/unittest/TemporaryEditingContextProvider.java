@@ -10,6 +10,7 @@ import com.webobjects.eoaccess.EOModel;
 import com.webobjects.eoaccess.EOModelGroup;
 import com.webobjects.eoaccess.EOUtilities;
 import com.webobjects.eocontrol.EOEditingContext;
+import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSBundle;
 
 import er.extensions.eof.ERXEC;
@@ -22,27 +23,39 @@ public class TemporaryEditingContextProvider extends ExternalResource
 
 	private boolean initialized = false;
 
-	public TemporaryEditingContextProvider( final String... modelNames )
+	public TemporaryEditingContextProvider(final String... modelNames)
 	{
 		fixJavaMemoryDictionary();
 
 		// Use Memory prototypes for tests. We don't want to set this
 		// information in the EOModel dictionary
-		ERXProperties.setStringForKey( "EOMemoryPrototypes", "dbEOPrototypesEntityGLOBAL" );
+		ERXProperties.setStringForKey("EOMemoryPrototypes", "dbEOPrototypesEntityGLOBAL");
 
-		for( String modelName : modelNames )
+		for(String modelName : modelNames)
 		{
-			loadModel( modelName );
+			loadModel(modelName);
+		}
+
+		NSArray<EOModel> models = EOModelGroup.defaultGroup().models();
+
+		for(EOModel model : models)
+		{
+			if(!"Memory".equals(model.adaptorName()))
+			{
+				// Use Memory adaptor for tests. We don't want to set this
+				// information in the EOModel dictionary
+				model.setAdaptorName("Memory");
+			}
 		}
 	}
 
 	@Override
 	protected void after()
 	{
-		EODatabaseContext databaseContext = EOUtilities.databaseContextForModelNamed( editingContext, EOModelGroup.defaultGroup().modelNames().objectAtIndex( 0 ) );
+		EODatabaseContext databaseContext = EOUtilities.databaseContextForModelNamed(editingContext, EOModelGroup.defaultGroup().modelNames().objectAtIndex(0));
 		EOAdaptorContext adaptorContext = databaseContext.adaptorContext();
 
-		( (ERMemoryAdaptorContext) adaptorContext ).resetAllEntities();
+		((ERMemoryAdaptorContext) adaptorContext).resetAllEntities();
 
 		editingContext.revert();
 		editingContext.unlock();
@@ -62,7 +75,7 @@ public class TemporaryEditingContextProvider extends ExternalResource
 
 	public EOEditingContext editingContext()
 	{
-		if( editingContext == null )
+		if(editingContext == null)
 		{
 			initializeOnce();
 		}
@@ -76,14 +89,14 @@ public class TemporaryEditingContextProvider extends ExternalResource
 	 */
 	private void fixJavaMemoryDictionary()
 	{
-		NSBundle bundle = NSBundle.bundleForName( "JavaMemoryAdaptor" );
+		NSBundle bundle = NSBundle.bundleForName("JavaMemoryAdaptor");
 
-		bundle._infoDictionary().takeValueForKey( "er.memoryadaptor.ERMemoryAdaptor", "EOAdaptorClassName" );
+		bundle._infoDictionary().takeValueForKey("er.memoryadaptor.ERMemoryAdaptor", "EOAdaptorClassName");
 	}
 
 	private void initializeOnce()
 	{
-		if( initialized )
+		if(initialized)
 		{
 			return;
 		}
@@ -95,26 +108,24 @@ public class TemporaryEditingContextProvider extends ExternalResource
 		editingContext.lock();
 	}
 
-	protected void loadModel( final String modelName )
+	protected void loadModel(final String modelName)
 	{
 		EOModelGroup modelGroup = EOModelGroup.defaultGroup();
 
-		if( modelGroup.modelNamed( modelName ) != null )
+		EOModel model = modelGroup.modelNamed(modelName);
+
+		if(model != null)
 		{
 			return;
 		}
 
-		URL url = getClass().getResource( "/" + modelName + ".eomodeld" );
+		URL url = getClass().getResource("/" + modelName + ".eomodeld");
 
-		if( url == null )
+		if(url == null)
 		{
-			throw new IllegalArgumentException( String.format( "Cannot load model named '%s'", modelName ) );
+			throw new IllegalArgumentException(String.format("Cannot load model named '%s'", modelName));
 		}
 
-		EOModel model = modelGroup.addModelWithPathURL( url );
-
-		// Use Memory adaptor for tests. We don't want to set this
-		// information in the EOModel dictionary
-		model.setAdaptorName( "Memory" );
+		modelGroup.addModelWithPathURL(url);
 	}
 }

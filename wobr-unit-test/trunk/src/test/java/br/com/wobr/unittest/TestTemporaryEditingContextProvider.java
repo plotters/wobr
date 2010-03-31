@@ -4,6 +4,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import java.net.URL;
+
 import org.junit.After;
 import org.junit.Test;
 
@@ -26,15 +28,43 @@ public class TestTemporaryEditingContextProvider
 	private static final String TEST_MODEL_NAME = "Test";
 
 	@Test
+	public void changeAdaptorForModelsNotLoadedByTemporaryEditingContextProvider() throws Exception
+	{
+		URL url = getClass().getResource("/" + TEST_MODEL_NAME + ".eomodeld");
+
+		EOModel model = EOModelGroup.defaultGroup().addModelWithPathURL(url);
+
+		model.setAdaptorName("JDBC");
+
+		new TemporaryEditingContextProvider();
+
+		assertThat(model.adaptorName(), is("Memory"));
+	}
+
+	@Test
+	public void changeAdaptorIfModelAlreadyLoadedWithDifferentAdaptor() throws Exception
+	{
+		URL url = getClass().getResource("/" + TEST_MODEL_NAME + ".eomodeld");
+
+		EOModel model = EOModelGroup.defaultGroup().addModelWithPathURL(url);
+
+		model.setAdaptorName("JDBC");
+
+		new TemporaryEditingContextProvider(TEST_MODEL_NAME);
+
+		assertThat(model.adaptorName(), is("Memory"));
+	}
+
+	@Test
 	public void exceptionIfCannotFindModel() throws Exception
 	{
 		try
 		{
-			new TemporaryEditingContextProvider( "UnknownModel" );
+			new TemporaryEditingContextProvider("UnknownModel");
 		}
-		catch( IllegalArgumentException exception )
+		catch(IllegalArgumentException exception)
 		{
-			assertThat( exception.getMessage(), is( "Cannot load model named 'UnknownModel'" ) );
+			assertThat(exception.getMessage(), is("Cannot load model named 'UnknownModel'"));
 		}
 
 	}
@@ -42,11 +72,11 @@ public class TestTemporaryEditingContextProvider
 	@Test
 	public void loadOneModel() throws Exception
 	{
-		new TemporaryEditingContextProvider( TEST_MODEL_NAME );
+		new TemporaryEditingContextProvider(TEST_MODEL_NAME);
 
-		EOModel result = EOModelGroup.defaultGroup().modelNamed( TEST_MODEL_NAME );
+		EOModel result = EOModelGroup.defaultGroup().modelNamed(TEST_MODEL_NAME);
 
-		assertThat( result, notNullValue() );
+		assertThat(result, notNullValue());
 	}
 
 	@After
@@ -54,22 +84,22 @@ public class TestTemporaryEditingContextProvider
 	{
 		EOModelGroup modelGroup = EOModelGroup.defaultGroup();
 
-		EOModel model = modelGroup.modelNamed( TEST_MODEL_NAME );
+		EOModel model = modelGroup.modelNamed(TEST_MODEL_NAME);
 
-		if( model != null )
+		if(model != null)
 		{
-			modelGroup.removeModel( model );
+			modelGroup.removeModel(model);
 		}
 	}
 
 	@Test
 	public void useMemoryAdaptorForAllModels() throws Exception
 	{
-		new TemporaryEditingContextProvider( TEST_MODEL_NAME );
+		new TemporaryEditingContextProvider(TEST_MODEL_NAME);
 
-		String result = EOModelGroup.defaultGroup().modelNamed( TEST_MODEL_NAME ).adaptorName();
+		String result = EOModelGroup.defaultGroup().modelNamed(TEST_MODEL_NAME).adaptorName();
 
-		assertThat( result, is( "Memory" ) );
+		assertThat(result, is("Memory"));
 	}
 
 	@Test
@@ -77,8 +107,8 @@ public class TestTemporaryEditingContextProvider
 	{
 		new TemporaryEditingContextProvider();
 
-		String result = ERXProperties.stringForKey( "dbEOPrototypesEntityGLOBAL" );
+		String result = ERXProperties.stringForKey("dbEOPrototypesEntityGLOBAL");
 
-		assertThat( result, is( "EOMemoryPrototypes" ) );
+		assertThat(result, is("EOMemoryPrototypes"));
 	}
 }
