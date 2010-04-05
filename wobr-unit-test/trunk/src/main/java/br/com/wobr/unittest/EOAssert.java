@@ -6,6 +6,9 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.StringDescription;
 
+import br.com.wobr.unittest.matchers.CanBeSavedMatcher;
+import br.com.wobr.unittest.matchers.SaveChangesMatcher;
+
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.eocontrol.EOEnterpriseObject;
 

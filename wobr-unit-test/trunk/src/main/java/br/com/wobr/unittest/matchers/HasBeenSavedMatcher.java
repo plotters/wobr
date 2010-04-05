@@ -1,4 +1,4 @@
-package br.com.wobr.unittest;
+package br.com.wobr.unittest.matchers;
 
 import org.hamcrest.Description;
 import org.junit.internal.matchers.TypeSafeMatcher;
