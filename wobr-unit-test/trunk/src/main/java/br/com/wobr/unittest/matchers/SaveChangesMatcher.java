@@ -1,11 +1,6 @@
 package br.com.wobr.unittest.matchers;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-
 import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.junit.internal.matchers.TypeSafeMatcher;
 
 import com.webobjects.eocontrol.EOEditingContext;
 
@@ -13,20 +8,16 @@ import com.webobjects.eocontrol.EOEditingContext;
  * @author <a href="mailto:hprange@gmail.com">Henrique Prange</a>
  * @param <T> a kind of <code>EOEditingContext</code>.
  */
-public class SaveChangesMatcher<T extends EOEditingContext> extends TypeSafeMatcher<T>
+public class SaveChangesMatcher<T extends EOEditingContext> extends AbstractEnhancedTypeSafeMatcher<T>
 {
-	private Exception exception;
-
-	private final String message;
-
 	public SaveChangesMatcher()
 	{
-		this.message = null;
+		super();
 	}
 
 	public SaveChangesMatcher( final String message )
 	{
-		this.message = message;
+		super( message );
 	}
 
 	public void describeTo( final Description description )
@@ -67,26 +58,8 @@ public class SaveChangesMatcher<T extends EOEditingContext> extends TypeSafeMatc
 	}
 
 	@Override
-	public boolean matchesSafely( final T editingContext )
+	protected void matchesWithPossibleException( final T editingContext ) throws Exception
 	{
-		try
-		{
-			editingContext.saveChanges();
-		}
-		catch( Exception exception )
-		{
-			this.exception = exception;
-
-			if( message != null )
-			{
-				Matcher<String> matcher = is( not( message ) );
-
-				return matcher.matches( exception.getMessage() );
-			}
-
-			return false;
-		}
-
-		return true;
+		editingContext.saveChanges();
 	}
 }
