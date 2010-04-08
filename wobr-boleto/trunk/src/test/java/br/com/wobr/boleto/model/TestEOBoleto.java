@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import br.com.caelum.stella.boleto.Boleto;
 import br.com.wobr.unittest.EOAssert;
-import br.com.wobr.unittest.TemporaryEditingContextProvider;
+import br.com.wobr.unittest.rules.TemporaryEditingContextProvider;
 
 import com.webobjects.foundation.NSTimestamp;
 

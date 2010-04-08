@@ -6,7 +6,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.Rule;
 import org.junit.Test;
 
-import br.com.wobr.unittest.TemporaryEditingContextProvider;
+import br.com.wobr.unittest.rules.TemporaryEditingContextProvider;
 
 public class TestAbstractInformacao
 {
