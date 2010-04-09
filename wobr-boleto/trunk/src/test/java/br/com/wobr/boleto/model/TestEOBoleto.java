@@ -140,7 +140,7 @@ public class TestEOBoleto
 			boleto.addToLocaisPagamentoRelationship(EOLocalPagamento.createEOLocalPagamento(editingContextProvider.editingContext(), "local " + i));
 		}
 
-		EOAssert.confirm(boleto, EOAssert.cannotBeSavedBecauseOf("O boleto pode conter no m\u00e1ximo 2 locais de pagamento"));
+		EOAssert.confirm(boleto, EOAssert.cannotBeSavedBecause("O boleto pode conter no m\u00e1ximo 2 locais de pagamento"));
 	}
 
 	@Test
