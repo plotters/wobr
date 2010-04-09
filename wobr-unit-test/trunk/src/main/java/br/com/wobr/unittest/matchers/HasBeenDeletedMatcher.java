@@ -17,29 +17,29 @@ public class HasBeenDeletedMatcher<T extends EOEnterpriseObject> extends TypeSaf
 {
 	private String status;
 
-	public void describeTo( final Description description )
+	public void describeTo(final Description description)
 	{
-		description.appendText( String.format( "deleted object\n     but got: an %s object", status ) );
+		description.appendText(String.format("deleted object\n     but got: %s object", status));
 	}
 
-	private boolean isDeletedEO( final T eo )
+	private boolean isDeletedEO(final T eo)
 	{
 		EOEditingContext editingContext = eo.editingContext();
 
-		if( editingContext == null )
+		if(editingContext == null)
 		{
 			return true;
 		}
 
-		return editingContext.deletedObjects().contains( eo );
+		return editingContext.deletedObjects().contains(eo);
 	}
 
 	@Override
-	public boolean matchesSafely( final T eo )
+	public boolean matchesSafely(final T eo)
 	{
-		boolean isDeleted = isDeletedEO( eo );
+		boolean isDeleted = isDeletedEO(eo);
 
-		status = isDeleted ? "deleted" : "active";
+		status = isDeleted ? "a deleted" : "an active";
 
 		return isDeleted;
 	}

@@ -18,75 +18,75 @@ import com.webobjects.foundation.NSArray;
 /**
  * @author <a href="mailto:hprange@gmail.com">Henrique Prange</a>
  */
-@RunWith( MockitoJUnitRunner.class )
+@RunWith(MockitoJUnitRunner.class)
 public class TestHasBeenDeletedMatcher
 {
-	@Mock
-	private EOEnterpriseObject mockObject;
+	private HasBeenDeletedMatcher<EOEnterpriseObject> matcher;
 
 	private StringDescription mockDescription;
 
 	@Mock
 	private EOEditingContext mockEditingContext;
 
-	private HasBeenDeletedMatcher<EOEnterpriseObject> matcher;
+	@Mock
+	private EOEnterpriseObject mockObject;
 
 	@Test
 	public void descriptionForHasBeenDeleted() throws Exception
 	{
-		Mockito.when( mockObject.editingContext() ).thenReturn( mockEditingContext );
+		Mockito.when(mockObject.editingContext()).thenReturn(mockEditingContext);
 
-		Mockito.when( mockEditingContext.deletedObjects() ).thenReturn( NSArray.<EOEnterpriseObject> emptyArray() );
+		Mockito.when(mockEditingContext.deletedObjects()).thenReturn(NSArray.<EOEnterpriseObject> emptyArray());
 
-		matcher.matchesSafely( mockObject );
-		matcher.describeTo( mockDescription );
+		matcher.matchesSafely(mockObject);
+		matcher.describeTo(mockDescription);
 
-		assertThat( mockDescription.toString(), is( "deleted object\n     but got: an active object" ) );
+		assertThat(mockDescription.toString(), is("deleted object\n     but got: an active object"));
 	}
 
 	@Test
 	public void descriptionForHasNotBeenDeleted() throws Exception
 	{
-		matcher.matchesSafely( mockObject );
-		matcher.describeTo( mockDescription );
+		matcher.matchesSafely(mockObject);
+		matcher.describeTo(mockDescription);
 
-		assertThat( mockDescription.toString(), is( "deleted object\n     but got: an deleted object" ) );
+		assertThat(mockDescription.toString(), is("deleted object\n     but got: a deleted object"));
 	}
 
 	@Test
 	public void matchesHasBeenDeleted() throws Exception
 	{
-		Mockito.when( mockObject.editingContext() ).thenReturn( mockEditingContext );
+		Mockito.when(mockObject.editingContext()).thenReturn(mockEditingContext);
 
-		NSArray<EOEnterpriseObject> deletedObjects = new NSArray<EOEnterpriseObject>( mockObject );
+		NSArray<EOEnterpriseObject> deletedObjects = new NSArray<EOEnterpriseObject>(mockObject);
 
-		Mockito.when( mockEditingContext.deletedObjects() ).thenReturn( deletedObjects );
+		Mockito.when(mockEditingContext.deletedObjects()).thenReturn(deletedObjects);
 
-		boolean result = matcher.matchesSafely( mockObject );
+		boolean result = matcher.matchesSafely(mockObject);
 
-		assertThat( result, is( true ) );
+		assertThat(result, is(true));
 	}
 
 	@Test
 	public void matchesHasBeenDeletedWithNullEditingContext() throws Exception
 	{
-		Mockito.when( mockObject.editingContext() ).thenReturn( null );
+		Mockito.when(mockObject.editingContext()).thenReturn(null);
 
-		boolean result = matcher.matchesSafely( mockObject );
+		boolean result = matcher.matchesSafely(mockObject);
 
-		assertThat( result, is( true ) );
+		assertThat(result, is(true));
 	}
 
 	@Test
 	public void matchesHasNotBeenDeleted() throws Exception
 	{
-		Mockito.when( mockObject.editingContext() ).thenReturn( mockEditingContext );
+		Mockito.when(mockObject.editingContext()).thenReturn(mockEditingContext);
 
-		Mockito.when( mockEditingContext.deletedObjects() ).thenReturn( NSArray.<EOEnterpriseObject> emptyArray() );
+		Mockito.when(mockEditingContext.deletedObjects()).thenReturn(NSArray.<EOEnterpriseObject> emptyArray());
 
-		boolean result = matcher.matchesSafely( mockObject );
+		boolean result = matcher.matchesSafely(mockObject);
 
-		assertThat( result, is( false ) );
+		assertThat(result, is(false));
 	}
 
 	@Before
