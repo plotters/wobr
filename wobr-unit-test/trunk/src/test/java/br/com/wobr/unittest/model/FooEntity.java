@@ -6,12 +6,12 @@ public class FooEntity extends _FooEntity
 
 	private boolean canBeSaved = true;
 
-	public void setCanBeDeleted( final boolean canBeDeleted )
+	public void setCanBeDeleted(final boolean canBeDeleted)
 	{
 		this.canBeDeleted = canBeDeleted;
 	}
 
-	public void setCanBeSaved( final boolean canBeSaved )
+	public void setCanBeSaved(final boolean canBeSaved)
 	{
 		this.canBeSaved = canBeSaved;
 	}
@@ -21,9 +21,9 @@ public class FooEntity extends _FooEntity
 	{
 		super.validateForDelete();
 
-		if( !canBeDeleted )
+		if(!canBeDeleted)
 		{
-			throw new ValidationException( "This foo object can't be deleted" );
+			throw new ValidationException("This foo object can't be deleted");
 		}
 	}
 
@@ -32,9 +32,9 @@ public class FooEntity extends _FooEntity
 	{
 		super.validateForSave();
 
-		if( !canBeSaved )
+		if(!canBeSaved)
 		{
-			throw new ValidationException( "This foo object can't be saved" );
+			throw new ValidationException("This foo object can't be saved");
 		}
 	}
 }

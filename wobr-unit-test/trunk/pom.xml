@@ -12,7 +12,7 @@
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>WOBR Unit Test Framework</name>
-	<description>The WOBR Unit Test framework is a set of utilities for testing WebObjects applications.</description>
+	<description>The WOBR Unit Test framework contains a set of utilities for testing WebObjects applications using JUnit 4.7 or later capabilities.</description>
 
 	<properties>
 		<wonder.version>5.0.0-r10702</wonder.version>

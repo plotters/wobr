@@ -15,26 +15,26 @@ public class HasBeenSavedMatcher<T extends EOEnterpriseObject> extends TypeSafeM
 {
 	private String status;
 
-	public void describeTo( final Description description )
+	public void describeTo(final Description description)
 	{
-		description.appendText( String.format( "saved object\n     but got: an object with %s changes", status ) );
+		description.appendText(String.format("saved object\n     but got: an object with %s changes", status));
 	}
 
 	@Override
-	public boolean matchesSafely( final T enterpriseObject )
+	public boolean matchesSafely(final T enterpriseObject)
 	{
 		EOEditingContext editingContext = enterpriseObject.editingContext();
 
-		if( editingContext == null )
+		if(editingContext == null)
 		{
-			throw new IllegalArgumentException( "The enterprise object has no editing context reference. Are you sure the enterprise object was inserted into an editing context?" );
+			throw new IllegalArgumentException("The enterprise object has no editing context reference. Are you sure the enterprise object was inserted into an editing context?");
 		}
 
-		EOGlobalID globalId = editingContext.globalIDForObject( enterpriseObject );
+		EOGlobalID globalId = editingContext.globalIDForObject(enterpriseObject);
 
-		boolean hasBeenSaved = !( globalId == null || globalId.isTemporary() );
+		boolean hasBeenSaved = !(globalId == null || globalId.isTemporary());
 
-		hasBeenSaved = hasBeenSaved && enterpriseObject.changesFromSnapshot( editingContext.committedSnapshotForObject( enterpriseObject ) ).isEmpty();
+		hasBeenSaved = hasBeenSaved && enterpriseObject.changesFromSnapshot(editingContext.committedSnapshotForObject(enterpriseObject)).isEmpty();
 
 		status = hasBeenSaved ? "saved" : "unsaved";
 
