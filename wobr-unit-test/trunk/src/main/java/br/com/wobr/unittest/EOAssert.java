@@ -6,6 +6,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.StringDescription;
 
+import br.com.wobr.unittest.matchers.CanBeDeletedMatcher;
 import br.com.wobr.unittest.matchers.CanBeSavedMatcher;
 import br.com.wobr.unittest.matchers.HasBeenDeletedMatcher;
 import br.com.wobr.unittest.matchers.HasBeenSavedMatcher;
@@ -19,44 +20,59 @@ import com.webobjects.eocontrol.EOEnterpriseObject;
  */
 public class EOAssert
 {
+	public static Matcher<EOEnterpriseObject> canBeDeleted()
+	{
+		return new CanBeDeletedMatcher<EOEnterpriseObject>();
+	}
+
 	public static Matcher<EOEnterpriseObject> canBeSaved()
 	{
 		return new CanBeSavedMatcher<EOEnterpriseObject>();
 	}
 
+	public static Matcher<EOEnterpriseObject> cannotBeDeleted()
+	{
+		return not( canBeDeleted() );
+	}
+
+	public static Matcher<EOEnterpriseObject> cannotBeDeletedBecause( final String message )
+	{
+		return not( new CanBeDeletedMatcher<EOEnterpriseObject>( message ) );
+	}
+
 	public static Matcher<EOEnterpriseObject> cannotBeSaved()
 	{
-		return not(canBeSaved());
+		return not( canBeSaved() );
 	}
 
-	public static Matcher<EOEnterpriseObject> cannotBeSavedBecause(final String message)
+	public static Matcher<EOEnterpriseObject> cannotBeSavedBecause( final String message )
 	{
-		return not(new CanBeSavedMatcher<EOEnterpriseObject>(message));
+		return not( new CanBeSavedMatcher<EOEnterpriseObject>( message ) );
 	}
 
-	public static <T extends EOEnterpriseObject> void confirm(final T actual, final Matcher<T> matcher)
+	public static <T extends EOEnterpriseObject> void confirm( final T actual, final Matcher<T> matcher )
 	{
-		if(matcher.matches(actual))
+		if( matcher.matches( actual ) )
 		{
 			return;
 		}
 
 		Description description = new StringDescription();
 
-		description.appendText("\nExpected: ");
-		description.appendDescriptionOf(matcher);
+		description.appendText( "\nExpected: " );
+		description.appendDescriptionOf( matcher );
 
-		throw new AssertionError(description.toString());
+		throw new AssertionError( description.toString() );
 	}
 
 	public static Matcher<EOEditingContext> doNotSaveChanges()
 	{
-		return not(saveChanges());
+		return not( saveChanges() );
 	}
 
-	public static Matcher<EOEditingContext> doNotSaveChangesBecause(final String message)
+	public static Matcher<EOEditingContext> doNotSaveChangesBecause( final String message )
 	{
-		return not(new SaveChangesMatcher<EOEditingContext>(message));
+		return not( new SaveChangesMatcher<EOEditingContext>( message ) );
 	}
 
 	public static Matcher<EOEnterpriseObject> hasBeenDeleted()
@@ -71,12 +87,12 @@ public class EOAssert
 
 	public static Matcher<EOEnterpriseObject> hasNotBeenDeleted()
 	{
-		return not(hasBeenDeleted());
+		return not( hasBeenDeleted() );
 	}
 
 	public static Matcher<EOEnterpriseObject> hasNotBeenSaved()
 	{
-		return not(hasBeenSaved());
+		return not( hasBeenSaved() );
 	}
 
 	public static Matcher<EOEditingContext> saveChanges()

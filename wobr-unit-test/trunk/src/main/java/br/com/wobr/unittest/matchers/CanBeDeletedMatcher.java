@@ -48,7 +48,7 @@ public class CanBeDeletedMatcher<T extends EOEnterpriseObject> extends AbstractE
 
 		if( exception == null )
 		{
-			description.appendText( "a valid one\n" );
+			description.appendText( "a valid one" );
 
 			return;
 		}

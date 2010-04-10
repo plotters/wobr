@@ -43,7 +43,7 @@ public class TestCanBeDeletedMatcher
 	{
 		matcher.describeTo( mockDescription );
 
-		assertThat( mockDescription.toString(), is( "valid for delete enterprise object\n     but got: a valid one\n" ) );
+		assertThat( mockDescription.toString(), is( "valid for delete enterprise object\n     but got: a valid one" ) );
 	}
 
 	@Test

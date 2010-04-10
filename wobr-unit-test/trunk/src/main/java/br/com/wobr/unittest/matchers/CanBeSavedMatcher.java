@@ -20,12 +20,6 @@ public class CanBeSavedMatcher<T extends EOEnterpriseObject> extends AbstractEnh
 		super( message );
 	}
 
-	@Override
-	protected void matchesWithPossibleException( final T eo )
-	{
-		eo.validateForSave();
-	}
-
 	public void describeTo( final Description description )
 	{
 		if( message == null )
@@ -35,7 +29,7 @@ public class CanBeSavedMatcher<T extends EOEnterpriseObject> extends AbstractEnh
 
 			if( exception == null )
 			{
-				description.appendText( "a valid one\n" );
+				description.appendText( "a valid one" );
 
 				return;
 			}
@@ -62,5 +56,11 @@ public class CanBeSavedMatcher<T extends EOEnterpriseObject> extends AbstractEnh
 		description.appendText( ": \"" );
 		description.appendText( exception.getMessage() );
 		description.appendText( "\"" );
+	}
+
+	@Override
+	protected void matchesWithPossibleException( final T eo )
+	{
+		eo.validateForSave();
 	}
 }

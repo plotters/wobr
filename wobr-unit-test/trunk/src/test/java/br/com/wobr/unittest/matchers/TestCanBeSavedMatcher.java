@@ -43,7 +43,7 @@ public class TestCanBeSavedMatcher
 	{
 		matcher.describeTo( mockDescription );
 
-		assertThat( mockDescription.toString(), is( "valid for save enterprise object\n     but got: a valid one\n" ) );
+		assertThat( mockDescription.toString(), is( "valid for save enterprise object\n     but got: a valid one" ) );
 	}
 
 	@Test
