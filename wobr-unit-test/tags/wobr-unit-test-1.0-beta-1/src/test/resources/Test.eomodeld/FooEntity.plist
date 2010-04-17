@@ -1,0 +1,13 @@
+{
+    attributes = (
+        {allowsNull = Y; columnName = bar; name = bar; prototypeName = shortString; }, 
+        {allowsNull = N; name = id; prototypeName = id; }
+    ); 
+    attributesUsedForLocking = (id); 
+    className = "br.com.wobr.unittest.model.FooEntity"; 
+    classProperties = (bar); 
+    externalName = "foo_entity"; 
+    fetchSpecificationDictionary = {}; 
+    name = FooEntity; 
+    primaryKeyAttributes = (id); 
+}

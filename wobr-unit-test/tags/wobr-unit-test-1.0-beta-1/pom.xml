@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>br.com.wobr</groupId>
+		<artifactId>wobr-parent</artifactId>
+		<version>1.0</version>
+	</parent>
+
+	<artifactId>wobr-unit-test</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0-beta-1</version>
+	<name>WOBR Unit Test Framework</name>
+	<description>The WOBR Unit Test framework contains a set of utilities for testing WebObjects applications using JUnit 4.7 or later capabilities.</description>
+
+	<properties>
+		<wonder.version>5.0.0-r10702</wonder.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>wonder.core</groupId>
+			<artifactId>ERExtensions</artifactId>
+			<version>${wonder.version}</version>
+			<classifier>wo54</classifier>
+		</dependency>
+		<dependency>
+			<groupId>wonder.eoadaptors</groupId>
+			<artifactId>JavaMemoryAdaptor</artifactId>
+			<version>${wonder.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.webobjects</groupId>
+			<artifactId>JavaEOAccess</artifactId>
+			<version>${webobjects.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.webobjects</groupId>
+			<artifactId>JavaEOControl</artifactId>
+			<version>${webobjects.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>1.8.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>wonder.core</groupId>
+			<artifactId>ERPrototypes</artifactId>
+			<version>${wonder.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<scm>
+		<connection>scm:svn:http://wobr.googlecode.com/svn/wobr-unit-test/tags/wobr-unit-test-1.0-beta-1</connection>
+		<developerConnection>scm:svn:https://wobr.googlecode.com/svn/wobr-unit-test/tags/wobr-unit-test-1.0-beta-1</developerConnection>
+	</scm>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.6.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<linkXref>true</linkXref>
+					<targetJdk>1.5</targetJdk>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.4.2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jdepend-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>2.0.1</version>
+				<configuration>
+					<xmlOutput>true</xmlOutput>
+					<effort>Max</effort>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>dashboard-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
+</project>
