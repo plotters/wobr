@@ -10,7 +10,7 @@
 
 	<artifactId>wobr-unit-test</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-beta-1</version>
+	<version>1.0-SNAPSHOT</version>
 	<name>WOBR Unit Test Framework</name>
 	<description>The WOBR Unit Test framework contains a set of utilities for testing WebObjects applications using JUnit 4.7 or later capabilities.</description>
 
@@ -60,8 +60,8 @@
 	</dependencies>
 
 	<scm>
-		<connection>scm:svn:http://wobr.googlecode.com/svn/wobr-unit-test/tags/wobr-unit-test-1.0-beta-1</connection>
-		<developerConnection>scm:svn:https://wobr.googlecode.com/svn/wobr-unit-test/tags/wobr-unit-test-1.0-beta-1</developerConnection>
+		<connection>scm:svn:http://wobr.googlecode.com/svn/wobr-unit-test/trunk</connection>
+		<developerConnection>scm:svn:https://wobr.googlecode.com/svn/wobr-unit-test/trunk</developerConnection>
 	</scm>
 
 	<reporting>
