@@ -178,17 +178,6 @@ public class TestEOAssert
 	}
 
 	@Test
-	public void doNotDeleteWithWrongCauseFailure() throws Exception
-	{
-		foo.setCanBeSaved(false);
-
-		thrown.expect(AssertionError.class);
-		thrown.expectMessage(is("\nExpected: not expecting exception other than \"The wrong exception\" while saving the editing context\n     but got: com.webobjects.foundation.NSValidation$ValidationException: \"This foo object can't be saved\""));
-
-		confirm(editingContext, doNotSaveChangesBecause("The wrong exception"));
-	}
-
-	@Test
 	public void doNotSaveChangesFailure() throws Exception
 	{
 		foo.setCanBeSaved(true);
@@ -224,6 +213,17 @@ public class TestEOAssert
 		foo.setCanBeSaved(false);
 
 		confirm(editingContext, doNotSaveChangesBecause("This foo object can't be saved"));
+	}
+
+	@Test
+	public void doNotSaveWithWrongCauseFailure() throws Exception
+	{
+		foo.setCanBeSaved(false);
+
+		thrown.expect(AssertionError.class);
+		thrown.expectMessage(is("\nExpected: not expecting exception other than \"The wrong exception\" while saving the editing context\n     but got: com.webobjects.foundation.NSValidation$ValidationException: \"This foo object can't be saved\""));
+
+		confirm(editingContext, doNotSaveChangesBecause("The wrong exception"));
 	}
 
 	@Test
