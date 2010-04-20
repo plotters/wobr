@@ -24,14 +24,7 @@ import org.junit.rules.ExpectedException;
 import br.com.wobr.unittest.model.FooEntity;
 import br.com.wobr.unittest.rules.TemporaryEditingContextProvider;
 
-import com.webobjects.eoaccess.EOAdaptorContext;
-import com.webobjects.eoaccess.EODatabaseContext;
-import com.webobjects.eoaccess.EOModelGroup;
-import com.webobjects.eoaccess.EOUtilities;
 import com.webobjects.eocontrol.EOEditingContext;
-import com.webobjects.foundation.NSArray;
-
-import er.memoryadaptor.ERMemoryAdaptorContext;
 
 /**
  * @author <a href="mailto:hprange@gmail.com">Henrique Prange</a>
@@ -271,22 +264,6 @@ public class TestEOAssert
 	@Test
 	public void hasBeenSavedSuccess() throws Exception
 	{
-		NSArray<String> modelNames = EOModelGroup.defaultGroup().modelNames();
-
-		for(String modelName : modelNames)
-		{
-			EODatabaseContext databaseContext = EOUtilities.databaseContextForModelNamed(editingContext, modelName);
-
-			EOAdaptorContext adaptorContext = databaseContext.adaptorContext();
-
-			System.out.println("Model: " + modelName + "\tAdaptor: " + adaptorContext);
-
-			if(!(adaptorContext instanceof ERMemoryAdaptorContext))
-			{
-				throw new IllegalStateException(String.format("Expected %s, but got %s. Please, use the %s constructor to load all the required models for testing.", ERMemoryAdaptorContext.class.getName(), adaptorContext.getClass().getName(), this.getClass().getSimpleName()));
-			}
-		}
-
 		editingContext.saveChanges();
 
 		confirm(foo, hasBeenSaved());
