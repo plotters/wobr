@@ -14,7 +14,6 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import br.com.wobr.unittest.model.FooEntity;
-import br.com.wobr.unittest.rules.TemporaryEditingContextProvider;
 
 import com.webobjects.eoaccess.EOModel;
 import com.webobjects.eoaccess.EOModelGroup;
@@ -55,9 +54,13 @@ public class TestTemporaryEditingContextProvider
 
 		model.setAdaptorName("JDBC");
 
+		System.out.println(model);
+
 		new TemporaryEditingContextProvider();
 
 		assertThat(model.adaptorName(), is("Memory"));
+
+		System.out.println(EOModelGroup.defaultGroup().models());
 	}
 
 	@Test
