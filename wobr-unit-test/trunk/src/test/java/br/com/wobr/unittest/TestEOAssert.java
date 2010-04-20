@@ -24,6 +24,7 @@ import org.junit.rules.ExpectedException;
 import br.com.wobr.unittest.model.FooEntity;
 import br.com.wobr.unittest.rules.TemporaryEditingContextProvider;
 
+import com.webobjects.eoaccess.EOModelGroup;
 import com.webobjects.eocontrol.EOEditingContext;
 
 /**
@@ -264,6 +265,8 @@ public class TestEOAssert
 	@Test
 	public void hasBeenSavedSuccess() throws Exception
 	{
+		System.out.println(EOModelGroup.defaultGroup().models());
+
 		editingContext.saveChanges();
 
 		confirm(foo, hasBeenSaved());
