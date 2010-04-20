@@ -43,7 +43,7 @@ public class TestEOAssert
 	private FooEntity foo;
 
 	@Rule
-	public final TemporaryEditingContextProvider provider = new TemporaryEditingContextProvider("Test", "erprototypes");
+	public final TemporaryEditingContextProvider provider = new TemporaryEditingContextProvider("Test");
 
 	@Rule
 	public final ExpectedException thrown = ExpectedException.none();
