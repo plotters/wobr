@@ -54,13 +54,9 @@ public class TestTemporaryEditingContextProvider
 
 		model.setAdaptorName("JDBC");
 
-		System.out.println(model);
-
 		new TemporaryEditingContextProvider();
 
 		assertThat(model.adaptorName(), is("Memory"));
-
-		System.out.println(EOModelGroup.defaultGroup().models());
 	}
 
 	@Test
