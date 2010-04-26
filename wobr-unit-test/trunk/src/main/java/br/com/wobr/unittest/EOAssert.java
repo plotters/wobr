@@ -116,7 +116,8 @@ import com.webobjects.eocontrol.EOEnterpriseObject;
 public class EOAssert
 {
 	/**
-	 * Used to check whether an enterprise object can be deleted.
+	 * Used to check whether an enterprise object can be deleted without
+	 * throwing any exceptions.
 	 * 
 	 * @return a <code>Matcher</code> matching if the enterprise object can be
 	 *         deleted
@@ -127,7 +128,8 @@ public class EOAssert
 	}
 
 	/**
-	 * Used to check whether an enterprise object can be saved.
+	 * Used to check whether an enterprise object can be saved without throwing
+	 * any exceptions.
 	 * 
 	 * @return a <code>Matcher</code> matching if the enterprise object can be
 	 *         saved
@@ -196,6 +198,9 @@ public class EOAssert
 	 * confirm(eo, hasBeenSaved());
 	 * </pre>
 	 * 
+	 * The confirm word was selected to avoid conflicts with assertThat from
+	 * JUnit and verify from most mock objects libraries.
+	 * 
 	 * @param <T>
 	 *            the static type accepted by the matcher
 	 * @param enterpriseObject
@@ -220,6 +225,9 @@ public class EOAssert
 	 * <pre>
 	 * confirm(editingContext, doNotSaveChanges());
 	 * </pre>
+	 * 
+	 * The confirm word was selected to avoid conflicts with assertThat from
+	 * JUnit and verify from most mock objects libraries.
 	 * 
 	 * @param <T>
 	 *            the static type accepted by the matcher
@@ -256,7 +264,7 @@ public class EOAssert
 	 * Used to check whether an editing context is <b>NOT</b> able to save
 	 * changes.
 	 * 
-	 * @return a <code>Matcher</code> matching if the enterprise object can
+	 * @return a <code>Matcher</code> matching if the editing context can
 	 *         <b>NOT</b> be saved
 	 */
 	public static Matcher<EOEditingContext> doNotSaveChanges()
@@ -264,31 +272,76 @@ public class EOAssert
 		return not(saveChanges());
 	}
 
+	/**
+	 * Used to check whether an editing context is <b>NOT</b> able to save
+	 * changes because of the matching expected exception.
+	 * 
+	 * @param message
+	 *            the expected exception message
+	 * 
+	 * @return a <code>Matcher</code> matching if the editing context can
+	 *         <b>NOT</b> be saved
+	 */
 	public static Matcher<EOEditingContext> doNotSaveChangesBecause(final String message)
 	{
 		return not(new SaveChangesMatcher<EOEditingContext>(message));
 	}
 
+	/**
+	 * Used to check whether an enterprise object has been deleted and is no
+	 * longer managed by an editing context.
+	 * 
+	 * @return a <code>Matcher</code> matching if the enterprise object has been
+	 *         deleted
+	 */
 	public static Matcher<EOEnterpriseObject> hasBeenDeleted()
 	{
 		return new HasBeenDeletedMatcher<EOEnterpriseObject>();
 	}
 
+	/**
+	 * Used to check whether an enterprise object has been saved and has no
+	 * pending changes to be saved.
+	 * 
+	 * @return a <code>Matcher</code> matching if the enterprise object has been
+	 *         saved
+	 */
 	public static Matcher<EOEnterpriseObject> hasBeenSaved()
 	{
 		return new HasBeenSavedMatcher<EOEnterpriseObject>();
 	}
 
+	/**
+	 * Used to check whether an enterprise object has <b>NOT</b> been deleted
+	 * and is still managed by an editing context.
+	 * 
+	 * @return a <code>Matcher</code> matching if the enterprise object has
+	 *         <b>NOT</b> been deleted
+	 */
 	public static Matcher<EOEnterpriseObject> hasNotBeenDeleted()
 	{
 		return not(hasBeenDeleted());
 	}
 
+	/**
+	 * Used to check whether an enterprise object has <b>NOT</b> been saved or
+	 * still has pending changes to be saved.
+	 * 
+	 * @return a <code>Matcher</code> matching if the enterprise object has
+	 *         <b>NOT</b> been saved
+	 */
 	public static Matcher<EOEnterpriseObject> hasNotBeenSaved()
 	{
 		return not(hasBeenSaved());
 	}
 
+	/**
+	 * Used to check whether an editing context is able to save changes
+	 * successfully.
+	 * 
+	 * @return a <code>Matcher</code> matching if the editing context can save
+	 *         changes correctly
+	 */
 	public static Matcher<EOEditingContext> saveChanges()
 	{
 		return new SaveChangesMatcher<EOEditingContext>();
