@@ -6,17 +6,17 @@ import static org.junit.Assert.assertThat;
 import org.junit.Rule;
 import org.junit.Test;
 
-import br.com.wobr.unittest.rules.TemporaryEditingContextProvider;
+import br.com.wobr.unittest.rules.TemporaryEnterpriseObjectProvider;
 
 public class TestAbstractInformacao
 {
 	@Rule
-	public final TemporaryEditingContextProvider provider = new TemporaryEditingContextProvider( "Boleto" );
+	public final TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider( "Boleto" );
 
 	@Test
 	public void inicializacaoDescricao() throws Exception
 	{
-		EODescricao descricao = EODescricao.createEODescricao( provider.editingContext(), null );
+		EODescricao descricao = provider.createInstance( EODescricao.class );
 
 		assertThat( descricao.tipo(), is( "1" ) );
 	}
@@ -24,7 +24,7 @@ public class TestAbstractInformacao
 	@Test
 	public void inicializacaoInstrucao() throws Exception
 	{
-		EOInstrucao descricao = EOInstrucao.createEOInstrucao( provider.editingContext(), null );
+		EOInstrucao descricao = provider.createInstance( EOInstrucao.class );
 
 		assertThat( descricao.tipo(), is( "2" ) );
 	}
@@ -32,7 +32,7 @@ public class TestAbstractInformacao
 	@Test
 	public void inicializacaoLocalPagamento() throws Exception
 	{
-		EOLocalPagamento localPagamento = EOLocalPagamento.createEOLocalPagamento( provider.editingContext(), null );
+		EOLocalPagamento localPagamento = provider.createInstance( EOLocalPagamento.class );
 
 		assertThat( localPagamento.tipo(), is( "3" ) );
 	}

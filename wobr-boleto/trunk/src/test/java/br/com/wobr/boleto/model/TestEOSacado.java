@@ -9,12 +9,12 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import br.com.caelum.stella.boleto.Sacado;
-import br.com.wobr.unittest.rules.TemporaryEditingContextProvider;
+import br.com.wobr.unittest.rules.TemporaryEnterpriseObjectProvider;
 
 public class TestEOSacado
 {
 	@Rule
-	public final TemporaryEditingContextProvider editingContextProvider = new TemporaryEditingContextProvider( "Boleto" );
+	public final TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider( "Boleto" );
 
 	protected EOSacado sacado;
 
@@ -51,6 +51,6 @@ public class TestEOSacado
 	@Before
 	public void setup()
 	{
-		sacado = EOSacado.createEOSacado( editingContextProvider.editingContext() );
+		sacado = provider.createInstance( EOSacado.class );
 	}
 }
