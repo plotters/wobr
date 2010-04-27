@@ -21,22 +21,25 @@ import er.extensions.foundation.ERXProperties;
 import er.memoryadaptor.ERMemoryAdaptorContext;
 
 /**
- * The TemporaryEditingContextProvider Rule provides an editing context using
- * the memory adaptor that is guaranteed to be reset when the test method
+ * The TemporaryEnterpriseObjectProvider Rule provide means to create temporary
+ * enterprise object for unit testing. It uses an editing context configured
+ * with the memory adaptor that is guaranteed to be reset when the test method
  * finishes (whether it passes or fails):
  * 
  * <pre>
  * public class TestMyModel
  * {
  * 	&#064;Rule
- * 	public TemporaryEditingContextProvider provider = new TemporaryEditingContextProvider();
+ * 	public TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider();
  * 
  * 	&#064;Test
  * 	public void testingMyModelLogic() throws Exception
  * 	{
- * 		EOEditingContext editingContext = provider.editingContext();
- * 		MyEntity object = (MyEntity) EOUtilities.createAndInsertInstance(editingContext, &quot;MyEntity&quot;);
- * 		// ...
+ * 		MyEntity instance = provider.createInstance( &quot;MyEntity&quot; );
+ * 		// Do something with instance...
+ * 
+ * 		EOEditingContext editingContext = provider.temporaryEditingContext();
+ * 		// Do something with editingContext...
  * 	}
  * }
  * </pre>
@@ -50,42 +53,39 @@ public class TemporaryEnterpriseObjectProvider extends ExternalResource
 
 	private boolean finished = false;
 
-	private boolean initialized = false;
-
 	/**
-	 * Creates a TemporaryEditingContextProvider rule.
+	 * Creates a TemporaryEnterpriseObjectProvider rule.
 	 * 
-	 * @param modelNames
-	 *            the name of all models required by unit tests.
+	 * @param modelNames the name of all models required by unit tests.
 	 */
-	public TemporaryEnterpriseObjectProvider(final String... modelNames)
+	public TemporaryEnterpriseObjectProvider( final String... modelNames )
 	{
 		fixJavaMemoryDictionary();
 
 		// Use Memory prototypes for tests. We don't want to set this
 		// information in the EOModel dictionary
-		ERXProperties.setStringForKey("EOMemoryPrototypes", "dbEOPrototypesEntityGLOBAL");
+		ERXProperties.setStringForKey( "EOMemoryPrototypes", "dbEOPrototypesEntityGLOBAL" );
 
-		for(String modelName : modelNames)
+		for( String modelName : modelNames )
 		{
-			loadModel(modelName);
+			loadModel( modelName );
 		}
 
 		NSArray<EOModel> models = EOModelGroup.defaultGroup().models();
 
-		for(EOModel model : models)
+		for( EOModel model : models )
 		{
-			if(!"Memory".equals(model.adaptorName()))
+			if( !"Memory".equals( model.adaptorName() ) )
 			{
 				// Use Memory adaptor for tests. We don't want to set this
 				// information in the EOModel dictionary
-				model.setAdaptorName("Memory");
+				model.setAdaptorName( "Memory" );
 			}
 		}
 	}
 
 	/**
-	 * Reset all changes made into the provided editing context.
+	 * Reset all changes made into the temporary editing context.
 	 * 
 	 * @see org.junit.rules.ExternalResource#after()
 	 */
@@ -94,7 +94,7 @@ public class TemporaryEnterpriseObjectProvider extends ExternalResource
 	{
 		ERMemoryAdaptorContext adaptorContext = currentAdaptorContext();
 
-		if(adaptorContext != null)
+		if( adaptorContext != null )
 		{
 			adaptorContext.resetAllEntities();
 		}
@@ -110,7 +110,7 @@ public class TemporaryEnterpriseObjectProvider extends ExternalResource
 	}
 
 	/**
-	 * Initialize the editing context provided for unit testing.
+	 * Initialize the temporary editing context provided for unit testing.
 	 * 
 	 * @see org.junit.rules.ExternalResource#before()
 	 */
@@ -119,7 +119,7 @@ public class TemporaryEnterpriseObjectProvider extends ExternalResource
 	{
 		super.before();
 
-		initializeOnce();
+		temporaryEditingContext();
 	}
 
 	EOEditingContext createEditingContext()
@@ -127,18 +127,26 @@ public class TemporaryEnterpriseObjectProvider extends ExternalResource
 		return ERXEC.newEditingContext();
 	}
 
-	public <T extends EOEnterpriseObject> T createInstance(Class<T> clazz)
+	/**
+	 * Create an instance of the specified class and insert into the temporary
+	 * editing context.
+	 * 
+	 * @param <T> the static type of the instance that should be instantiated
+	 * @param clazz the class of the entity that should be instantiated
+	 * @return an instance of the given class
+	 */
+	public <T extends EOEnterpriseObject> T createInstance( final Class<T> clazz )
 	{
-		if(clazz == null)
+		if( clazz == null )
 		{
-			throw new IllegalArgumentException("Cannot create an instance for a null class.");
+			throw new IllegalArgumentException( "Cannot create an instance for a null class." );
 		}
 
 		try
 		{
-			return ERXEOControlUtilities.createAndInsertObject(editingContext(), clazz);
+			return ERXEOControlUtilities.createAndInsertObject( temporaryEditingContext(), clazz );
 		}
-		catch(Exception exception)
+		catch( Exception exception )
 		{
 			// Ops. The entity name cannot be obtained based on the class name.
 		}
@@ -147,60 +155,60 @@ public class TemporaryEnterpriseObjectProvider extends ExternalResource
 
 		try
 		{
-			Field field = clazz.getField("ENTITY_NAME");
+			Field field = clazz.getField( "ENTITY_NAME" );
 
-			entityName = (String) field.get(null);
+			entityName = (String) field.get( null );
 		}
-		catch(Exception exception)
+		catch( Exception exception )
 		{
-			throw new IllegalArgumentException("Cannot create an instance based on the provided class. Please, try providing an entity name instead.", exception);
+			throw new IllegalArgumentException( "Cannot create an instance based on the provided class. Please, provide an entity name instead.", exception );
 		}
 
-		@SuppressWarnings("unchecked")
-		T instance = (T) EOUtilities.createAndInsertInstance(editingContext(), entityName);
+		@SuppressWarnings( "unchecked" )
+		T instance = (T) createInstance( entityName );
 
 		return instance;
+	}
+
+	/**
+	 * Create an instance of the specified entity named and insert into the
+	 * temporary editing context.
+	 * 
+	 * @param <T> the static type of the enterprise object returned by this
+	 *            method
+	 * @param entityName the name of the entity that should be instantiated
+	 * @return an instance of the given entity named
+	 */
+	@SuppressWarnings( "unchecked" )
+	public <T extends EOEnterpriseObject> T createInstance( final String entityName )
+	{
+		if( entityName == null )
+		{
+			throw new IllegalArgumentException( "Cannot create an instance for a null entity name." );
+		}
+
+		return (T) EOUtilities.createAndInsertInstance( temporaryEditingContext(), entityName );
 	}
 
 	ERMemoryAdaptorContext currentAdaptorContext()
 	{
 		NSArray<String> modelNames = EOModelGroup.defaultGroup().modelNames();
 
-		if(modelNames.isEmpty())
+		if( modelNames.isEmpty() )
 		{
 			return null;
 		}
 
-		EODatabaseContext databaseContext = EOUtilities.databaseContextForModelNamed(editingContext, modelNames.objectAtIndex(0));
+		EODatabaseContext databaseContext = EOUtilities.databaseContextForModelNamed( editingContext, modelNames.objectAtIndex( 0 ) );
 
 		EOAdaptorContext adaptorContext = databaseContext.adaptorContext();
 
-		if(!(adaptorContext instanceof ERMemoryAdaptorContext))
+		if( !( adaptorContext instanceof ERMemoryAdaptorContext ) )
 		{
-			throw new IllegalStateException(String.format("Expected %s, but got %s. Please, use the %s constructor to load all the required models for testing.", ERMemoryAdaptorContext.class.getName(), adaptorContext.getClass().getName(), this.getClass().getSimpleName()));
+			throw new IllegalStateException( String.format( "Expected %s, but got %s. Please, use the %s constructor to load all the required models for testing.", ERMemoryAdaptorContext.class.getName(), adaptorContext.getClass().getName(), this.getClass().getSimpleName() ) );
 		}
 
 		return (ERMemoryAdaptorContext) adaptorContext;
-	}
-
-	/**
-	 * Get the editing context to be used for unit testing.
-	 * 
-	 * @return an <code>EOEditingContext</code> that save changes in memory.
-	 */
-	protected EOEditingContext editingContext()
-	{
-		if(finished)
-		{
-			throw new IllegalStateException(String.format("You cannot obtain an editing context instance after the %s disposal", this.getClass().getSimpleName()));
-		}
-
-		if(editingContext == null)
-		{
-			initializeOnce();
-		}
-
-		return editingContext;
 	}
 
 	/**
@@ -209,52 +217,59 @@ public class TemporaryEnterpriseObjectProvider extends ExternalResource
 	 */
 	private void fixJavaMemoryDictionary()
 	{
-		NSBundle bundle = NSBundle.bundleForName("JavaMemoryAdaptor");
+		NSBundle bundle = NSBundle.bundleForName( "JavaMemoryAdaptor" );
 
-		bundle._infoDictionary().takeValueForKey("er.memoryadaptor.ERMemoryAdaptor", "EOAdaptorClassName");
-	}
-
-	private void initializeOnce()
-	{
-		if(initialized)
-		{
-			return;
-		}
-
-		initialized = true;
-
-		editingContext = createEditingContext();
-
-		editingContext.lock();
+		bundle._infoDictionary().takeValueForKey( "er.memoryadaptor.ERMemoryAdaptor", "EOAdaptorClassName" );
 	}
 
 	/**
 	 * Load the model with the specified name into the default model group.
 	 * 
-	 * @param modelName
-	 *            name of the model to be loaded
-	 * @throws IllegalArgumentException
-	 *             if no model can be found with the specified name
+	 * @param modelName name of the model to be loaded
+	 * @throws IllegalArgumentException if no model can be found with the
+	 *             specified name
 	 * @see EOModelGroup#defaultGroup();
 	 */
-	protected void loadModel(final String modelName)
+	protected void loadModel( final String modelName )
 	{
 		EOModelGroup modelGroup = EOModelGroup.defaultGroup();
 
-		EOModel model = modelGroup.modelNamed(modelName);
+		EOModel model = modelGroup.modelNamed( modelName );
 
-		if(model != null)
+		if( model != null )
 		{
 			return;
 		}
 
-		URL url = getClass().getResource("/" + modelName + ".eomodeld");
+		URL url = getClass().getResource( "/" + modelName + ".eomodeld" );
 
-		if(url == null)
+		if( url == null )
 		{
-			throw new IllegalArgumentException(String.format("Cannot load model named '%s'", modelName));
+			throw new IllegalArgumentException( String.format( "Cannot load model named '%s'", modelName ) );
 		}
 
-		modelGroup.addModelWithPathURL(url);
+		modelGroup.addModelWithPathURL( url );
+	}
+
+	/**
+	 * Get the temporary editing context to be used for unit testing.
+	 * 
+	 * @return an <code>EOEditingContext</code> that save changes in memory.
+	 */
+	public EOEditingContext temporaryEditingContext()
+	{
+		if( finished )
+		{
+			throw new IllegalStateException( String.format( "You cannot obtain an editing context instance after the %s disposal", this.getClass().getSimpleName() ) );
+		}
+
+		if( editingContext == null )
+		{
+			editingContext = createEditingContext();
+
+			editingContext.lock();
+		}
+
+		return editingContext;
 	}
 }

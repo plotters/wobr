@@ -29,83 +29,81 @@ import com.webobjects.eocontrol.EOEnterpriseObject;
  * The <code>EOAssert</code> class provides static methods to checks whether an
  * enterprise object can be saved or deleted and if it has been saved or
  * deleted.
- * 
  * <h4>Confirm that an enterprise object can/cannot be saved</h4>
  * 
  * <pre>
  * // Checks whether the eo can be saved
- * confirm(eo, canBeSaved());
+ * confirm( eo, canBeSaved() );
  * </pre>
  * 
  * <pre>
  * // Checks whether the eo cannot be saved
- * confirm(eo, cannotBeSaved());
+ * confirm( eo, cannotBeSaved() );
  * </pre>
  * 
  * <pre>
  * // Much safer check whether eo cannot be saved
- * confirm(eo, cannotBeSavedBecause(&quot;The foo property cannot be null&quot;));
+ * confirm( eo, cannotBeSavedBecause( &quot;The foo property cannot be null&quot; ) );
  * </pre>
  * 
  * <h4>Confirm that an enterprise object can/cannot be deleted</h4>
  * 
  * <pre>
  * // Checks whether the eo can be deleted
- * confirm(eo, canBeDeleted());
+ * confirm( eo, canBeDeleted() );
  * </pre>
  * 
  * <pre>
  * // Checks whether the eo cannot be deleted
- * confirm(eo, cannotBeDeleted());
+ * confirm( eo, cannotBeDeleted() );
  * </pre>
  * 
  * <pre>
  * // Much safer check whether eo cannot be deleted
- * confirm(eo, cannotBeDeletedBecause(&quot;It is a required object&quot;));
+ * confirm( eo, cannotBeDeletedBecause( &quot;It is a required object&quot; ) );
  * </pre>
  * 
  * <h4>Confirm that an enterprise object has/hasn't been saved</h4>
  * 
  * <pre>
  * // Checks whether the eo has been saved and has no pending changes
- * confirm(eo, hasBeenSaved());
+ * confirm( eo, hasBeenSaved() );
  * </pre>
  * 
  * <pre>
  * // Checks whether the eo has not been saved
- * confirm(eo, hasNotBeenSaved());
+ * confirm( eo, hasNotBeenSaved() );
  * </pre>
  * 
  * <h4>Confirm that an enterprise object has/hasn't been deleted</h4>
  * 
  * <pre>
  * // Checks whether the eo has been deleted
- * confirm(eo, hasBeenDeleted());
+ * confirm( eo, hasBeenDeleted() );
  * </pre>
  * 
  * <pre>
  * // Checks whether the eo has not been deleted
- * confirm(eo, hasNotBeenDeleted());
+ * confirm( eo, hasNotBeenDeleted() );
  * </pre>
  * 
  * The <code>EOAssert</code> class also offers methods to check if an
- * <code>EOEditingContext</code> can save changes with no problems.
- * 
+ * <code>EOEditingContext</code> can save changes correctly.
  * <h4>Confirm that an editing context save changes successfully or not</h4>
  * 
  * <pre>
  * // Checks whether the editing context save changes successfully
- * confirm(editingContext, saveChanges());
+ * confirm( editingContext, saveChanges() );
  * </pre>
  * 
  * <pre>
  * // Checks whether the editing context does not save changes successfully
- * confirm(editingContext, doNotSaveChanges());
+ * confirm( editingContext, doNotSaveChanges() );
  * </pre>
  * 
  * <pre>
  * // Much safer check whether the editing context does not save changes successfully
- * confirm(editingContext, doNotSaveChangesBecause(&quot;The bar property of Foo cannot be null&quot;));
+ * confirm( editingContext, doNotSaveChangesBecause( &quot;The bar property of Foo cannot be null&quot; ) );
  * </pre>
  * 
  * @author <a href="mailto:hprange@gmail.com">Henrique Prange</a>
@@ -147,21 +145,20 @@ public class EOAssert
 	 */
 	public static Matcher<EOEnterpriseObject> cannotBeDeleted()
 	{
-		return not(canBeDeleted());
+		return not( canBeDeleted() );
 	}
 
 	/**
 	 * Used to check whether an enterprise object can <b>NOT</b> be deleted
 	 * because of the matching expected exception.
 	 * 
-	 * @param message
-	 *            the expected exception message
+	 * @param message the expected exception message
 	 * @return a <code>Matcher</code> matching if the enterprise object can
 	 *         <b>NOT</b> be deleted
 	 */
-	public static Matcher<EOEnterpriseObject> cannotBeDeletedBecause(final String message)
+	public static Matcher<EOEnterpriseObject> cannotBeDeletedBecause( final String message )
 	{
-		return not(new CanBeDeletedMatcher<EOEnterpriseObject>(message));
+		return not( new CanBeDeletedMatcher<EOEnterpriseObject>( message ) );
 	}
 
 	/**
@@ -172,21 +169,20 @@ public class EOAssert
 	 */
 	public static Matcher<EOEnterpriseObject> cannotBeSaved()
 	{
-		return not(canBeSaved());
+		return not( canBeSaved() );
 	}
 
 	/**
 	 * Used to check whether an enterprise object can <b>NOT</b> be saved
 	 * because of the matching expected exception.
 	 * 
-	 * @param message
-	 *            the expected exception message
+	 * @param message the expected exception message
 	 * @return a <code>Matcher</code> matching if the enterprise object can
 	 *         <b>NOT</b> be saved
 	 */
-	public static Matcher<EOEnterpriseObject> cannotBeSavedBecause(final String message)
+	public static Matcher<EOEnterpriseObject> cannotBeSavedBecause( final String message )
 	{
-		return not(new CanBeSavedMatcher<EOEnterpriseObject>(message));
+		return not( new CanBeSavedMatcher<EOEnterpriseObject>( message ) );
 	}
 
 	/**
@@ -195,26 +191,22 @@ public class EOAssert
 	 * thrown with information about the matcher and failing value. Example:
 	 * 
 	 * <pre>
-	 * confirm(eo, hasBeenSaved());
+	 * confirm( eo, hasBeenSaved() );
 	 * </pre>
 	 * 
 	 * The confirm word was selected to avoid conflicts with assertThat from
 	 * JUnit and verify from most mock objects libraries.
 	 * 
-	 * @param <T>
-	 *            the static type accepted by the matcher
-	 * @param enterpriseObject
-	 *            the enterprise object to be checked
-	 * @param matcher
-	 *            an expression, built of {@link Matcher}s, specifying allowed
-	 *            values
-	 * 
+	 * @param <T> the static type accepted by the matcher
+	 * @param enterpriseObject the enterprise object to be checked
+	 * @param matcher an expression, built of {@link Matcher}s, specifying
+	 *            allowed values
 	 * @see org.hamcrest.CoreMatchers
 	 * @see org.junit.matchers.JUnitMatchers
 	 */
-	public static <T extends EOEnterpriseObject> void confirm(final T enterpriseObject, final Matcher<T> matcher)
+	public static <T extends EOEnterpriseObject> void confirm( final T enterpriseObject, final Matcher<T> matcher )
 	{
-		confirmImplementation(enterpriseObject, matcher);
+		confirmImplementation( enterpriseObject, matcher );
 	}
 
 	/**
@@ -223,41 +215,37 @@ public class EOAssert
 	 * information about the matcher and failing value. Example:
 	 * 
 	 * <pre>
-	 * confirm(editingContext, doNotSaveChanges());
+	 * confirm( editingContext, doNotSaveChanges() );
 	 * </pre>
 	 * 
 	 * The confirm word was selected to avoid conflicts with assertThat from
 	 * JUnit and verify from most mock objects libraries.
 	 * 
-	 * @param <T>
-	 *            the static type accepted by the matcher
-	 * @param editingContext
-	 *            the editing context to be checked
-	 * @param matcher
-	 *            an expression, built of {@link Matcher}s, specifying allowed
-	 *            values
-	 * 
+	 * @param <T> the static type accepted by the matcher
+	 * @param editingContext the editing context to be checked
+	 * @param matcher an expression, built of {@link Matcher}s, specifying
+	 *            allowed values
 	 * @see org.hamcrest.CoreMatchers
 	 * @see org.junit.matchers.JUnitMatchers
 	 */
-	public static <T extends EOEditingContext> void confirm(final T editingContext, final Matcher<T> matcher)
+	public static <T extends EOEditingContext> void confirm( final T editingContext, final Matcher<T> matcher )
 	{
-		confirmImplementation(editingContext, matcher);
+		confirmImplementation( editingContext, matcher );
 	}
 
-	private static <T> void confirmImplementation(final T actual, final Matcher<T> matcher)
+	private static <T> void confirmImplementation( final T actual, final Matcher<T> matcher )
 	{
-		if(matcher.matches(actual))
+		if( matcher.matches( actual ) )
 		{
 			return;
 		}
 
 		Description description = new StringDescription();
 
-		description.appendText("\nExpected: ");
-		description.appendDescriptionOf(matcher);
+		description.appendText( "\nExpected: " );
+		description.appendDescriptionOf( matcher );
 
-		throw new AssertionError(description.toString());
+		throw new AssertionError( description.toString() );
 	}
 
 	/**
@@ -269,22 +257,20 @@ public class EOAssert
 	 */
 	public static Matcher<EOEditingContext> doNotSaveChanges()
 	{
-		return not(saveChanges());
+		return not( saveChanges() );
 	}
 
 	/**
 	 * Used to check whether an editing context is <b>NOT</b> able to save
 	 * changes because of the matching expected exception.
 	 * 
-	 * @param message
-	 *            the expected exception message
-	 * 
+	 * @param message the expected exception message
 	 * @return a <code>Matcher</code> matching if the editing context can
 	 *         <b>NOT</b> be saved
 	 */
-	public static Matcher<EOEditingContext> doNotSaveChangesBecause(final String message)
+	public static Matcher<EOEditingContext> doNotSaveChangesBecause( final String message )
 	{
-		return not(new SaveChangesMatcher<EOEditingContext>(message));
+		return not( new SaveChangesMatcher<EOEditingContext>( message ) );
 	}
 
 	/**
@@ -320,7 +306,7 @@ public class EOAssert
 	 */
 	public static Matcher<EOEnterpriseObject> hasNotBeenDeleted()
 	{
-		return not(hasBeenDeleted());
+		return not( hasBeenDeleted() );
 	}
 
 	/**
@@ -332,7 +318,7 @@ public class EOAssert
 	 */
 	public static Matcher<EOEnterpriseObject> hasNotBeenSaved()
 	{
-		return not(hasBeenSaved());
+		return not( hasBeenSaved() );
 	}
 
 	/**

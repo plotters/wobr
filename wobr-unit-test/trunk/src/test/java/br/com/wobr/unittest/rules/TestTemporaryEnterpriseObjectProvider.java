@@ -28,15 +28,9 @@ import er.extensions.foundation.ERXProperties;
 import er.memoryadaptor.ERMemoryAdaptorContext;
 
 /**
- * TODO: Create instance for entity name
- * <p>
- * TODO: Cannot create instance for null entity name
- * <p>
- * TODO: Cannot create instance for not valid entity name
- * 
  * @author <a href="mailto:hprange@gmail.com">Henrique Prange</a>
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith( MockitoJUnitRunner.class )
 public class TestTemporaryEnterpriseObjectProvider
 {
 	private static final String TEST_MODEL_NAME = "Test";
@@ -50,126 +44,159 @@ public class TestTemporaryEnterpriseObjectProvider
 	@Test
 	public void cannotCreateEditingContextAfterTestExecution() throws Throwable
 	{
-		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider( TEST_MODEL_NAME );
 
 		provider.before();
 		provider.after();
 
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage(is("You cannot obtain an editing context instance after the TemporaryEnterpriseObjectProvider disposal"));
+		thrown.expect( IllegalStateException.class );
+		thrown.expectMessage( is( "You cannot obtain an editing context instance after the TemporaryEnterpriseObjectProvider disposal" ) );
 
-		provider.editingContext();
+		provider.temporaryEditingContext();
 	}
 
 	@Test
 	public void cannotCreateInstanceForClassThatCannotBeRecognized() throws Exception
 	{
-		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider( TEST_MODEL_NAME );
 
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage(is("Cannot create an instance based on the provided class. Please, try providing an entity name instead."));
+		thrown.expect( IllegalArgumentException.class );
+		thrown.expectMessage( is( "Cannot create an instance based on the provided class. Please, provide an entity name instead." ) );
 
-		provider.createInstance(StubEnttiy.class);
+		provider.createInstance( StubEnttiy.class );
+	}
+
+	@Test
+	public void cannotCreateInstanceForInvalidEntityName() throws Exception
+	{
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider( TEST_MODEL_NAME );
+
+		thrown.expect( IllegalArgumentException.class );
+		thrown.expectMessage( is( "Could not find EOClassDescription for entity name 'InvalidEntityName' !" ) );
+
+		provider.createInstance( "InvalidEntityName" );
 	}
 
 	@Test
 	public void cannotCreateInstanceForNullClass() throws Exception
 	{
-		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider( TEST_MODEL_NAME );
 
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage(is("Cannot create an instance for a null class."));
+		thrown.expect( IllegalArgumentException.class );
+		thrown.expectMessage( is( "Cannot create an instance for a null class." ) );
 
-		provider.createInstance(null);
+		provider.createInstance( (Class) null );
 	}
 
 	@Test
-	public void changeAdaptorForModelsNotLoadedByTemporaryEditingContextProvider() throws Exception
+	public void cannotCreateInstanceForNullEntityName() throws Exception
 	{
-		URL url = getClass().getResource("/" + TEST_MODEL_NAME + ".eomodeld");
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider( TEST_MODEL_NAME );
 
-		EOModel model = EOModelGroup.defaultGroup().addModelWithPathURL(url);
+		thrown.expect( IllegalArgumentException.class );
+		thrown.expectMessage( is( "Cannot create an instance for a null entity name." ) );
 
-		model.setAdaptorName("JDBC");
+		provider.createInstance( (String) null );
+	}
+
+	@Test
+	public void changeAdaptorForModelsNotLoadedByTemporaryEnterpriseObjectProvider() throws Exception
+	{
+		URL url = getClass().getResource( "/" + TEST_MODEL_NAME + ".eomodeld" );
+
+		EOModel model = EOModelGroup.defaultGroup().addModelWithPathURL( url );
+
+		model.setAdaptorName( "JDBC" );
 
 		new TemporaryEnterpriseObjectProvider();
 
-		assertThat(model.adaptorName(), is("Memory"));
+		assertThat( model.adaptorName(), is( "Memory" ) );
 	}
 
 	@Test
 	public void changeAdaptorIfModelAlreadyLoadedWithDifferentAdaptor() throws Exception
 	{
-		URL url = getClass().getResource("/" + TEST_MODEL_NAME + ".eomodeld");
+		URL url = getClass().getResource( "/" + TEST_MODEL_NAME + ".eomodeld" );
 
-		EOModel model = EOModelGroup.defaultGroup().addModelWithPathURL(url);
+		EOModel model = EOModelGroup.defaultGroup().addModelWithPathURL( url );
 
-		model.setAdaptorName("JDBC");
+		model.setAdaptorName( "JDBC" );
 
-		new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
+		new TemporaryEnterpriseObjectProvider( TEST_MODEL_NAME );
 
-		assertThat(model.adaptorName(), is("Memory"));
+		assertThat( model.adaptorName(), is( "Memory" ) );
 	}
 
 	@Test
 	public void clearEditingContextChangesAfterTestExecution() throws Exception
 	{
-		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider( TEST_MODEL_NAME );
 
-		EOEditingContext editingContext = provider.editingContext();
+		EOEditingContext editingContext = provider.temporaryEditingContext();
 
-		FooEntity foo = FooEntity.createFooEntity(editingContext);
+		FooEntity foo = FooEntity.createFooEntity( editingContext );
 
-		foo.setBar("test");
+		foo.setBar( "test" );
 
 		editingContext.saveChanges();
 
 		provider.after();
 
-		provider = new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
+		provider = new TemporaryEnterpriseObjectProvider( TEST_MODEL_NAME );
 
-		NSArray<FooEntity> result = FooEntity.fetchAllFooEntities(provider.editingContext());
+		NSArray<FooEntity> result = FooEntity.fetchAllFooEntities( provider.temporaryEditingContext() );
 
-		assertThat(result.isEmpty(), is(true));
+		assertThat( result.isEmpty(), is( true ) );
 	}
 
 	@Test
 	public void createInstanceForClassWithAnotherEntityNameContainingEntityNameProperty() throws Exception
 	{
-		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider( TEST_MODEL_NAME );
 
-		DifferentClassNameForEntity result = provider.createInstance(DifferentClassNameForEntity.class);
+		DifferentClassNameForEntity result = provider.createInstance( DifferentClassNameForEntity.class );
 
-		assertThat(result, notNullValue());
-		assertThat(result.editingContext(), is(provider.editingContext()));
+		assertThat( result, notNullValue() );
+		assertThat( result.editingContext(), is( provider.temporaryEditingContext() ) );
+	}
+
+	@Test
+	public void createInstanceForEntityNamed() throws Exception
+	{
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider( TEST_MODEL_NAME );
+
+		FooEntity result = provider.createInstance( FooEntity.ENTITY_NAME );
+
+		assertThat( result, notNullValue() );
+		assertThat( result.editingContext(), is( provider.temporaryEditingContext() ) );
 	}
 
 	@Test
 	public void createInstanceForExistingClass() throws Exception
 	{
-		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider( TEST_MODEL_NAME );
 
-		FooEntity result = provider.createInstance(FooEntity.class);
+		FooEntity result = provider.createInstance( FooEntity.class );
 
-		assertThat(result, notNullValue());
-		assertThat(result.editingContext(), is(provider.editingContext()));
+		assertThat( result, notNullValue() );
+		assertThat( result.editingContext(), is( provider.temporaryEditingContext() ) );
 	}
 
 	@Test
 	public void disposeEditingContextAfterTestExecution() throws Throwable
 	{
-		TemporaryEnterpriseObjectProvider provider = Mockito.spy(new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME));
+		TemporaryEnterpriseObjectProvider provider = Mockito.spy( new TemporaryEnterpriseObjectProvider( TEST_MODEL_NAME ) );
 
-		Mockito.doReturn(mockEditingContext).when(provider).createEditingContext();
-		Mockito.doReturn(Mockito.mock(ERMemoryAdaptorContext.class)).when(provider).currentAdaptorContext();
+		Mockito.doReturn( mockEditingContext ).when( provider ).createEditingContext();
+		Mockito.doReturn( Mockito.mock( ERMemoryAdaptorContext.class ) ).when( provider ).currentAdaptorContext();
 
 		provider.before();
 
-		Mockito.verify(mockEditingContext, Mockito.times(0)).dispose();
+		Mockito.verify( mockEditingContext, Mockito.times( 0 ) ).dispose();
 
 		provider.after();
 
-		Mockito.verify(mockEditingContext, Mockito.times(1)).dispose();
+		Mockito.verify( mockEditingContext, Mockito.times( 1 ) ).dispose();
 	}
 
 	@Test
@@ -183,9 +210,9 @@ public class TestTemporaryEnterpriseObjectProvider
 
 		NSArray<EOModel> models = modelGroup.models();
 
-		for(EOModel model : models)
+		for( EOModel model : models )
 		{
-			modelGroup.removeModel(model);
+			modelGroup.removeModel( model );
 		}
 
 		provider.after();
@@ -194,19 +221,19 @@ public class TestTemporaryEnterpriseObjectProvider
 	@Test
 	public void exceptionIfAdaptorContextIsNotMemoryAdaptor() throws Throwable
 	{
-		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider( TEST_MODEL_NAME );
 
 		NSArray<EOModel> models = EOModelGroup.defaultGroup().models();
 
-		for(EOModel model : models)
+		for( EOModel model : models )
 		{
-			model.setAdaptorName("JDBC");
+			model.setAdaptorName( "JDBC" );
 		}
 
 		provider.before();
 
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage(is("Expected er.memoryadaptor.ERMemoryAdaptorContext, but got com.webobjects.jdbcadaptor.JDBCContext. Please, use the TemporaryEnterpriseObjectProvider constructor to load all the required models for testing."));
+		thrown.expect( IllegalStateException.class );
+		thrown.expectMessage( is( "Expected er.memoryadaptor.ERMemoryAdaptorContext, but got com.webobjects.jdbcadaptor.JDBCContext. Please, use the TemporaryEnterpriseObjectProvider constructor to load all the required models for testing." ) );
 
 		provider.after();
 	}
@@ -214,34 +241,34 @@ public class TestTemporaryEnterpriseObjectProvider
 	@Test
 	public void exceptionIfCannotFindModel() throws Exception
 	{
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage(is("Cannot load model named 'UnknownModel'"));
+		thrown.expect( IllegalArgumentException.class );
+		thrown.expectMessage( is( "Cannot load model named 'UnknownModel'" ) );
 
-		new TemporaryEnterpriseObjectProvider("UnknownModel");
+		new TemporaryEnterpriseObjectProvider( "UnknownModel" );
 	}
 
 	@Test
 	public void initializeEditingContextOnce() throws Exception
 	{
-		TemporaryEnterpriseObjectProvider provider = Mockito.spy(new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME));
+		TemporaryEnterpriseObjectProvider provider = Mockito.spy( new TemporaryEnterpriseObjectProvider( TEST_MODEL_NAME ) );
 
-		Mockito.doReturn(mockEditingContext).when(provider).createEditingContext();
+		Mockito.doReturn( mockEditingContext ).when( provider ).createEditingContext();
 
-		provider.editingContext();
-		provider.editingContext();
+		provider.temporaryEditingContext();
+		provider.temporaryEditingContext();
 
-		Mockito.verify(provider, Mockito.times(1)).createEditingContext();
-		Mockito.verify(mockEditingContext, Mockito.times(1)).lock();
+		Mockito.verify( provider, Mockito.times( 1 ) ).createEditingContext();
+		Mockito.verify( mockEditingContext, Mockito.times( 1 ) ).lock();
 	}
 
 	@Test
 	public void loadOneModel() throws Exception
 	{
-		new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
+		new TemporaryEnterpriseObjectProvider( TEST_MODEL_NAME );
 
-		EOModel result = EOModelGroup.defaultGroup().modelNamed(TEST_MODEL_NAME);
+		EOModel result = EOModelGroup.defaultGroup().modelNamed( TEST_MODEL_NAME );
 
-		assertThat(result, notNullValue());
+		assertThat( result, notNullValue() );
 	}
 
 	@After
@@ -249,22 +276,22 @@ public class TestTemporaryEnterpriseObjectProvider
 	{
 		EOModelGroup modelGroup = EOModelGroup.defaultGroup();
 
-		EOModel model = modelGroup.modelNamed(TEST_MODEL_NAME);
+		EOModel model = modelGroup.modelNamed( TEST_MODEL_NAME );
 
-		if(model != null)
+		if( model != null )
 		{
-			modelGroup.removeModel(model);
+			modelGroup.removeModel( model );
 		}
 	}
 
 	@Test
 	public void useMemoryAdaptorForAllModels() throws Exception
 	{
-		new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
+		new TemporaryEnterpriseObjectProvider( TEST_MODEL_NAME );
 
-		String result = EOModelGroup.defaultGroup().modelNamed(TEST_MODEL_NAME).adaptorName();
+		String result = EOModelGroup.defaultGroup().modelNamed( TEST_MODEL_NAME ).adaptorName();
 
-		assertThat(result, is("Memory"));
+		assertThat( result, is( "Memory" ) );
 	}
 
 	@Test
@@ -272,8 +299,8 @@ public class TestTemporaryEnterpriseObjectProvider
 	{
 		new TemporaryEnterpriseObjectProvider();
 
-		String result = ERXProperties.stringForKey("dbEOPrototypesEntityGLOBAL");
+		String result = ERXProperties.stringForKey( "dbEOPrototypesEntityGLOBAL" );
 
-		assertThat(result, is("EOMemoryPrototypes"));
+		assertThat( result, is( "EOMemoryPrototypes" ) );
 	}
 }
