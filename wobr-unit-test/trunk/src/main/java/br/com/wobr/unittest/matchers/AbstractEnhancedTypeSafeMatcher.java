@@ -11,6 +11,7 @@ import org.junit.internal.matchers.TypeSafeMatcher;
  * the expected one.
  * 
  * @author <a href="mailto:hprange@gmail.com">Henrique Prange</a>
+ * @since 1.0
  * 
  * @param T
  *            the type of the object to be matched

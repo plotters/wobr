@@ -1,0 +1,9 @@
+{
+    attributes = ({allowsNull = N; name = id; prototypeName = id; }); 
+    attributesUsedForLocking = (id); 
+    className = "br.com.wobr.unittest.model.DifferentClassNameForEntity"; 
+    externalName = EntityWithDifferentClassName; 
+    fetchSpecificationDictionary = {}; 
+    name = EntityWithDifferentClassName; 
+    primaryKeyAttributes = (id); 
+}

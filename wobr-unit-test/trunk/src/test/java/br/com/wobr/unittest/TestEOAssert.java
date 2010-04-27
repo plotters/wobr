@@ -22,7 +22,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import br.com.wobr.unittest.model.FooEntity;
-import br.com.wobr.unittest.rules.TemporaryEditingContextProvider;
+import br.com.wobr.unittest.rules.TemporaryEnterpriseObjectProvider;
 
 import com.webobjects.eocontrol.EOEditingContext;
 
@@ -36,7 +36,7 @@ public class TestEOAssert
 	private FooEntity foo;
 
 	@Rule
-	public final TemporaryEditingContextProvider provider = new TemporaryEditingContextProvider("Test");
+	public final TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider("Test");
 
 	@Rule
 	public final ExpectedException thrown = ExpectedException.none();

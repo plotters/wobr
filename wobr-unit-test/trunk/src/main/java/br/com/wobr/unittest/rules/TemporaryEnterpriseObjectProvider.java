@@ -1,5 +1,6 @@
 package br.com.wobr.unittest.rules;
 
+import java.lang.reflect.Field;
 import java.net.URL;
 
 import org.junit.rules.ExternalResource;
@@ -10,10 +11,12 @@ import com.webobjects.eoaccess.EOModel;
 import com.webobjects.eoaccess.EOModelGroup;
 import com.webobjects.eoaccess.EOUtilities;
 import com.webobjects.eocontrol.EOEditingContext;
+import com.webobjects.eocontrol.EOEnterpriseObject;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSBundle;
 
 import er.extensions.eof.ERXEC;
+import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.foundation.ERXProperties;
 import er.memoryadaptor.ERMemoryAdaptorContext;
 
@@ -39,8 +42,9 @@ import er.memoryadaptor.ERMemoryAdaptorContext;
  * </pre>
  * 
  * @author <a href="mailto:hprange@gmail.com">Henrique Prange</a>
+ * @since 1.0
  */
-public class TemporaryEditingContextProvider extends ExternalResource
+public class TemporaryEnterpriseObjectProvider extends ExternalResource
 {
 	private EOEditingContext editingContext;
 
@@ -54,7 +58,7 @@ public class TemporaryEditingContextProvider extends ExternalResource
 	 * @param modelNames
 	 *            the name of all models required by unit tests.
 	 */
-	public TemporaryEditingContextProvider(final String... modelNames)
+	public TemporaryEnterpriseObjectProvider(final String... modelNames)
 	{
 		fixJavaMemoryDictionary();
 
@@ -123,6 +127,41 @@ public class TemporaryEditingContextProvider extends ExternalResource
 		return ERXEC.newEditingContext();
 	}
 
+	public <T extends EOEnterpriseObject> T createInstance(Class<T> clazz)
+	{
+		if(clazz == null)
+		{
+			throw new IllegalArgumentException("Cannot create an instance for a null class.");
+		}
+
+		try
+		{
+			return ERXEOControlUtilities.createAndInsertObject(editingContext(), clazz);
+		}
+		catch(Exception exception)
+		{
+			// Ops. The entity name cannot be obtained based on the class name.
+		}
+
+		String entityName = null;
+
+		try
+		{
+			Field field = clazz.getField("ENTITY_NAME");
+
+			entityName = (String) field.get(null);
+		}
+		catch(Exception exception)
+		{
+			throw new IllegalArgumentException("Cannot create an instance based on the provided class. Please, try providing an entity name instead.", exception);
+		}
+
+		@SuppressWarnings("unchecked")
+		T instance = (T) EOUtilities.createAndInsertInstance(editingContext(), entityName);
+
+		return instance;
+	}
+
 	ERMemoryAdaptorContext currentAdaptorContext()
 	{
 		NSArray<String> modelNames = EOModelGroup.defaultGroup().modelNames();
@@ -149,7 +188,7 @@ public class TemporaryEditingContextProvider extends ExternalResource
 	 * 
 	 * @return an <code>EOEditingContext</code> that save changes in memory.
 	 */
-	public EOEditingContext editingContext()
+	protected EOEditingContext editingContext()
 	{
 		if(finished)
 		{

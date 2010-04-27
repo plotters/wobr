@@ -11,6 +11,8 @@ import com.webobjects.eocontrol.EOEnterpriseObject;
  * added to the editing context right after their creation.
  * 
  * @author <a href="mailto:hprange@gmail.com">Henrique Prange</a>
+ * @since 1.0
+ * 
  * @param <T>
  */
 public class HasBeenDeletedMatcher<T extends EOEnterpriseObject> extends TypeSafeMatcher<T>

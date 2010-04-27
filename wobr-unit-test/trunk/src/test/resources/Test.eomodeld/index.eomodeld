@@ -2,7 +2,13 @@
     EOModelVersion = "2.1"; 
     adaptorName = None; 
     connectionDictionary = {}; 
-    entities = ({className = "br.com.wobr.unittest.model.FooEntity"; name = FooEntity; }); 
+    entities = (
+        {
+            className = "br.com.wobr.unittest.model.DifferentClassNameForEntity"; 
+            name = EntityWithDifferentClassName; 
+        }, 
+        {className = "br.com.wobr.unittest.model.FooEntity"; name = FooEntity; }
+    ); 
     userInfo = {
         "_EntityModeler" = {
             activeDatabaseConfigName = Default; 

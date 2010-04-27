@@ -7,13 +7,17 @@ import static org.junit.Assert.assertThat;
 import java.net.URL;
 
 import org.junit.After;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import br.com.wobr.unittest.model.DifferentClassNameForEntity;
 import br.com.wobr.unittest.model.FooEntity;
+import br.com.wobr.unittest.model.StubEnttiy;
 
 import com.webobjects.eoaccess.EOModel;
 import com.webobjects.eoaccess.EOModelGroup;
@@ -24,25 +28,59 @@ import er.extensions.foundation.ERXProperties;
 import er.memoryadaptor.ERMemoryAdaptorContext;
 
 /**
+ * TODO: Create instance for entity name
+ * <p>
+ * TODO: Cannot create instance for null entity name
+ * <p>
+ * TODO: Cannot create instance for not valid entity name
+ * 
  * @author <a href="mailto:hprange@gmail.com">Henrique Prange</a>
  */
 @RunWith(MockitoJUnitRunner.class)
-public class TestTemporaryEditingContextProvider
+public class TestTemporaryEnterpriseObjectProvider
 {
 	private static final String TEST_MODEL_NAME = "Test";
 
 	@Mock
 	private EOEditingContext mockEditingContext;
 
-	@Test(expected = IllegalStateException.class)
+	@Rule
+	public final ExpectedException thrown = ExpectedException.none();
+
+	@Test
 	public void cannotCreateEditingContextAfterTestExecution() throws Throwable
 	{
-		TemporaryEditingContextProvider provider = new TemporaryEditingContextProvider(TEST_MODEL_NAME);
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
 
 		provider.before();
 		provider.after();
 
+		thrown.expect(IllegalStateException.class);
+		thrown.expectMessage(is("You cannot obtain an editing context instance after the TemporaryEnterpriseObjectProvider disposal"));
+
 		provider.editingContext();
+	}
+
+	@Test
+	public void cannotCreateInstanceForClassThatCannotBeRecognized() throws Exception
+	{
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
+
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage(is("Cannot create an instance based on the provided class. Please, try providing an entity name instead."));
+
+		provider.createInstance(StubEnttiy.class);
+	}
+
+	@Test
+	public void cannotCreateInstanceForNullClass() throws Exception
+	{
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
+
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage(is("Cannot create an instance for a null class."));
+
+		provider.createInstance(null);
 	}
 
 	@Test
@@ -54,7 +92,7 @@ public class TestTemporaryEditingContextProvider
 
 		model.setAdaptorName("JDBC");
 
-		new TemporaryEditingContextProvider();
+		new TemporaryEnterpriseObjectProvider();
 
 		assertThat(model.adaptorName(), is("Memory"));
 	}
@@ -68,7 +106,7 @@ public class TestTemporaryEditingContextProvider
 
 		model.setAdaptorName("JDBC");
 
-		new TemporaryEditingContextProvider(TEST_MODEL_NAME);
+		new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
 
 		assertThat(model.adaptorName(), is("Memory"));
 	}
@@ -76,7 +114,7 @@ public class TestTemporaryEditingContextProvider
 	@Test
 	public void clearEditingContextChangesAfterTestExecution() throws Exception
 	{
-		TemporaryEditingContextProvider provider = new TemporaryEditingContextProvider(TEST_MODEL_NAME);
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
 
 		EOEditingContext editingContext = provider.editingContext();
 
@@ -88,7 +126,7 @@ public class TestTemporaryEditingContextProvider
 
 		provider.after();
 
-		provider = new TemporaryEditingContextProvider(TEST_MODEL_NAME);
+		provider = new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
 
 		NSArray<FooEntity> result = FooEntity.fetchAllFooEntities(provider.editingContext());
 
@@ -96,9 +134,31 @@ public class TestTemporaryEditingContextProvider
 	}
 
 	@Test
+	public void createInstanceForClassWithAnotherEntityNameContainingEntityNameProperty() throws Exception
+	{
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
+
+		DifferentClassNameForEntity result = provider.createInstance(DifferentClassNameForEntity.class);
+
+		assertThat(result, notNullValue());
+		assertThat(result.editingContext(), is(provider.editingContext()));
+	}
+
+	@Test
+	public void createInstanceForExistingClass() throws Exception
+	{
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
+
+		FooEntity result = provider.createInstance(FooEntity.class);
+
+		assertThat(result, notNullValue());
+		assertThat(result.editingContext(), is(provider.editingContext()));
+	}
+
+	@Test
 	public void disposeEditingContextAfterTestExecution() throws Throwable
 	{
-		TemporaryEditingContextProvider provider = Mockito.spy(new TemporaryEditingContextProvider(TEST_MODEL_NAME));
+		TemporaryEnterpriseObjectProvider provider = Mockito.spy(new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME));
 
 		Mockito.doReturn(mockEditingContext).when(provider).createEditingContext();
 		Mockito.doReturn(Mockito.mock(ERMemoryAdaptorContext.class)).when(provider).currentAdaptorContext();
@@ -115,7 +175,7 @@ public class TestTemporaryEditingContextProvider
 	@Test
 	public void doNotClearTheDatabaseContextIfNoModelsLoaded() throws Throwable
 	{
-		TemporaryEditingContextProvider provider = new TemporaryEditingContextProvider();
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider();
 
 		provider.before();
 
@@ -131,10 +191,10 @@ public class TestTemporaryEditingContextProvider
 		provider.after();
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void exceptionIfAdaptorContextIsNotMemoryAdaptor() throws Throwable
 	{
-		TemporaryEditingContextProvider provider = new TemporaryEditingContextProvider(TEST_MODEL_NAME);
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
 
 		NSArray<EOModel> models = EOModelGroup.defaultGroup().models();
 
@@ -144,27 +204,26 @@ public class TestTemporaryEditingContextProvider
 		}
 
 		provider.before();
-		provider.after();
 
+		thrown.expect(IllegalStateException.class);
+		thrown.expectMessage(is("Expected er.memoryadaptor.ERMemoryAdaptorContext, but got com.webobjects.jdbcadaptor.JDBCContext. Please, use the TemporaryEnterpriseObjectProvider constructor to load all the required models for testing."));
+
+		provider.after();
 	}
 
 	@Test
 	public void exceptionIfCannotFindModel() throws Exception
 	{
-		try
-		{
-			new TemporaryEditingContextProvider("UnknownModel");
-		}
-		catch(IllegalArgumentException exception)
-		{
-			assertThat(exception.getMessage(), is("Cannot load model named 'UnknownModel'"));
-		}
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage(is("Cannot load model named 'UnknownModel'"));
+
+		new TemporaryEnterpriseObjectProvider("UnknownModel");
 	}
 
 	@Test
 	public void initializeEditingContextOnce() throws Exception
 	{
-		TemporaryEditingContextProvider provider = Mockito.spy(new TemporaryEditingContextProvider(TEST_MODEL_NAME));
+		TemporaryEnterpriseObjectProvider provider = Mockito.spy(new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME));
 
 		Mockito.doReturn(mockEditingContext).when(provider).createEditingContext();
 
@@ -178,7 +237,7 @@ public class TestTemporaryEditingContextProvider
 	@Test
 	public void loadOneModel() throws Exception
 	{
-		new TemporaryEditingContextProvider(TEST_MODEL_NAME);
+		new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
 
 		EOModel result = EOModelGroup.defaultGroup().modelNamed(TEST_MODEL_NAME);
 
@@ -201,7 +260,7 @@ public class TestTemporaryEditingContextProvider
 	@Test
 	public void useMemoryAdaptorForAllModels() throws Exception
 	{
-		new TemporaryEditingContextProvider(TEST_MODEL_NAME);
+		new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
 
 		String result = EOModelGroup.defaultGroup().modelNamed(TEST_MODEL_NAME).adaptorName();
 
@@ -211,7 +270,7 @@ public class TestTemporaryEditingContextProvider
 	@Test
 	public void useMemoryPrototypesForAllModels() throws Exception
 	{
-		new TemporaryEditingContextProvider();
+		new TemporaryEnterpriseObjectProvider();
 
 		String result = ERXProperties.stringForKey("dbEOPrototypesEntityGLOBAL");
 

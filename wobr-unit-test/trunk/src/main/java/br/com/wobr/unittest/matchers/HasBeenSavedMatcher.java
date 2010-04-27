@@ -9,6 +9,8 @@ import com.webobjects.eocontrol.EOGlobalID;
 
 /**
  * @author <a href="mailto:hprange@gmail.com">Henrique Prange</a>
+ * @since 1.0
+ * 
  * @param <T>
  */
 public class HasBeenSavedMatcher<T extends EOEnterpriseObject> extends TypeSafeMatcher<T>
