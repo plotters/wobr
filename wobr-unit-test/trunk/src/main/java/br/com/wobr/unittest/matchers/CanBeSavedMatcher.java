@@ -5,11 +5,11 @@ import org.hamcrest.Description;
 import com.webobjects.eocontrol.EOEnterpriseObject;
 
 /**
+ * Tests if the <code>EOEnterpriseObject</code> can be saved.
+ * 
  * @author <a href="mailto:hprange@gmail.com">Henrique Prange</a>
  * @since 1.0
- * 
- * @param <T>
- *            a kind of <code>EOEnterpriseObject</code>
+ * @param <T> a kind of <code>EOEnterpriseObject</code>
  */
 public class CanBeSavedMatcher<T extends EOEnterpriseObject> extends AbstractEnhancedTypeSafeMatcher<T>
 {
@@ -18,51 +18,51 @@ public class CanBeSavedMatcher<T extends EOEnterpriseObject> extends AbstractEnh
 		super();
 	}
 
-	public CanBeSavedMatcher(final String message)
+	public CanBeSavedMatcher( final String message )
 	{
-		super(message);
+		super( message );
 	}
 
-	public void describeTo(final Description description)
+	public void describeTo( final Description description )
 	{
-		if(message == null)
+		if( message == null )
 		{
-			description.appendText("valid for save enterprise object");
-			description.appendText("\n     but got: ");
+			description.appendText( "valid for save enterprise object" );
+			description.appendText( "\n     but got: " );
 
-			if(exception == null)
+			if( exception == null )
 			{
-				description.appendText("a valid one");
+				description.appendText( "a valid one" );
 
 				return;
 			}
 
-			description.appendText(exception.getClass().getName());
-			description.appendText(": ");
-			description.appendValue(exception.getMessage());
+			description.appendText( exception.getClass().getName() );
+			description.appendText( ": " );
+			description.appendValue( exception.getMessage() );
 
 			return;
 		}
 
-		description.appendText("expecting exception other than \"");
-		description.appendText(message);
-		description.appendText("\"\n     but got: ");
+		description.appendText( "expecting exception other than \"" );
+		description.appendText( message );
+		description.appendText( "\"\n     but got: " );
 
-		if(exception == null)
+		if( exception == null )
 		{
-			description.appendText("no validation exception");
+			description.appendText( "no validation exception" );
 
 			return;
 		}
 
-		description.appendText(exception.getClass().getName());
-		description.appendText(": \"");
-		description.appendText(exception.getMessage());
-		description.appendText("\"");
+		description.appendText( exception.getClass().getName() );
+		description.appendText( ": \"" );
+		description.appendText( exception.getMessage() );
+		description.appendText( "\"" );
 	}
 
 	@Override
-	protected void matchesWithPossibleException(final T eo)
+	protected void matchesWithPossibleException( final T eo )
 	{
 		eo.validateForSave();
 	}
