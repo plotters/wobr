@@ -2,6 +2,10 @@ package br.com.wobr.unittest.rules;
 
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.rules.ExternalResource;
 
@@ -48,9 +52,13 @@ import er.memoryadaptor.ERMemoryAdaptorContext;
  */
 public class TemporaryEnterpriseObjectProvider extends ExternalResource
 {
+	private final Map<String, String> adaptorsToRestore = new HashMap<String, String>();
+
 	private EOEditingContext editingContext;
 
 	private boolean finished = false;
+
+	private final Collection<String> modelsToClear = new ArrayList<String>();
 
 	/**
 	 * Creates a TemporaryEnterpriseObjectProvider rule.
@@ -77,6 +85,8 @@ public class TemporaryEnterpriseObjectProvider extends ExternalResource
 		{
 			if(!"Memory".equals(model.adaptorName()))
 			{
+				adaptorsToRestore.put(model.name(), model.adaptorName());
+
 				// Use Memory adaptor for tests. We don't want to set this
 				// information in the EOModel dictionary
 				model.setAdaptorName("Memory");
@@ -103,6 +113,22 @@ public class TemporaryEnterpriseObjectProvider extends ExternalResource
 		editingContext.unlock();
 		editingContext.dispose();
 		editingContext = null;
+
+		EOModelGroup modelGroup = EOModelGroup.defaultGroup();
+
+		for(String modelName : adaptorsToRestore.keySet())
+		{
+			EOModel model = modelGroup.modelNamed(modelName);
+
+			model.setAdaptorName(adaptorsToRestore.get(modelName));
+		}
+
+		for(String modelName : modelsToClear)
+		{
+			EOModel model = modelGroup.modelNamed(modelName);
+
+			modelGroup.removeModel(model);
+		}
 
 		finished = true;
 
@@ -259,7 +285,12 @@ public class TemporaryEnterpriseObjectProvider extends ExternalResource
 			return;
 		}
 
-		URL url = getClass().getResource("/" + modelName + ".eomodeld");
+		URL url = getClass().getResource("/Resources/" + modelName + ".eomodeld");
+
+		if(url == null)
+		{
+			url = getClass().getResource("/" + modelName + ".eomodeld");
+		}
 
 		if(url == null)
 		{
@@ -267,6 +298,8 @@ public class TemporaryEnterpriseObjectProvider extends ExternalResource
 		}
 
 		modelGroup.addModelWithPathURL(url);
+
+		modelsToClear.add(modelName);
 	}
 
 	/**

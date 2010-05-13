@@ -2,6 +2,7 @@ package br.com.wobr.unittest.rules;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.hasItem;
 
@@ -30,8 +31,6 @@ import er.extensions.foundation.ERXProperties;
 import er.memoryadaptor.ERMemoryAdaptorContext;
 
 /**
- * TODO: delete object already deleted
- * 
  * @author <a href="mailto:hprange@gmail.com">Henrique Prange</a>
  */
 @RunWith(MockitoJUnitRunner.class)
@@ -247,6 +246,21 @@ public class TestTemporaryEnterpriseObjectProvider
 	}
 
 	@Test
+	public void doNotRemoveModelsLoadedOutsideOfTheProvider() throws Throwable
+	{
+		URL url = getClass().getResource("/" + TEST_MODEL_NAME + ".eomodeld");
+
+		EOModelGroup.defaultGroup().addModelWithPathURL(url);
+
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider();
+
+		provider.before();
+		provider.after();
+
+		assertThat(EOModelGroup.defaultGroup().modelNamed(TEST_MODEL_NAME), notNullValue());
+	}
+
+	@Test
 	public void exceptionIfAdaptorContextIsNotMemoryAdaptor() throws Throwable
 	{
 		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
@@ -276,12 +290,6 @@ public class TestTemporaryEnterpriseObjectProvider
 	}
 
 	@Test
-	public void ignoreDeleteInstanceTwice() throws Exception
-	{
-
-	}
-
-	@Test
 	public void initializeEditingContextOnce() throws Exception
 	{
 		TemporaryEnterpriseObjectProvider provider = Mockito.spy(new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME));
@@ -303,6 +311,44 @@ public class TestTemporaryEnterpriseObjectProvider
 		EOModel result = EOModelGroup.defaultGroup().modelNamed(TEST_MODEL_NAME);
 
 		assertThat(result, notNullValue());
+	}
+
+	@Test
+	public void loadOneModelInsideResourcesFolder() throws Exception
+	{
+		new TemporaryEnterpriseObjectProvider("AnotherTest");
+
+		EOModel result = EOModelGroup.defaultGroup().modelNamed("AnotherTest");
+
+		assertThat(result, notNullValue());
+	}
+
+	@Test
+	public void removeModelsLoadedByTheProviderAfterTestExecution() throws Throwable
+	{
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider(TEST_MODEL_NAME);
+
+		provider.before();
+		provider.after();
+
+		assertThat(EOModelGroup.defaultGroup().modelNamed(TEST_MODEL_NAME), nullValue());
+	}
+
+	@Test
+	public void restoreOriginalAdaptorConfigurationAfterTestExecution() throws Throwable
+	{
+		URL url = getClass().getResource("/" + TEST_MODEL_NAME + ".eomodeld");
+
+		EOModel model = EOModelGroup.defaultGroup().addModelWithPathURL(url);
+
+		model.setAdaptorName("JDBC");
+
+		TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider();
+
+		provider.before();
+		provider.after();
+
+		assertThat(EOModelGroup.defaultGroup().modelNamed(TEST_MODEL_NAME).adaptorName(), is("JDBC"));
 	}
 
 	@After
