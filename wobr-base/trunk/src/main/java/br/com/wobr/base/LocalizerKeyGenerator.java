@@ -2,6 +2,7 @@ package br.com.wobr.base;
 
 import com.webobjects.eoaccess.EOAttribute;
 import com.webobjects.eoaccess.EOEntity;
+import com.webobjects.eoaccess.EORelationship;
 
 /**
  * Generator for keys used for localization. The generated keys can be used
@@ -30,6 +31,10 @@ public class LocalizerKeyGenerator
 	 *            the attribute
 	 * @return The key used for localization corresponding the entity's
 	 *         attribute or <code>null</code> if the entity is <code>null</code>
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the keypath is invalid and is not possible to determine
+	 *             the entity to be used in the generated key
 	 */
 	public String generateKey(EOEntity entity, String keypath)
 	{
@@ -47,8 +52,25 @@ public class LocalizerKeyGenerator
 		{
 			EOAttribute attribute = entity._attributeForPath(keypath);
 
-			entityForLastProperty = attribute.entity();
-			attributeName = attribute.name();
+			if(attribute == null)
+			{
+				int indexOfLastDot = keypath.lastIndexOf(".");
+
+				EORelationship relationship = entity._relationshipForPath(keypath.substring(0, indexOfLastDot));
+
+				if(relationship == null)
+				{
+					throw new IllegalArgumentException(String.format("Cannot generate key. The keypath '%s' is invalid.", keypath));
+				}
+
+				entityForLastProperty = relationship.destinationEntity();
+				attributeName = keypath.substring(indexOfLastDot + 1);
+			}
+			else
+			{
+				entityForLastProperty = attribute.entity();
+				attributeName = attribute.name();
+			}
 		}
 
 		buffer.append("model.").append(entityForLastProperty.model().name()).append(".").append(entityForLastProperty.name());

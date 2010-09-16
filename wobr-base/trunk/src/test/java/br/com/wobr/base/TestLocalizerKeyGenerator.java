@@ -3,25 +3,42 @@ package br.com.wobr.base;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
 import com.webobjects.eoaccess.EOAttribute;
 import com.webobjects.eoaccess.EOEntity;
 import com.webobjects.eoaccess.EOModel;
+import com.webobjects.eoaccess.EORelationship;
 
 /**
  * @author <a href="mailto:hprange@gmail.com">Henrique Prange</a>
  */
 public class TestLocalizerKeyGenerator
 {
-	protected LocalizerKeyGenerator generator;
+	private LocalizerKeyGenerator generator;
 
 	private EOEntity mockEntity;
 
-	protected EOModel mockModel;
+	private EOModel mockModel;
+
+	@Rule
+	public final ExpectedException thrown = ExpectedException.none();
+
+	@Test
+	public void exceptionIfKeypathIsCompletellyInvalid() throws Exception
+	{
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage(is("Cannot generate key. The keypath 'invalid.invalid' is invalid."));
+
+		generator.generateKey(mockEntity, "invalid.invalid");
+	}
 
 	@Test
 	public void keyForEntityAndOneLevelKeypath() throws Exception
@@ -46,6 +63,25 @@ public class TestLocalizerKeyGenerator
 		String result = generator.generateKey(mockEntity2, "property1.property2");
 
 		assertThat(result, is("model.model_name.EntityName.property2"));
+	}
+
+	@Test
+	public void keyForInvalidKeypathOnLastPath() throws Exception
+	{
+		EORelationship mockRelationship = mock(EORelationship.class);
+
+		when(mockEntity._attributeForPath("valid.valid.valid.invalid")).thenReturn(null);
+		when(mockEntity._relationshipForPath("valid.valid.valid")).thenReturn(mockRelationship);
+
+		EOEntity mockEntity2 = mock(EOEntity.class);
+
+		when(mockRelationship.destinationEntity()).thenReturn(mockEntity2);
+		when(mockEntity2.name()).thenReturn("AnotherEntity");
+		when(mockEntity2.model()).thenReturn(mockModel);
+
+		String result = generator.generateKey(mockEntity, "valid.valid.valid.invalid");
+
+		assertThat(result, is("model.model_name.AnotherEntity.invalid"));
 	}
 
 	@Test
