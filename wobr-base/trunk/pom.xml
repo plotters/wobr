@@ -43,4 +43,9 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<scm>
+		<connection>scm:svn:http://wobr.googlecode.com/svn/wobr-base/trunk</connection>
+		<developerConnection>scm:svn:https://wobr.googlecode.com/svn/wobr-base/trunk</developerConnection>
+	</scm>
 </project>
