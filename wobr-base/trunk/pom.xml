@@ -10,7 +10,7 @@
 
 	<artifactId>wobr-base</artifactId>
 	<packaging>woframework</packaging>
-	<version>0.2-SNAPSHOT</version>
+	<version>0.1.1</version>
 	<name>WOBR Base Framework</name>
 
 	<dependencies>
@@ -45,7 +45,7 @@
 	</dependencies>
 
 	<scm>
-		<connection>scm:svn:http://wobr.googlecode.com/svn/wobr-base/trunk</connection>
-		<developerConnection>scm:svn:https://wobr.googlecode.com/svn/wobr-base/trunk</developerConnection>
+		<connection>scm:svn:http://wobr.googlecode.com/svn/wobr-base/tags/wobr-base-0.1.1</connection>
+		<developerConnection>scm:svn:https://wobr.googlecode.com/svn/wobr-base/tags/wobr-base-0.1.1</developerConnection>
 	</scm>
 </project>
