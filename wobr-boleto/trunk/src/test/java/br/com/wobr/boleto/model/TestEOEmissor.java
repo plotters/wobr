@@ -7,7 +7,8 @@ import static org.junit.Assert.assertThat;
 import org.junit.Rule;
 import org.junit.Test;
 
-import br.com.wobr.unittest.rules.TemporaryEnterpriseObjectProvider;
+import com.wounit.annotations.UnderTest;
+import com.wounit.rules.MockEditingContext;
 
 /**
  * @author <a href="mailto:hprange@gmail.com">Henrique Prange</a>
@@ -15,13 +16,14 @@ import br.com.wobr.unittest.rules.TemporaryEnterpriseObjectProvider;
 public class TestEOEmissor
 {
 	@Rule
-	public final TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider( "Boleto" );
+	public final MockEditingContext editingContext = new MockEditingContext( "Boleto" );
+
+	@UnderTest
+	private EOEmissor emissor;
 
 	@Test
 	public void converteEmissorParaEmissorStella() throws Exception
 	{
-		EOEmissor emissor = provider.createInstance( EOEmissor.class );
-
 		emissor.setAgencia( 1234 );
 		emissor.setCarteira( 175 );
 		emissor.setCedente( "Teste" );
@@ -52,8 +54,6 @@ public class TestEOEmissor
 	@Test
 	public void converteEmissorVazioParaEmissorStella() throws Exception
 	{
-		EOEmissor emissor = provider.createInstance( EOEmissor.class );
-
 		br.com.caelum.stella.boleto.Emissor result = emissor.toStellaEmissor();
 
 		assertThat( result, notNullValue() );

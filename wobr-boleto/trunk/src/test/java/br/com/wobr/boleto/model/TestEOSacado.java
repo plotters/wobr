@@ -4,18 +4,20 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.wounit.annotations.UnderTest;
+import com.wounit.rules.MockEditingContext;
+
 import br.com.caelum.stella.boleto.Sacado;
-import br.com.wobr.unittest.rules.TemporaryEnterpriseObjectProvider;
 
 public class TestEOSacado
 {
 	@Rule
-	public final TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider( "Boleto" );
+	public final MockEditingContext editingContext = new MockEditingContext( "Boleto" );
 
+	@UnderTest
 	protected EOSacado sacado;
 
 	@Test
@@ -46,11 +48,5 @@ public class TestEOSacado
 		Sacado result = sacado.toStellaSacado();
 
 		assertThat( result, notNullValue() );
-	}
-
-	@Before
-	public void setup()
-	{
-		sacado = provider.createInstance( EOSacado.class );
 	}
 }

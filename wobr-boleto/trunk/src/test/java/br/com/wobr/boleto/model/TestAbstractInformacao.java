@@ -6,34 +6,34 @@ import static org.junit.Assert.assertThat;
 import org.junit.Rule;
 import org.junit.Test;
 
-import br.com.wobr.unittest.rules.TemporaryEnterpriseObjectProvider;
+import com.wounit.rules.MockEditingContext;
 
-public class TestAbstractInformacao
-{
+public class TestAbstractInformacao {
 	@Rule
-	public final TemporaryEnterpriseObjectProvider provider = new TemporaryEnterpriseObjectProvider( "Boleto" );
+	public final MockEditingContext editingContext = new MockEditingContext(
+			"Boleto");
 
 	@Test
-	public void inicializacaoDescricao() throws Exception
-	{
-		EODescricao descricao = provider.createInstance( EODescricao.class );
+	public void inicializacaoDescricao() throws Exception {
+		EODescricao descricao = EODescricao.createEODescricao(editingContext,
+				null);
 
-		assertThat( descricao.tipo(), is( "1" ) );
+		assertThat(descricao.tipo(), is("1"));
 	}
 
 	@Test
-	public void inicializacaoInstrucao() throws Exception
-	{
-		EOInstrucao descricao = provider.createInstance( EOInstrucao.class );
+	public void inicializacaoInstrucao() throws Exception {
+		EOInstrucao instrucao = EOInstrucao.createEOInstrucao(editingContext,
+				null);
 
-		assertThat( descricao.tipo(), is( "2" ) );
+		assertThat(instrucao.tipo(), is("2"));
 	}
 
 	@Test
-	public void inicializacaoLocalPagamento() throws Exception
-	{
-		EOLocalPagamento localPagamento = provider.createInstance( EOLocalPagamento.class );
+	public void inicializacaoLocalPagamento() throws Exception {
+		EOLocalPagamento localPagamento = EOLocalPagamento
+				.createEOLocalPagamento(editingContext, null);
 
-		assertThat( localPagamento.tipo(), is( "3" ) );
+		assertThat(localPagamento.tipo(), is("3"));
 	}
 }
