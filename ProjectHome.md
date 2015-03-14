@@ -1,0 +1,1 @@
+WebObjects libraries provided by a consortium of Brazilian companies.
